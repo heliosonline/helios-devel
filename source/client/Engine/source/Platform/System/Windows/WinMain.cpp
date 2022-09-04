@@ -1,10 +1,10 @@
-#include "pch_engine.h"
+#include "pch.h"
 
 #include "HeliosEngine/Core/Application.h"
 #include <Windows.h>
 
 
-#ifdef HE_BUILD_DEBUG
+#ifdef BUILD_DEBUG
 // ConsoleApp for stdout debuging
 int main(int argc, char** argv)
 #else

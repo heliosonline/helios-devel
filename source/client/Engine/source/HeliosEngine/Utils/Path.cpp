@@ -1,17 +1,17 @@
-#include "pch_engine.h"
+#include "pch.h"
 
 #include "HeliosEngine/Utils/Path.h"
 
 
 // platform headers
-#if defined HE_SYSTEM_WINDOS
+#if defined BUILDTARGET_WINDOWS
 	#include <Windows.h>
 	#include <stdlib.h>
-#elif defined HE_SYSTEM_LINUX
+#elif defined BUILDTARGET_LINUX
 	#include <string>
 	#include <limits.h>
 	#include <unistd.h>
-#elif defined HE_SYSTEM_MACOS
+#elif defined BUILDTARGET_MACOS
 #endif
 
 
@@ -28,7 +28,7 @@ namespace Utils {
 	{
 		std::string path;
 
-#if defined HE_SYSTEM_WINDOWS 
+#if defined BUILDTARGET_WINDOWS 
 
 		char ctemp[MAX_PATH];
 		wchar_t wtemp[MAX_PATH];
@@ -38,14 +38,14 @@ namespace Utils {
 		std::string strtemp(ctemp);
 		path = strtemp.substr(0, strtemp.find_last_of("/\\"));
 
-#elif defined HE_SYSTEM_LINUX
+#elif defined BUILDTARGET_LINUX
 
 		// TODO... test GetExePath() for Linux
 		char result[PATH_MAX];
 		ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
 		return std::string(result, (count > 0) ? count : 0);
 
-#elif defined HE_SYSTEM_MACOS
+#elif defined BUILDTARGET_MACOS
 
 		// TODO... implement GetExePath() for MacOS
 		// TODO... test GetExePath() for MacOS

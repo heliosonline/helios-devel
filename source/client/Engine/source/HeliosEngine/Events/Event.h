@@ -24,11 +24,11 @@ namespace Helios {
 	};
 
 
-#define EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }\
+#define HE_EVENT_CLASS_TYPE(type) static EventType GetStaticType() { return EventType::type; }\
                                EventType GetEventType() const override { return GetStaticType(); }\
                                const char* GetName() const override { return #type; }
 
-#define EVENT_CLASS_CATEGORY(category) int GetCategoryFlags() const override { return category; }
+#define HE_EVENT_CLASS_CATEGORY(category) int GetCategoryFlags() const override { return category; }
 
 
 	class Event

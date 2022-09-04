@@ -19,15 +19,15 @@ workspace "Helios-Development"
 	--------------------------------
 	filter "platforms:Windows"
 		system  "windows"
-		defines "_SYSTEM_WINDOWS"
+		defines "BUILDTARGET_WINDOWS"
 
 	filter "platforms:Linux"
 		system  "linux"
-		defines "_SYSTEM_LINUX"
+		defines "BUILDTARGET_LINUX"
 
 	filter "platforms:MacOS"
 		system  "macosx"
-		defines "_SYSTEM_MACOS"
+		defines "BUILDTARGET_MACOS"
 
 	-- Windows only
 	filter { "system:windows", "action:vs*" }
@@ -38,13 +38,13 @@ workspace "Helios-Development"
 	-- [ DEBUG/RELEASE CONFIGURATION ] --
 	-------------------------------------
 	filter "configurations:Debug"
-		defines  "_BUILD_DEBUG"
+		defines  "BUILD_DEBUG"
 		symbols  "On"
 		optimize "Off"
 		runtime  "Debug"
 
 	filter "configurations:Release"
-		defines  "_BUILD_RELEASE"
+		defines  "BUILD_RELEASE"
 		symbols  "Off"
 		optimize "Speed"
 		runtime  "Release"

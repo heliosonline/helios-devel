@@ -1,4 +1,4 @@
-#include "pch_engine.h"
+#include "pch.h"
 
 #include "Platform/Renderer/OpenGL/GLRendererAPI.h"
 
@@ -23,7 +23,7 @@ namespace Helios {
 
 	void GLRendererAPI::Init()
 	{
-#ifdef HE_BUILD_DEBUG
+#ifdef BUILD_DEBUG
 		// install a message callback for debuging
 		glEnable(GL_DEBUG_OUTPUT);
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);

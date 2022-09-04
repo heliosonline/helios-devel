@@ -1,0 +1,13 @@
+[submodule "source/client/Engine/vendor/glfw"]
+	path = source/client/Engine/vendor/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "source/client/Engine/vendor/spdlog"]
+	path = source/client/Engine/vendor/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "source/client/Engine/vendor/imgui"]
+	path = source/client/Engine/vendor/imgui
+	url = https://github.com/ocornut/imgui.git
+	branch = docking
+[submodule "source/client/Engine/vendor/glm"]
+	path = source/client/Engine/vendor/glm
+	url = https://github.com/g-truc/glm.git

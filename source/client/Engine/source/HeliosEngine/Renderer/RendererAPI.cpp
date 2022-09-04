@@ -1,9 +1,9 @@
-#include "pch_engine.h"
+#include "pch.h"
 
 #include "HeliosEngine/Renderer/RendererAPI.h"
 
 // related on build options and platform
-#ifdef HE_BUILDWITH_RENDERER_OPENGL
+#ifdef BUILDWITH_RENDERER_OPENGL
 #	include "Platform/Renderer/OpenGL/GLRendererAPI.h"
 #endif
 
@@ -11,7 +11,7 @@
 namespace Helios {
 
 
-	RendererAPI::API RendererAPI::s_API = HE_DEFAULT_RENDERERAPI;
+	RendererAPI::API RendererAPI::s_API = DEFAULT_RENDERERAPI;
 
 
 	Scope<RendererAPI> RendererAPI::Create()
@@ -21,7 +21,7 @@ namespace Helios {
 			case RendererAPI::API::None: LOG_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
 
 // related on build options and platform
-#ifdef HE_BUILDWITH_RENDERER_OPENGL
+#ifdef BUILDWITH_RENDERER_OPENGL
 			case RendererAPI::API::OpenGL: return CreateScope<GLRendererAPI>();
 #endif
 

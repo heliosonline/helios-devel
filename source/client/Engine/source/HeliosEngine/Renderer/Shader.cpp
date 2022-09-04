@@ -1,10 +1,10 @@
-#include "pch_engine.h"
+#include "pch.h"
 
 #include "HeliosEngine/Renderer/Renderer.h"
 #include "HeliosEngine/Renderer/Shader.h"
 
 // related on build options and platform
-#ifdef HE_BUILDWITH_RENDERER_OPENGL
+#ifdef BUILDWITH_RENDERER_OPENGL
 #	include "Platform/Renderer/OpenGL/GLShader.h"
 #endif
 
@@ -24,7 +24,7 @@ namespace Helios {
 		case RendererAPI::API::None:    LOG_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
 
 // related on build options and platform
-#ifdef HE_BUILDWITH_RENDERER_OPENGL
+#ifdef BUILDWITH_RENDERER_OPENGL
 		case RendererAPI::API::OpenGL:  return CreateRef<GLShader>(filepath);
 #endif
 
@@ -40,7 +40,7 @@ namespace Helios {
 		case RendererAPI::API::None:    LOG_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
 
 // related on build options and platform
-#ifdef HE_BUILDWITH_RENDERER_OPENGL
+#ifdef BUILDWITH_RENDERER_OPENGL
 		case RendererAPI::API::OpenGL:  return CreateRef<GLShader>(name, vertexSrc, fragmentSrc);
 #endif
 

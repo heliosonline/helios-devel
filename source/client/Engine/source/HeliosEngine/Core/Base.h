@@ -10,12 +10,12 @@
 
 
 // Platform
-#if defined(HE_SYSTEM_WINDOWS)
-	#include <Windows.h>
-#elif defined(HE_SYSTEM_LINUX)
-	// TODO...
-#elif defined(HE_SYSTEM_MACOS)
-	// TODO...
+#if defined(BUILDTARGET_WINDOWS)
+#	include "Platform/System/Windows/WinBase.h"
+#elif defined(BUILDTARGET_LINUX)
+#	include "Platform/System/Linux/LinuxBase.h"
+#elif defined(BUILDTARGET_MACOS)
+#	include "Platform/System/MacOS/MacOSBase.h"
 #endif
 
 

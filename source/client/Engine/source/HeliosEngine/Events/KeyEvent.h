@@ -12,7 +12,7 @@ namespace Helios {
 	public:
 		KeyCode GetKeyCode() const { return m_KeyCode; }
 
-		EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
+		HE_EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
 	protected:
 		KeyEvent(const KeyCode keycode)
 			: m_KeyCode(keycode) {}
@@ -36,7 +36,7 @@ namespace Helios {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(KeyPressed)
+		HE_EVENT_CLASS_TYPE(KeyPressed)
 	private:
 		bool m_IsRepeat;
 	};
@@ -55,7 +55,7 @@ namespace Helios {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(KeyReleased)
+		HE_EVENT_CLASS_TYPE(KeyReleased)
 	};
 
 
@@ -72,7 +72,7 @@ namespace Helios {
 			return ss.str();
 		}
 
-		EVENT_CLASS_TYPE(KeyTyped)
+		HE_EVENT_CLASS_TYPE(KeyTyped)
 	};
 
 

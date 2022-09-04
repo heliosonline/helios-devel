@@ -9,8 +9,8 @@ project "Engine.glad2"
 	kind          "StaticLib"
 	targetname    "glad2"
 	
-    targetdir (dir_bin   .. dir_group .. dir_config .. dir_project)
-    objdir    (dir_build .. dir_group .. dir_config .. dir_project)
+	targetdir (dir_bin   .. dir_group .. dir_config .. "engine.vendor/" .. dir_project)
+	objdir    (dir_build .. dir_group .. dir_config .. "engine.vendor/" .. dir_project)
 	
 	includedirs {
 		"include",

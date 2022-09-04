@@ -1,4 +1,4 @@
-#include "pch_engine.h"
+#include "pch.h"
 
 #include "HeliosEngine/Core/Window.h"
 #include "HeliosEngine/Events/ApplicationEvent.h"
@@ -53,7 +53,7 @@ namespace Helios {
 			glfwSetErrorCallback(GLFWErrorCallback);
 		}
 
-#if defined(HE_BUILD_DEBUG) && defined(HE_BUILDWITH_RENDERER_OPENGL)
+#if defined(BUILD_DEBUG) && defined(BUILDWITH_RENDERER_OPENGL)
 		if (Renderer::GetAPI() == RendererAPI::API::OpenGL)
 			glfwWindowHint(GLFW_CONTEXT_DEBUG, GLFW_TRUE);
 		LOG_CORE_DEBUG("GLFW using debug mode context (hint)");

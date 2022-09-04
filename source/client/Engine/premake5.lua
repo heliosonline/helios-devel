@@ -14,19 +14,28 @@ project "Engine"
 	pchheader "pch.h"
 	pchsource "source/pch.cpp"
 
+	defines {
+		"GLFW_INCLUDE_NONE"
+	}
+
 	-- Libraries
 	LibCommon{}
 
 
 	includedirs {
 		"source",
+		"vendor/spdlog/include",
 		"vendor/glad/include",
-		"vendor/stb"
+		"vendor/glfw/include",
+		"vendor/glm",
+		"vendor/imgui",
+		"vendor/stb",
 	}
 	
 	
 	links {
-		"Engine.glad2"
+		"Engine.glad2",
+		"Engine.glfw",
 	}
 
 
@@ -36,6 +45,8 @@ project "Engine"
 
 
 	files {
+		"source/pch.h",
+		"source/pch.cpp",
 		"source/HeliosEngine/**.h",
 		"source/HeliosEngine/**.cpp",
 		"vendor/stb/*.h",
@@ -118,11 +129,6 @@ project "Engine"
 	filter {}
 		
 
-	prebuildmessage "Updating version information..."
-	prebuildcommands {
-		"\"%{wks.location}tools/build_inc/bin/build_inc_" .. os.host() .. "\" -bfile \"%{prj.location}source/config/version.h\" -bdef VERSION_BUILD"
-	}
-
-
 	group "client/Engine/vendor"
 		include("vendor/glad")
+		include("vendor/premake5-glfw.lua")

@@ -1,4 +1,4 @@
-#include "pch_engine.h"
+#include "pch.h"
 
 #include "HeliosEngine/Core/Application.h"
 #include "HeliosEngine/Core/EntryPoint.h"
@@ -107,23 +107,23 @@ namespace Helios {
 			Timestep timestep = RunLoopTimer.Elapsed();
 			RunLoopTimer.Reset();
 
-			{ // tempoary for debuging
-				static int fps = 0;
-				fps += (int)(1.0f / timestep);
-				static int fps_cnt = 0;
-				fps_cnt++;
-				static float fps_ts = 0;
-				fps_ts += timestep;
-				if (fps_ts >= 1.0f)
-				{
-					std::ostringstream title;
-					title << "FPS: " << fps/fps_cnt << " (" << 1000*fps_ts/fps_cnt << " ms)";
-					glfwSetWindowTitle((GLFWwindow*)m_Window->GetNativeWindow(), title.str().c_str());
-					fps = 0;
-					fps_cnt = 0;
-					fps_ts = 0;
-				}
-			} // tempoary for debuging
+{ // tempoary for debuging
+	static int fps = 0;
+	fps += (int)(1.0f / timestep);
+	static int fps_cnt = 0;
+	fps_cnt++;
+	static float fps_ts = 0;
+	fps_ts += timestep;
+	if (fps_ts >= 1.0f)
+	{
+		std::ostringstream title;
+		title << "FPS: " << fps/fps_cnt << " (" << 1000*fps_ts/fps_cnt << " ms)";
+		glfwSetWindowTitle((GLFWwindow*)m_Window->GetNativeWindow(), title.str().c_str());
+		fps = 0;
+		fps_cnt = 0;
+		fps_ts = 0;
+	}
+} // tempoary for debuging
 
 			if (!m_Minimized)
 			{

@@ -9,12 +9,12 @@ namespace Helios {
 
 
 // related on build options and platform
-#if   defined HE_BUILDWITH_RENDERER_DIRECTX
-#		define HE_DEFAULT_RENDERERAPI RendererAPI::API::DirectX
-#elif defined HE_BUILDWITH_RENDERER_VULKAN
-#		define HE_DEFAULT_RENDERERAPI RendererAPI::API::Vulkan
-#elif defined HE_BUILDWITH_RENDERER_OPENGL
-#		define HE_DEFAULT_RENDERERAPI RendererAPI::API::OpenGL
+#if   defined BUILDWITH_RENDERER_DIRECTX
+#		define DEFAULT_RENDERERAPI RendererAPI::API::DirectX
+#elif defined BUILDWITH_RENDERER_VULKAN
+#		define DEFAULT_RENDERERAPI RendererAPI::API::Vulkan
+#elif defined BUILDWITH_RENDERER_OPENGL
+#		define DEFAULT_RENDERERAPI RendererAPI::API::OpenGL
 #endif
 
 
@@ -26,13 +26,13 @@ namespace Helios {
 			None = 0,
 
 // related on build options and platform
-#ifdef HE_BUILDWITH_RENDERER_DIRECTX
+#ifdef BUILDWITH_RENDERER_DIRECTX
 			DirectX,
 #endif
-#ifdef HE_BUILDWITH_RENDERER_VULKAN
+#ifdef BUILDWITH_RENDERER_VULKAN
 			Vulkan,
 #endif
-#ifdef HE_BUILDWITH_RENDERER_OPENGL
+#ifdef BUILDWITH_RENDERER_OPENGL
 			OpenGL,
 #endif
 
