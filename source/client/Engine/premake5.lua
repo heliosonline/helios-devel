@@ -1,0 +1,128 @@
+-----------------------
+-- [ PROJECT CONFIG] --
+-----------------------
+project "Engine"
+	architecture  "x86_64"
+	language      "C++"
+	cppdialect    "C++20"
+	staticruntime "On"
+	kind          "StaticLib"
+	
+	targetdir (dir_bin   .. dir_group .. dir_config)
+	objdir    (dir_build .. dir_group .. dir_config .. dir_project)
+	
+	pchheader "pch.h"
+	pchsource "source/pch.cpp"
+
+	-- Libraries
+	LibCommon{}
+
+
+	includedirs {
+		"source",
+		"vendor/glad/include",
+		"vendor/stb"
+	}
+	
+	
+	links {
+		"Engine.glad2"
+	}
+
+
+	dependson {
+		""
+	}
+
+
+	files {
+		"source/HeliosEngine/**.h",
+		"source/HeliosEngine/**.cpp",
+		"vendor/stb/*.h",
+		"vendor/stb/*.cpp"
+	}
+
+
+	filter "configurations:Debug"
+	
+		defines {
+		}
+	
+
+	filter "configurations:Release"
+		
+		defines {
+		}
+
+
+	filter "platforms:Windows"
+
+		defines {
+--			"BUILDWITH_RENDERER_DIRECTX",
+			"BUILDWITH_RENDERER_OPENGL",
+--			"BUILDWITH_RENDERER_VULKAN",
+		}
+
+		files {
+			"source/Platform/System/Windows/**.h",
+			"source/Platform/System/Windows/**.cpp",
+--			"source/Platform/Renderer/DirectX/**.h",
+--			"source/Platform/Renderer/DirectX/**.cpp",
+			"source/Platform/Renderer/OpenGL/**.h",
+			"source/Platform/Renderer/OpenGL/**.cpp",
+--			"source/Platform/Renderer/Vulkan/**.h",
+--			"source/Platform/Renderer/Vulkan/**.cpp",
+		}
+
+
+	filter "platforms:Linux"
+
+		defines {
+--			"BUILDWITH_RENDERER_DIRECTX",
+			"BUILDWITH_RENDERER_OPENGL",
+--			"BUILDWITH_RENDERER_VULKAN",
+		}
+
+		files {
+			"source/Platform/System/Linux/**.h",
+			"source/Platform/System/Linux/**.cpp",
+--			"source/Platform/Renderer/DirectX/**.h",
+--			"source/Platform/Renderer/DirectX/**.cpp",
+			"source/Platform/Renderer/OpenGL/**.h",
+			"source/Platform/Renderer/OpenGL/**.cpp",
+--			"source/Platform/Renderer/Vulkan/**.h",
+--			"source/Platform/Renderer/Vulkan/**.cpp",
+		}
+
+
+	filter "platforms:MacOS"
+
+		defines {
+--			"BUILDWITH_RENDERER_DIRECTX",
+			"BUILDWITH_RENDERER_OPENGL",
+--			"BUILDWITH_RENDERER_VULKAN",
+		}
+
+		files {
+			"source/Platform/System/MacOS/**.h",
+			"source/Platform/System/MacOS/**.cpp",
+--			"source/Platform/Renderer/DirectX/**.h",
+--			"source/Platform/Renderer/DirectX/**.cpp",
+			"source/Platform/Renderer/OpenGL/**.h",
+			"source/Platform/Renderer/OpenGL/**.cpp",
+--			"source/Platform/Renderer/Vulkan/**.h",
+--			"source/Platform/Renderer/Vulkan/**.cpp",
+		}
+
+
+	filter {}
+		
+
+	prebuildmessage "Updating version information..."
+	prebuildcommands {
+		"\"%{wks.location}tools/build_inc/bin/build_inc_" .. os.host() .. "\" -bfile \"%{prj.location}source/config/version.h\" -bdef VERSION_BUILD"
+	}
+
+
+	group "client/Engine/vendor"
+		include("vendor/glad")
