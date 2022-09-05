@@ -85,5 +85,6 @@ workspace "Helios-Development"
 	group "tools"
 		dir_group = "tools/"
 		include("tools/build_inc/")
+		include("docu/")
 
 	group ""
