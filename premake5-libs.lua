@@ -24,7 +24,16 @@ end
 
 function LibHeliosEngine()
 	includedirs {
-		"%{wks.location}/source/client/Engine/source"
+		"%{wks.location}/source/client/Engine/source",
+		"%{wks.location}/source/client/Engine/vendor/spdlog/include",
+--		"%{wks.location}/source/client/Engine/vendor/glad/include",
+		"%{wks.location}/source/client/Engine/vendor/glfw/include",
+		"%{wks.location}/source/client/Engine/vendor/glm",
+		"%{wks.location}/source/client/Engine/vendor/imgui",
+--		"%{wks.location}/source/client/Engine/vendor/stb",
+	}
+	defines {
+		"GLFW_INCLUDE_NONE"
 	}
 	links { "Engine" }
 end

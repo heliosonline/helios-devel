@@ -13,6 +13,8 @@ namespace Utils {
 
 	// get current working dir
 	std::string GetCurrentDir();
+	// set current working dir
+	void SetCurrentDir(std::string& path);
 
 	// get path to the executable
 	std::string GetExePath();

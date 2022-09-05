@@ -36,6 +36,7 @@ project "Engine"
 	links {
 		"Engine.glad2",
 		"Engine.glfw",
+		"Engine.imgui",
 	}
 
 
@@ -132,3 +133,4 @@ project "Engine"
 	group "client/Engine/vendor"
 		include("vendor/glad")
 		include("vendor/premake5-glfw.lua")
+		include("vendor/premake5-imgui.lua")

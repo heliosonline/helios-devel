@@ -24,6 +24,12 @@ namespace Utils {
 	}
 
 
+	void SetCurrentDir(std::string& path)
+	{
+		std::filesystem::current_path(path);
+	}
+
+
 	std::string GetExePath()
 	{
 		std::string path;

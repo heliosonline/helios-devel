@@ -36,7 +36,10 @@ namespace Helios {
 		if (m_Specification.hints & Hints::HINT_USE_CWD)
 			m_Specification.WorkingDirectory = Utils::GetCurrentDir();
 		if (m_Specification.hints & Hints::HINT_USE_EXEPATH_AS_CWD)
+		{
 			m_Specification.WorkingDirectory = Utils::GetExePath();
+			Utils::SetCurrentDir(m_Specification.WorkingDirectory);
+		}
 
 		Log::Init("HeliosEngine.log", m_Specification.WorkingDirectory);
 
