@@ -6,7 +6,6 @@ project "Client"
 	language      "C++"
 	cppdialect    "C++20"
 	staticruntime "On"
-	kind          "ConsoleApp"
 	
 	targetdir (dir_bin   .. dir_group .. dir_config)
 	objdir    (dir_build .. dir_group .. dir_config .. dir_project)
@@ -43,12 +42,16 @@ project "Client"
 
 	filter "configurations:Debug"
 	
+		kind "ConsoleApp"
+
 		defines {
 		}
 	
 
 	filter "configurations:Release"
 		
+		kind "WindowedApp"
+
 		defines {
 		}
 
