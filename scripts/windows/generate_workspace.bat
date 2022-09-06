@@ -2,8 +2,9 @@
 
 
 echo ===== Generating Visual Studio 2022 workspace...
-cd ..\..
-vendor\premake5\windows\premake5.exe vs2022
+pushd ..\..\
+call vendor\premake5\windows\premake5.exe vs2022
+popd
 
 
 echo ===== Done.
