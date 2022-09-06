@@ -15,7 +15,8 @@ project "Engine"
 	pchsource "source/pch.cpp"
 
 	defines {
-		"GLFW_INCLUDE_NONE"
+		"GLFW_INCLUDE_NONE",
+		"HE_LOG_ASSERTS"
 	}
 
 	-- Libraries

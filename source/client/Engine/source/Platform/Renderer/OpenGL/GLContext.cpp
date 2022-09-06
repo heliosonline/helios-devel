@@ -27,6 +27,11 @@ namespace Helios {
 		LOG_CORE_INFO("  Vendor:   {0}", glGetString(GL_VENDOR));
 		LOG_CORE_INFO("  Renderer: {0}", glGetString(GL_RENDERER));
 		LOG_CORE_INFO("  Version:  {0}", glGetString(GL_VERSION));
+
+#ifdef HE_LOG_ASSERTS
+		// Check for required OpenGL version 4.5
+		LOG_CORE_ASSERT(GLAD_VERSION_MAJOR(version) > 4 || (GLAD_VERSION_MAJOR(version) == 4 && GLAD_VERSION_MINOR(version) >= 5), "OpenGL version >= 4.5 is required!")
+#endif
 	}
 
 
