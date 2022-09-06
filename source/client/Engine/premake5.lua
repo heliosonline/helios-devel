@@ -58,6 +58,7 @@ project "Engine"
 	filter "configurations:Debug"
 	
 		defines {
+			"LOG_LEVEL=1"
 		}
 	
 

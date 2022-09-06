@@ -5,7 +5,7 @@ namespace Utils {
 
 
 	// character to separate directories
-	#if defined BUILDTARGET_WINDOWS
+	#if defined TARGET_PLATFORM_WINDOWS
 		#define DIR_SEP "\\"
 	#else
 		#define DIR_SEP "/"

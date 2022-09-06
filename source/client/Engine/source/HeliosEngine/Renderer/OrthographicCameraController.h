@@ -2,7 +2,6 @@
 
 #include "HeliosEngine/Renderer/OrthographicCamera.h"
 #include "HeliosEngine/Core/Timestep.h"
-
 #include "HeliosEngine/Events/ApplicationEvent.h"
 #include "HeliosEngine/Events/MouseEvent.h"
 

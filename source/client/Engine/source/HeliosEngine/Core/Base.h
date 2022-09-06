@@ -1,22 +1,42 @@
 #pragma once
 
-// Standart C/C++
-#include <string>
-#include <filesystem>
-#include <memory>
-#include <functional>
-#include <utility>
-#include <unordered_map>
-
 
 // Platform
-#if defined(BUILDTARGET_WINDOWS)
+#include "Platform/PlatformDetection.h"
+#if defined(TARGET_PLATFORM_WINDOWS)
 #	include "Platform/System/Windows/WinBase.h"
-#elif defined(BUILDTARGET_LINUX)
+#elif defined(TARGET_PLATFORM_LINUX)
 #	include "Platform/System/Linux/LinuxBase.h"
-#elif defined(BUILDTARGET_MACOS)
+#elif defined(TARGET_PLATFORM_MACOS)
 #	include "Platform/System/MacOS/MacOSBase.h"
 #endif
+
+
+// See https://github.com/skypjack/entt/wiki/Frequently-Asked-Questions#warning-c4003-the-min-the-max-and-the-macro
+#ifdef TARGET_PLATFORM_WINDOWS
+#	ifndef NOMINMAX
+#		define NOMINMAX
+#	endif
+#endif
+
+
+// Standart C/C++
+#include <algorithm>
+#include <utility>
+#include <filesystem>
+#include <functional>
+#include <memory>
+
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
+#include <array>
+#include <string>
+#include <vector>
+
+#include <unordered_map>
+#include <unordered_set>
 
 
 namespace Helios {
@@ -38,3 +58,6 @@ namespace Helios {
 	}
 
 } // namespace Helios
+
+
+#include "HeliosEngine/Core/Log.h"

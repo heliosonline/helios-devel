@@ -1,7 +1,6 @@
 #pragma once
 
 #include "HeliosEngine/Events/Event.h"
-
 #include "HeliosEngine/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>

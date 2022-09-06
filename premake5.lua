@@ -19,15 +19,12 @@ workspace "Helios-Development"
 	--------------------------------
 	filter "platforms:Windows"
 		system  "windows"
-		defines "BUILDTARGET_WINDOWS"
 
 	filter "platforms:Linux"
 		system  "linux"
-		defines "BUILDTARGET_LINUX"
 
 	filter "platforms:MacOS"
 		system  "macosx"
-		defines "BUILDTARGET_MACOS"
 
 	-- Windows only
 	filter { "system:windows", "action:vs*" }
