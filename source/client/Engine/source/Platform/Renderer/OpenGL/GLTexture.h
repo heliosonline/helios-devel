@@ -32,6 +32,8 @@ namespace Helios {
 			return m_RendererID == other.GetRendererID();
 		}
 	private:
+		void Create();
+	private:
 		std::string m_Path;
 		bool m_IsLoaded = false;
 		uint32_t m_Width, m_Height;

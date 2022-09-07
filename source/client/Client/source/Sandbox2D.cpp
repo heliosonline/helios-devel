@@ -8,13 +8,14 @@
 
 
 Sandbox2D::Sandbox2D()
-	: Layer("Example"), m_CameraController(800.0f / 600.0f, true)
+	: Layer("Sandbox2D"), m_CameraController(800.0f / 600.0f, true)
 {
 }
 
 
 void Sandbox2D::OnAttach()
 {
+	m_Texture = Helios::Texture2D::Create("assets/textures/Checkerboard.png");
 }
 
 
@@ -31,11 +32,10 @@ void Sandbox2D::OnUpdate(Helios::Timestep ts)
 	Helios::RenderCommand::Clear();
 
 	Helios::Renderer2D::BeginScene(m_CameraController.GetCamera());
-	Helios::Renderer2D::DrawQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+	Helios::Renderer2D::DrawQuad({ -0.5f, 0.0f, 0.1f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+	Helios::Renderer2D::DrawQuad({ 0.5f, -0.5f, -0.1 }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
+	Helios::Renderer2D::DrawQuad({ 0.2f, 0.0f }, { 1.0f, 1.0f }, m_Texture, { 1.0f, 1.0f, 1.0f, 0.5f });
 	Helios::Renderer2D::EndScene();
-
-//	m_FlatColorShader->SetFloat4("u_Color", m_Color);
-//	Helios::Renderer::Submit(m_FlatColorShader, m_VertexArray, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 }
 
 

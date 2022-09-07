@@ -9,7 +9,7 @@
 #include "Sandbox2D.h"
 
 
-#if 0
+#if 1
 class ExampleLayer : public Helios::Layer
 {
 public:

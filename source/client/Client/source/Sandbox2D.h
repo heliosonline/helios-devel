@@ -20,6 +20,7 @@ private:
 	// Temp
 	Helios::Ref<Helios::VertexArray> m_VertexArray;
 	Helios::Ref<Helios::Shader> m_FlatColorShader;
+	Helios::Ref<Helios::Texture2D> m_Texture;
 
 	glm::vec4 m_Color = { 0.2f, 0.3f, 0.8f, 1.0f };
 

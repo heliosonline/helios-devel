@@ -16,11 +16,11 @@ void main()
 #type fragment ////////////////////////////////////////////////////////////////
 #version 330 core
 
-layout(location = 0) out vec4 pixel;
+layout(location = 0) out vec4 color;
 
 uniform vec4 u_Color;
 
 void main()
 {
-	pixel = u_Color;
+	color = u_Color;
 }
