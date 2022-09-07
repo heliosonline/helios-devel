@@ -2,12 +2,14 @@
 
 #include "config/version.h"
 
-
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <imgui.h>
 
+#include "Sandbox2D.h"
 
+
+#if 0
 class ExampleLayer : public Helios::Layer
 {
 public:
@@ -196,6 +198,7 @@ private:
 	Helios::OrthographicCameraController m_CameraController;
 	glm::vec3 m_Color = { 0.2f, 0.3f, 0.8f };
 };
+#endif
 
 
 class HeliosGame : public Helios::Application
@@ -204,7 +207,8 @@ public:
 	HeliosGame(const Helios::ApplicationSpecification& specification)
 		: Helios::Application(specification)
 	{
-		PushLayer(new ExampleLayer());
+//		PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
 	}
 
 	~HeliosGame()
