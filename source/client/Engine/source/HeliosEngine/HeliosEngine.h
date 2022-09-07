@@ -16,6 +16,7 @@
 
 // Renderer
 #include <HeliosEngine/Renderer/Renderer.h>
+#include <HeliosEngine/Renderer/Renderer2D.h>
 #include <HeliosEngine/Renderer/RenderCommand.h>
 #include <HeliosEngine/Renderer/Buffer.h>
 #include <HeliosEngine/Renderer/Shader.h>

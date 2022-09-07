@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "HeliosEngine/Renderer/Renderer.h"
+#include "HeliosEngine/Renderer/Renderer2D.h"
 
 
 namespace Helios {
@@ -12,11 +13,13 @@ namespace Helios {
 	void Renderer::Init()
 	{
 		RenderCommand::Init();
+		Renderer2D::Init();
 	}
 
 
 	void Renderer::Shutdown()
 	{
+		Renderer2D::Shutdown();
 	}
 
 
