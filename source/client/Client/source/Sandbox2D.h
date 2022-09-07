@@ -1,9 +1,6 @@
 #pragma once
 
 
-#include "HeliosEngine/HeliosEngine.h"
-
-
 class Sandbox2D : public Helios::Layer
 {
 public:
