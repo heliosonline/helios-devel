@@ -12,14 +12,6 @@
 #endif
 
 
-// See https://github.com/skypjack/entt/wiki/Frequently-Asked-Questions#warning-c4003-the-min-the-max-and-the-macro
-#ifdef TARGET_PLATFORM_WINDOWS
-#	ifndef NOMINMAX
-#		define NOMINMAX
-#	endif
-#endif
-
-
 // Standart C/C++
 #include <algorithm>
 #include <utility>
@@ -61,3 +53,4 @@ namespace Helios {
 
 
 #include "HeliosEngine/Core/Log.h"
+#include "HeliosEngine/Debug/Instrumentor.h"
