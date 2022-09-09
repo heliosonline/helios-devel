@@ -32,10 +32,13 @@ void Sandbox2D::OnUpdate(Helios::Timestep ts)
 	Helios::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 	Helios::RenderCommand::Clear();
 
+	static float rotation = 0.0f;
+	rotation += ts * 20.0f;
+
 	Helios::Renderer2D::BeginScene(m_CameraController.GetCamera());
 	Helios::Renderer2D::DrawQuad({ -0.5f, 0.0f, 0.1f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
 	Helios::Renderer2D::DrawQuad({ 0.5f, -0.5f, -0.1 }, { 0.5f, 0.75f }, { 0.2f, 0.3f, 0.8f, 1.0f });
-	Helios::Renderer2D::DrawRotatedQuad({ 0.2f, 0.0f }, { 1.0f, 1.0f }, 45.0f, m_Texture, { 1.0f, 1.0f, 1.0f, 0.5f });
+	Helios::Renderer2D::DrawRotatedQuad({ 0.0f, 0.0f }, { 1.0f, 1.0f }, rotation, m_Texture, { 1.0f, 1.0f, 1.0f, 0.5f });
 	Helios::Renderer2D::DrawQuad({ -0.5f, 0.5f, 0.2f }, { 0.5f, 0.5f }, m_Texture2, { 1.0f, 1.0f, 1.0f, 0.75f });
 	Helios::Renderer2D::EndScene();
 }
