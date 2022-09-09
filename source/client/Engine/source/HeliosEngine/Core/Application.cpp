@@ -170,7 +170,10 @@ ImGui::ShowDemoWindow(&show);
 				}
 			}
 
-			m_Window->OnUpdate();
+			{
+				HE_PROFILE_SCOPE("Window OnUpdate");
+				m_Window->OnUpdate();
+			}
 		}
 	}
 
