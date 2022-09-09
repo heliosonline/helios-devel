@@ -52,7 +52,8 @@ project "Engine"
 		"source/HeliosEngine/**.h",
 		"source/HeliosEngine/**.cpp",
 		"vendor/stb/*.h",
-		"vendor/stb/*.cpp"
+		"vendor/stb/*.cpp",
+		"source/Platform/PlatformDetection.h",
 	}
 
 

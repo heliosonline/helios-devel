@@ -35,9 +35,9 @@ namespace Helios {
 		}
 
 
-		static void DrawIndexed(const Ref<VertexArray>& vertexArray)
+		static void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0)
 		{
-			s_RendererAPI->DrawIndexed(vertexArray);
+			s_RendererAPI->DrawIndexed(vertexArray, indexCount);
 		}
 
 

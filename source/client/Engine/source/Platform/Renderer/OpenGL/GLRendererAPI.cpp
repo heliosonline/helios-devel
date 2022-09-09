@@ -38,7 +38,7 @@ namespace Helios {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_DEPTH_TEST);
-//		glEnable(GL_LINE_SMOOTH);
+		glEnable(GL_LINE_SMOOTH);
 	}
 
 
@@ -66,11 +66,13 @@ namespace Helios {
 	}
 
 
-	void GLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray)
+	void GLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
 	{
 		HE_PROFILE_FUNCTION();
 
-		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+		vertexArray->Bind();
+		uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
+		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
 
 
