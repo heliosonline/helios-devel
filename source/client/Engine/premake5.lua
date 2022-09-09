@@ -131,6 +131,12 @@ project "Engine"
 
 
 	filter {}
+
+
+	postbuildmessage "Copying assets to the target folder..."
+	postbuildcommands {
+		"{COPYDIR} %{wks.location}source/client/Engine/assets " .. dir_bin .. dir_group .. dir_config .. "assets"
+	}
 		
 
 	group "client/Engine/vendor"
