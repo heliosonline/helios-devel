@@ -30,6 +30,8 @@ namespace Helios {
 	GLShader::GLShader(const std::string& filepath)
 		: m_FilePath(filepath)
 	{
+		HE_PROFILE_FUNCTION();
+
 		std::string source = ReadFile(filepath);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
@@ -46,6 +48,8 @@ namespace Helios {
 	GLShader::GLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
 		: m_Name(name)
 	{
+		HE_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
 		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -55,60 +59,80 @@ namespace Helios {
 
 	GLShader::~GLShader()
 	{
+		HE_PROFILE_FUNCTION();
+
 		glDeleteProgram(m_RendererID);
 	}
 
 
 	void GLShader::Bind() const
 	{
+		HE_PROFILE_FUNCTION();
+
 		glUseProgram(m_RendererID);
 	}
 
 
 	void GLShader::Unbind() const
 	{
+		HE_PROFILE_FUNCTION();
+
 		glUseProgram(0);
 	}
 
 
 	void GLShader::SetInt(const std::string& name, int value)
 	{
+		HE_PROFILE_FUNCTION();
+
 		UploadUniformInt(name, value);
 	}
 
 
 	void GLShader::SetIntArray(const std::string& name, int* values, uint32_t count)
 	{
+		HE_PROFILE_FUNCTION();
+
 		UploadUniformIntArray(name, values, count);
 	}
 
 
 	void GLShader::SetFloat(const std::string& name, float value)
 	{
+		HE_PROFILE_FUNCTION();
+
 		UploadUniformFloat(name, value);
 	}
 
 
 	void GLShader::SetFloat2(const std::string& name, const glm::vec2& value)
 	{
+		HE_PROFILE_FUNCTION();
+
 		UploadUniformFloat2(name, value);
 	}
 
 
 	void GLShader::SetFloat3(const std::string& name, const glm::vec3& value)
 	{
+		HE_PROFILE_FUNCTION();
+
 		UploadUniformFloat3(name, value);
 	}
 
 
 	void GLShader::SetFloat4(const std::string& name, const glm::vec4& value)
 	{
+		HE_PROFILE_FUNCTION();
+
 		UploadUniformFloat4(name, value);
 	}
 
 
 	void GLShader::SetMat4(const std::string& name, const glm::mat4& value)
 	{
+		HE_PROFILE_FUNCTION();
+
 		UploadUniformMat4(name, value);
 	}
 
@@ -170,6 +194,8 @@ namespace Helios {
 
 	std::string GLShader::ReadFile(const std::string& filepath)
 	{
+		HE_PROFILE_FUNCTION();
+
 		std::string result;
 
 		// open file
@@ -197,6 +223,8 @@ namespace Helios {
 
 	std::unordered_map<GLenum, std::string> GLShader::PreProcess(const std::string& source)
 	{
+		HE_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 
 		const char* typeToken = "#type ";
@@ -231,6 +259,8 @@ namespace Helios {
 
 	void GLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
+		HE_PROFILE_FUNCTION();
+
 		LOG_CORE_ASSERT(shaderSources.size() <= 2, "GLShader: We only support max 2 shader now!");
 		std::array<GLenum, 2> glShaderIDs = { 0, 0 };
 		int glShaderIDIndex = 0;

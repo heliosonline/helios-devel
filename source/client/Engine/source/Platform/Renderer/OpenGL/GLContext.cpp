@@ -12,12 +12,16 @@ namespace Helios {
 	GLContext::GLContext(GLFWwindow* window)
 		: m_Window(window)
 	{
+		HE_PROFILE_FUNCTION();
+
 		LOG_CORE_ASSERT(window, "Window handle is null!")
 	}
 
 
 	void GLContext::Init()
 	{
+		HE_PROFILE_FUNCTION();
+
 		glfwMakeContextCurrent(m_Window);
 		int version = gladLoadGL(glfwGetProcAddress);
 		LOG_CORE_ASSERT(version, "Failed to initialize OpenGL context!");
@@ -37,6 +41,8 @@ namespace Helios {
 
 	void GLContext::SwapBuffers()
 	{
+		HE_PROFILE_FUNCTION();
+
 		glfwSwapBuffers(m_Window);
 	}
 
