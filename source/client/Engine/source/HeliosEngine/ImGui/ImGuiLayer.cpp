@@ -24,6 +24,8 @@ namespace Helios {
 
 	void ImGuiLayer::OnAttach()
 	{
+		HE_PROFILER_FUNCTION();
+
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -74,6 +76,8 @@ namespace Helios {
 
 	void ImGuiLayer::OnDetach()
 	{
+		HE_PROFILER_FUNCTION();
+
 		// Dear ImGui cleanup
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
@@ -83,6 +87,8 @@ namespace Helios {
 
 	void ImGuiLayer::OnEvent(Event& event)
 	{
+		HE_PROFILER_FUNCTION();
+
 		if (m_BlockEvents)
 		{
 			ImGuiIO& io = ImGui::GetIO();
@@ -94,6 +100,8 @@ namespace Helios {
 
 	void ImGuiLayer::Begin()
 	{
+		HE_PROFILER_FUNCTION();
+
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -103,6 +111,8 @@ namespace Helios {
 
 	void ImGuiLayer::End()
 	{
+		HE_PROFILER_FUNCTION();
+
 		ImGuiIO& io = ImGui::GetIO();
 		Application& app = Application::Get();
 		io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());

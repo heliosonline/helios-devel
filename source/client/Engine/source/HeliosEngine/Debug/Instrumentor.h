@@ -1,5 +1,8 @@
 #pragma once
 
+#if HE_PROFILER_ENABLE
+
+
 #include "HeliosEngine/Core/Log.h"
 #include "HeliosEngine/Utils/Path.h"
 
@@ -234,11 +237,9 @@ namespace Helios {
 } // namespace Helios
 
 
-#define HE_PROFILE 0
-#if HE_PROFILE
-	// Resolve which function signature macro will be used. Note that this only
-	// is resolved when the (pre)compiler starts, so the syntax highlighting
-	// could mark the wrong one in your editor!
+// Resolve which function signature macro will be used. Note that this only
+// is resolved when the (pre)compiler starts, so the syntax highlighting
+// could mark the wrong one in your editor!
 #	if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
 #		define HE_FUNC_SIG __PRETTY_FUNCTION__
 #	elif defined(__DMC__) && (__DMC__ >= 0x810)
@@ -257,16 +258,19 @@ namespace Helios {
 #		define HE_FUNC_SIG "HE_FUNC_SIG unknown!"
 #	endif
 
-#	define HE_PROFILE_BEGIN_SESSION(name, filepath) ::Helios::Instrumentor::Get().BeginSession(name, filepath)
-#	define HE_PROFILE_END_SESSION() ::Helios::Instrumentor::Get().EndSession()
-#	define HE_PROFILE_SCOPE_LINE2(name, line) constexpr auto fixedName##line = ::Helios::InstrumentorUtils::CleanupOutputString(name, "__cdecl ");\
+#	define HE_PROFILER_BEGIN_SESSION(name, filepath) ::Helios::Instrumentor::Get().BeginSession(name, filepath)
+#	define HE_PROFILER_END_SESSION() ::Helios::Instrumentor::Get().EndSession()
+#	define HE_PROFILER_SCOPE_LINE2(name, line) constexpr auto fixedName##line = ::Helios::InstrumentorUtils::CleanupOutputString(name, "__cdecl ");\
 											   ::Helios::InstrumentationTimer timer##line(fixedName##line.Data)
-#	define HE_PROFILE_SCOPE_LINE(name, line) HE_PROFILE_SCOPE_LINE2(name, line)
-#	define HE_PROFILE_SCOPE(name) HE_PROFILE_SCOPE_LINE(name, __LINE__)
-#	define HE_PROFILE_FUNCTION() HE_PROFILE_SCOPE(HE_FUNC_SIG)
-#else
-#	define HE_PROFILE_BEGIN_SESSION(name, filepath)
-#	define HE_PROFILE_END_SESSION()
-#	define HE_PROFILE_SCOPE(name)
-#	define HE_PROFILE_FUNCTION()
-#endif
+#	define HE_PROFILER_SCOPE_LINE(name, line) HE_PROFILER_SCOPE_LINE2(name, line)
+#	define HE_PROFILER_SCOPE(name) HE_PROFILER_SCOPE_LINE(name, __LINE__)
+#	define HE_PROFILER_FUNCTION() HE_PROFILER_SCOPE(HE_FUNC_SIG)
+
+#else // if HE_PROFILER_ENABLE == 0
+
+#	define HE_PROFILER_BEGIN_SESSION(name, filepath)
+#	define HE_PROFILER_END_SESSION()
+#	define HE_PROFILER_SCOPE(name)
+#	define HE_PROFILER_FUNCTION()
+
+#endif // if HE_PROFILER_ENABLE

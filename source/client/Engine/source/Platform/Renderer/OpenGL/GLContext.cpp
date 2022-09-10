@@ -12,7 +12,7 @@ namespace Helios {
 	GLContext::GLContext(GLFWwindow* window)
 		: m_Window(window)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		LOG_CORE_ASSERT(window, "Window handle is null!")
 	}
@@ -20,7 +20,7 @@ namespace Helios {
 
 	void GLContext::Init()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glfwMakeContextCurrent(m_Window);
 		int version = gladLoadGL(glfwGetProcAddress);
@@ -44,7 +44,7 @@ namespace Helios {
 
 	void GLContext::SwapBuffers()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glfwSwapBuffers(m_Window);
 	}

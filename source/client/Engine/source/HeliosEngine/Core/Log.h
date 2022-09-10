@@ -64,7 +64,7 @@ namespace Helios {
 #define LOG_GLFW_ERROR(...) (LOG_LEVEL <= LOG_LEVEL_ERROR) ? ::Helios::Log::GetGLFWLogger()->error(__VA_ARGS__)    : (void)0
 
 // ASSERT macros
-#ifdef HE_LOG_ASSERTS
+#if HE_LOG_ASSERTS_ENABLED
 #	define LOG_CORE_ASSERT(x, ...) { if(!(x)) { LOG_CORE_FATAL("Assertion failed: {0}", __VA_ARGS__); DebugBreak(); } }
 #	define LOG_ASSERT(x, ...)      { if(!(x)) { LOG_FATAL("Assertion failed: {0}", __VA_ARGS__); DebugBreak(); } }
 #else

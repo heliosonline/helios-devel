@@ -27,18 +27,24 @@ namespace Helios {
 
 	Window::Window(const WindowSpecification& spec)
 	{
+		HE_PROFILER_FUNCTION();
+
 		Init(spec);
 	}
 
 
 	Window::~Window()
 	{
+		HE_PROFILER_FUNCTION();
+
 		Shutdown();
 	}
 
 
 	void Window::Init(const WindowSpecification& spec)
 	{
+		HE_PROFILER_FUNCTION();
+
 		m_Data.Title = spec.Title;
 		m_Data.Width = spec.Width;
 		m_Data.Height = spec.Height;
@@ -75,6 +81,8 @@ namespace Helios {
 
 	void Window::Shutdown()
 	{
+		HE_PROFILER_FUNCTION();
+
 		glfwDestroyWindow(m_Window);
 		--s_GLFWWindowCount;
 
@@ -87,6 +95,8 @@ namespace Helios {
 
 	void Window::OnUpdate()
 	{
+		HE_PROFILER_FUNCTION();
+
 		glfwPollEvents();
 		m_Context->SwapBuffers();
 	}
@@ -94,6 +104,8 @@ namespace Helios {
 
 	void Window::SetVSync(bool enabled)
 	{
+		HE_PROFILER_FUNCTION();
+
 		if (enabled)
 			glfwSwapInterval(1);
 		else
@@ -140,6 +152,8 @@ namespace Helios {
 
 	void Window::InitCallbacks()
 	{
+		HE_PROFILER_FUNCTION();
+
 		// Set GLFW callbacks (Key input)
 		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
 			{

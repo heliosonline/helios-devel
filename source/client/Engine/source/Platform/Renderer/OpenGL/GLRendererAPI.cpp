@@ -23,7 +23,7 @@ namespace Helios {
 
 	void GLRendererAPI::Init()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 #ifdef BUILD_DEBUG
 		// install a message callback for debuging
@@ -44,7 +44,7 @@ namespace Helios {
 
 	void GLRendererAPI::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glViewport(x, y, width, height);
 	}
@@ -52,7 +52,7 @@ namespace Helios {
 
 	void GLRendererAPI::SetClearColor(const glm::vec4& color)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glClearColor(color.r, color.g, color.b, color.a);
 	}
@@ -60,7 +60,7 @@ namespace Helios {
 
 	void GLRendererAPI::Clear()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
@@ -68,7 +68,7 @@ namespace Helios {
 
 	void GLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		vertexArray->Bind();
 		uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();

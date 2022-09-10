@@ -16,7 +16,6 @@ project "Engine"
 
 	defines {
 		"GLFW_INCLUDE_NONE",
-		"HE_LOG_ASSERTS"
 	}
 
 	-- Libraries

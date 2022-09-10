@@ -12,7 +12,7 @@ namespace Helios {
 
 	void Renderer::Init()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		RenderCommand::Init();
 		Renderer2D::Init();
@@ -21,7 +21,7 @@ namespace Helios {
 
 	void Renderer::Shutdown()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		Renderer2D::Shutdown();
 	}
@@ -29,7 +29,7 @@ namespace Helios {
 
 	void Renderer::OnWindowResize(uint32_t width, uint32_t height)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		RenderCommand::SetViewport(0, 0, width, height);
 	}
@@ -37,7 +37,7 @@ namespace Helios {
 
 	void Renderer::BeginScene(OrthographicCamera& camera)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		s_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
 	}
@@ -45,13 +45,13 @@ namespace Helios {
 
 	void Renderer::EndScene()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 	}
 
 
 	void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		shader->Bind();
 		shader->SetMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);

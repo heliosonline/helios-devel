@@ -16,17 +16,17 @@ namespace Helios {
 
 	int AppMain(int argc, char** argv)
 	{
-		HE_PROFILE_BEGIN_SESSION("Startup", "Profiler-Startup.json");
+		HE_PROFILER_BEGIN_SESSION("Startup", "Profiler-Startup.json");
 		auto app = CreateApplication({ argc, argv });
-		HE_PROFILE_END_SESSION();
+		HE_PROFILER_END_SESSION();
 
-		HE_PROFILE_BEGIN_SESSION("Runtime", "Profiler-Runtime.json");
+		HE_PROFILER_BEGIN_SESSION("Runtime", "Profiler-Runtime.json");
 		app->Run();
-		HE_PROFILE_END_SESSION();
+		HE_PROFILER_END_SESSION();
 
-		HE_PROFILE_BEGIN_SESSION("Shutdown", "Profiler-Shutdown.json");
+		HE_PROFILER_BEGIN_SESSION("Shutdown", "Profiler-Shutdown.json");
 		delete app;
-		HE_PROFILE_END_SESSION();
+		HE_PROFILER_END_SESSION();
 
 		return 0;
 	}
@@ -38,7 +38,7 @@ namespace Helios {
 	Application::Application(const ApplicationSpecification& specification)
 		: m_Specification(specification)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		// set working directory
 		if (!m_Specification.WorkingDirectory.empty())
@@ -72,7 +72,7 @@ namespace Helios {
 
 	Application::~Application()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		Renderer::Shutdown();
 	}
@@ -80,7 +80,7 @@ namespace Helios {
 
 	void Application::PushLayer(Layer* layer)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
@@ -89,7 +89,7 @@ namespace Helios {
 
 	void Application::PushOverlay(Layer* layer)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
@@ -98,7 +98,7 @@ namespace Helios {
 
 	void Application::Close()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		m_Running = false;
 	}
@@ -106,7 +106,7 @@ namespace Helios {
 
 	void Application::OnEvent(Event& e)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(HE_BIND_EVENT_FN(Application::OnWindowClose));
@@ -122,12 +122,12 @@ namespace Helios {
 
 	void Application::Run()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		Timer RunLoopTimer;
 		while (m_Running)
 		{
-			HE_PROFILE_SCOPE("RunLoop");
+			HE_PROFILER_SCOPE("RunLoop");
 
 			Timestep timestep = RunLoopTimer.Elapsed();
 			RunLoopTimer.Reset();
@@ -153,13 +153,13 @@ namespace Helios {
 			if (!m_Minimized)
 			{
 				{
-					HE_PROFILE_SCOPE("LayerStack OnUpdate");
+					HE_PROFILER_SCOPE("LayerStack OnUpdate");
 					for (Layer* layer : m_LayerStack)
 						layer->OnUpdate(timestep);
 				}
 
 				{
-					HE_PROFILE_SCOPE("LayerStack OnImGuiRender");
+					HE_PROFILER_SCOPE("LayerStack OnImGuiRender");
 
 					m_ImGuiLayer->Begin();
 static bool show = true;
@@ -171,7 +171,7 @@ ImGui::ShowDemoWindow(&show);
 			}
 
 			{
-				HE_PROFILE_SCOPE("Window OnUpdate");
+				HE_PROFILER_SCOPE("Window OnUpdate");
 				m_Window->OnUpdate();
 			}
 		}
@@ -180,7 +180,7 @@ ImGui::ShowDemoWindow(&show);
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		m_Running = false;
 		return true;
@@ -189,7 +189,7 @@ ImGui::ShowDemoWindow(&show);
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		if (e.GetWidth() == 0 || e.GetHeight() == 0)
 		{

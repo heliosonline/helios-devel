@@ -15,7 +15,7 @@ namespace Helios {
 
 	GLVertexBuffer::GLVertexBuffer(uint32_t size)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
@@ -25,7 +25,7 @@ namespace Helios {
 
 	GLVertexBuffer::GLVertexBuffer(float* vertices, uint32_t size)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
@@ -34,7 +34,7 @@ namespace Helios {
 
 	GLVertexBuffer::~GLVertexBuffer()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glDeleteBuffers(1, &m_RendererID);
 	}
@@ -42,7 +42,7 @@ namespace Helios {
 
 	void GLVertexBuffer::Bind() const
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 	}
@@ -50,7 +50,7 @@ namespace Helios {
 
 	void GLVertexBuffer::Unbind() const
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
@@ -58,6 +58,8 @@ namespace Helios {
 
 	void GLVertexBuffer::SetData(const void* data, uint32_t size)
 	{
+		HE_PROFILER_FUNCTION();
+
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
 	}
@@ -71,7 +73,7 @@ namespace Helios {
 	GLIndexBuffer::GLIndexBuffer(uint32_t* indices, uint32_t count)
 		: m_Count(count)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
@@ -80,7 +82,7 @@ namespace Helios {
 
 	GLIndexBuffer::~GLIndexBuffer()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glDeleteBuffers(1, &m_RendererID);
 	}
@@ -88,7 +90,7 @@ namespace Helios {
 
 	void GLIndexBuffer::Bind() const
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
 	}
@@ -96,7 +98,7 @@ namespace Helios {
 
 	void GLIndexBuffer::Unbind() const
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}

@@ -1,6 +1,9 @@
 #pragma once
 
 
+#include "HeliosEngine/HeliosConfig.h"
+
+
 // Platform
 #include "Platform/PlatformDetection.h"
 #if defined(TARGET_PLATFORM_WINDOWS)

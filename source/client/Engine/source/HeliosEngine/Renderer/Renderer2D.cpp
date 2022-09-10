@@ -25,7 +25,7 @@ namespace Helios {
 	struct Renderer2DData
 	{
 		// Config (max...)
-		static const uint32_t MaxQuads        = 10000;
+		static const uint32_t MaxQuads        = 20000;
 		static const uint32_t MaxVertices     = MaxQuads * 4;
 		static const uint32_t MaxIndices      = MaxQuads * 6;
 		static const uint32_t MaxTextureSlots = 32;
@@ -48,13 +48,16 @@ namespace Helios {
 		std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
 		uint32_t TextureSlotIndex = 1; // 0 = white texture
 		Ref<Texture2D> WhiteTexture;
+
+		// Stats
+		Renderer2D::Statistics Stats;
 	};
 	static Renderer2DData s_Data;
 
 
 	void Renderer2D::Init()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		{ // Quads
 			s_Data.QuadVertexArray = VertexArray::Create();
@@ -115,7 +118,7 @@ namespace Helios {
 
 	void Renderer2D::Shutdown()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		delete[] s_Data.QuadVertexBufferBase;
 	}
@@ -123,7 +126,7 @@ namespace Helios {
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		s_Data.QuadShader->Bind();
 		s_Data.QuadShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
@@ -134,7 +137,7 @@ namespace Helios {
 
 	void Renderer2D::EndScene()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		Flush();
 	}
@@ -142,6 +145,8 @@ namespace Helios {
 
 	void Renderer2D::StartBatch()
 	{
+		HE_PROFILER_FUNCTION();
+
 		s_Data.QuadIndexCount = 0;
 		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
 
@@ -151,6 +156,8 @@ namespace Helios {
 
 	void Renderer2D::NextBatch()
 	{
+		HE_PROFILER_FUNCTION();
+
 		Flush();
 		StartBatch();
 	}
@@ -158,6 +165,8 @@ namespace Helios {
 
 	void Renderer2D::Flush()
 	{
+		HE_PROFILER_FUNCTION();
+
 		if (s_Data.QuadIndexCount)
 		{
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
@@ -168,7 +177,8 @@ namespace Helios {
 
 			s_Data.QuadShader->Bind();
 			RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
-//			s_Data.Stats.DrawCalls++;
+
+			s_Data.Stats.DrawCalls++;
 		}
 	}
 
@@ -226,7 +236,7 @@ namespace Helios {
 	// textured quad with 3D position
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tiling, const glm::vec4& color)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glm::mat4 transform =
 			  glm::translate(glm::mat4(1.0f), position)
@@ -288,7 +298,7 @@ namespace Helios {
 	// textured rotated quad with 3D position
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tiling, const glm::vec4& color)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glm::mat4 transform =
 			  glm::translate(glm::mat4(1.0f), position)
@@ -301,7 +311,7 @@ namespace Helios {
 
 	void Renderer2D::DrawQuad(const glm::mat4 transform, const Ref<Texture2D>& texture, float tiling, const glm::vec4& color)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		constexpr size_t quadVertexCount = 4;
 		constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
@@ -344,7 +354,19 @@ namespace Helios {
 
 		s_Data.QuadIndexCount += 6;
 
-//		s_Data.Stats.QuadCount++;
+		s_Data.Stats.QuadCount++;
+	}
+
+
+	void Renderer2D::ResetStats()
+	{
+		memset(&s_Data.Stats, 0, sizeof(Statistics));
+	}
+
+
+	Renderer2D::Statistics Renderer2D::GetStats()
+	{
+		return s_Data.Stats;
 	}
 
 

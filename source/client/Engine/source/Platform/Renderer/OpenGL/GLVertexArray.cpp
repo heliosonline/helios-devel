@@ -32,7 +32,7 @@ namespace Helios {
 
 	GLVertexArray::GLVertexArray()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glCreateVertexArrays(1, &m_RendererID);
 	}
@@ -40,7 +40,7 @@ namespace Helios {
 
 	GLVertexArray::~GLVertexArray()
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glDeleteVertexArrays(1, &m_RendererID);
 	}
@@ -48,7 +48,7 @@ namespace Helios {
 
 	void GLVertexArray::Bind() const
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glBindVertexArray(m_RendererID);
 	}
@@ -56,7 +56,7 @@ namespace Helios {
 
 	void GLVertexArray::Unbind() const
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glBindVertexArray(0);
 	}
@@ -64,7 +64,7 @@ namespace Helios {
 
 	void GLVertexArray::AddVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		LOG_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
 
@@ -135,7 +135,7 @@ namespace Helios {
 
 	void GLVertexArray::SetIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
 	{
-		HE_PROFILE_FUNCTION();
+		HE_PROFILER_FUNCTION();
 
 		glBindVertexArray(m_RendererID);
 		indexBuffer->Bind();

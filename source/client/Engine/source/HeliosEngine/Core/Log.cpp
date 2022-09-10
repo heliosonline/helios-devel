@@ -16,6 +16,8 @@ namespace Helios {
 
 	void Log::Init(const std::string& filename, const std::string& path)
 	{
+		HE_PROFILER_FUNCTION();
+
 		std::vector<spdlog::sink_ptr> logSinks;
 
 		std::string file = (path.empty() ? "" : path + DIR_SEP) +
