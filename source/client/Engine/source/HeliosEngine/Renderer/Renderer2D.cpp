@@ -22,6 +22,13 @@ namespace Helios {
 	};
 
 
+	struct LineVertex
+	{
+		glm::vec3 Position;
+		glm::vec4 Color;
+	};
+
+
 	struct Renderer2DData
 	{
 		// Config (max...)
@@ -40,9 +47,18 @@ namespace Helios {
 		QuadVertex* QuadVertexBufferBase = nullptr;
 		QuadVertex* QuadVertexBufferPtr = nullptr;
 
-		// Circles
+		// TODO: Circles
 
 		// Lines
+		Ref<VertexArray> LineVertexArray;
+		Ref<VertexBuffer> LineVertexBuffer;
+		Ref<Shader> LineShader;
+
+		uint32_t LineVertexCount = 0;
+		LineVertex* LineVertexBufferBase = nullptr;
+		LineVertex* LineVertexBufferPtr = nullptr;
+
+		float LineWidth = 1.0f;
 
 		// Textures
 		std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
@@ -61,17 +77,15 @@ namespace Helios {
 
 		{ // Quads
 			s_Data.QuadVertexArray = VertexArray::Create();
-
 			s_Data.QuadVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(QuadVertex));
 			s_Data.QuadVertexBuffer->SetLayout({
 				{ ShaderDataType::Float3, "a_Position" },
 				{ ShaderDataType::Float4, "a_Color" },
 				{ ShaderDataType::Float2, "a_TexCoord" },
 				{ ShaderDataType::Float,  "a_TexIndex" },
-				{ ShaderDataType::Float,  "a_TilingFactor" },
+				{ ShaderDataType::Float,  "a_TilingFactor" }
 				});
 			s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
-
 			s_Data.QuadVertexBufferBase = new QuadVertex[s_Data.MaxVertices];
 
 			uint32_t* quadIndices = new uint32_t[s_Data.MaxIndices];
@@ -104,6 +118,16 @@ namespace Helios {
 		} // Circles
 
 		{ // Lines
+			s_Data.LineVertexArray = VertexArray::Create();
+			s_Data.LineVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(LineVertex));
+			s_Data.LineVertexBuffer->SetLayout({
+				{ ShaderDataType::Float3, "a_Position" },
+				{ ShaderDataType::Float4, "a_Color"    }
+				});
+			s_Data.LineVertexArray->AddVertexBuffer(s_Data.LineVertexBuffer);
+			s_Data.LineVertexBufferBase = new LineVertex[s_Data.MaxVertices];
+
+			s_Data.LineShader = Shader::Create("assets/shaders/Renderer2D_Line.glsl");
 		} // Lines
 
 		{ // Textures
@@ -121,6 +145,7 @@ namespace Helios {
 		HE_PROFILER_FUNCTION();
 
 		delete[] s_Data.QuadVertexBufferBase;
+		delete[] s_Data.LineVertexBufferBase;
 	}
 
 
@@ -130,6 +155,8 @@ namespace Helios {
 
 		s_Data.QuadShader->Bind();
 		s_Data.QuadShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data.LineShader->Bind();
+		s_Data.LineShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 
 		StartBatch();
 	}
@@ -150,6 +177,9 @@ namespace Helios {
 		s_Data.QuadIndexCount = 0;
 		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
 
+		s_Data.LineVertexCount = 0;
+		s_Data.LineVertexBufferPtr = s_Data.LineVertexBufferBase;
+
 		s_Data.TextureSlotIndex = 1;
 	}
 
@@ -166,6 +196,17 @@ namespace Helios {
 	void Renderer2D::Flush()
 	{
 		HE_PROFILER_FUNCTION();
+
+		if (s_Data.LineVertexCount)
+		{
+			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.LineVertexBufferPtr - (uint8_t*)s_Data.LineVertexBufferBase);
+			s_Data.LineVertexBuffer->SetData(s_Data.LineVertexBufferBase, dataSize);
+
+			s_Data.LineShader->Bind();
+			RenderCommand::SetLineWidth(s_Data.LineWidth);
+			RenderCommand::DrawLines(s_Data.LineVertexArray, s_Data.LineVertexCount);
+			s_Data.Stats.DrawCalls++;
+		}
 
 		if (s_Data.QuadIndexCount)
 		{
@@ -355,6 +396,66 @@ namespace Helios {
 		s_Data.QuadIndexCount += 6;
 
 		s_Data.Stats.QuadCount++;
+	}
+
+
+	// Line with 2D position
+	void Renderer2D::DrawLine(const glm::vec2& p0, const glm::vec2& p1, const glm::vec4& color)
+	{
+		DrawLine({ p0.x, p0.y, 0.0f }, { p1.x, p1.y, 0.0f }, color);
+	}
+
+
+	// Line with 3D position
+	void Renderer2D::DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color)
+	{
+		s_Data.LineVertexBufferPtr->Position = p0;
+		s_Data.LineVertexBufferPtr->Color = color;
+		s_Data.LineVertexBufferPtr++;
+
+		s_Data.LineVertexBufferPtr->Position = p1;
+		s_Data.LineVertexBufferPtr->Color = color;
+		s_Data.LineVertexBufferPtr++;
+
+		s_Data.LineVertexCount += 2;
+
+		s_Data.Stats.LineCount++;
+	}
+
+
+	// Rectangle with 2D position
+	void Renderer2D::DrawRect(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
+	{
+		DrawRect({ position.x, position.y, 0.0f }, size, color);
+	}
+
+
+	// Rectangle with 3D position
+	void Renderer2D::DrawRect(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
+	{
+		glm::vec3 p0 = glm::vec3(position.x - size.x * 0.5f, position.y - size.y * 0.5f, position.z);
+		glm::vec3 p1 = glm::vec3(position.x + size.x * 0.5f, position.y - size.y * 0.5f, position.z);
+		glm::vec3 p2 = glm::vec3(position.x + size.x * 0.5f, position.y + size.y * 0.5f, position.z);
+		glm::vec3 p3 = glm::vec3(position.x - size.x * 0.5f, position.y + size.y * 0.5f, position.z);
+
+		DrawLine(p0, p1, color);
+		DrawLine(p1, p2, color);
+		DrawLine(p2, p3, color);
+		DrawLine(p3, p0, color);
+	}
+
+
+	float Renderer2D::SetLineWidth(float width)
+	{
+		float oldWidth = s_Data.LineWidth;
+		s_Data.LineWidth = width;
+		return oldWidth;
+	}
+
+
+	float Renderer2D::GetLineWidth()
+	{
+		return s_Data.LineWidth;
 	}
 
 

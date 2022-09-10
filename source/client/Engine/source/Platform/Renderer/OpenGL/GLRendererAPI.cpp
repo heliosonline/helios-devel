@@ -76,4 +76,17 @@ namespace Helios {
 	}
 
 
+	void GLRendererAPI::DrawLines(const Ref<VertexArray>& vertexArray, uint32_t vertexCount)
+	{
+		vertexArray->Bind();
+		glDrawArrays(GL_LINES, 0, vertexCount);
+	}
+
+
+	void GLRendererAPI::SetLineWidth(float width)
+	{
+		glLineWidth(width);
+	}
+
+
 } // namespace Helios

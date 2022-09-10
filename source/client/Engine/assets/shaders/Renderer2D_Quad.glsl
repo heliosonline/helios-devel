@@ -1,4 +1,7 @@
-// Basic Texture Shader
+//--------------------------
+//  Renderer2D Quad Shader
+//--------------------------
+
 
 #type vertex
 #version 450 core
@@ -22,8 +25,8 @@ struct VertexOutput
 	float TilingFactor;
 };
 
-layout (location = 0) out VertexOutput Output;
-layout (location = 3) out flat float v_TexIndex;
+layout(location = 0) out VertexOutput Output;
+layout(location = 3) out flat float v_TexIndex;
 
 void main()
 {
@@ -47,10 +50,10 @@ struct VertexOutput
 	float TilingFactor;
 };
 
-layout (location = 0) in VertexOutput Input;
-layout (location = 3) in flat float v_TexIndex;
+layout(location = 0) in VertexOutput Input;
+layout(location = 3) in flat float v_TexIndex;
 
-layout (binding = 0) uniform sampler2D u_Textures[32];
+layout(binding = 0) uniform sampler2D u_Textures[32];
 
 void main()
 {
