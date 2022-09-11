@@ -31,9 +31,14 @@ namespace Helios {
 		LOG_CORE_INFO("  Vendor:   {0}", glGetString(GL_VENDOR));
 		LOG_CORE_INFO("  Renderer: {0}", glGetString(GL_RENDERER));
 		LOG_CORE_INFO("  Version:  {0}", glGetString(GL_VERSION));
+
+		LOG_CORE_INFO("OpenGL Driver Capabilities:");
 		int texSlots;
 		glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, &texSlots);
 		LOG_CORE_INFO("  Texture Slots: {0}", texSlots);
+		float lineWidth[2];
+		glGetFloatv(GL_LINE_WIDTH_RANGE, lineWidth);
+		LOG_CORE_INFO("  Line Widths: {0} .. {1}", lineWidth[0], lineWidth[1]);
 
 #ifdef HE_LOG_ASSERTS
 		// Check for required OpenGL version 4.5
