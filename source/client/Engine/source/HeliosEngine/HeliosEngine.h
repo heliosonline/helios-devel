@@ -21,6 +21,7 @@
 #include <HeliosEngine/Renderer/Buffer.h>
 #include <HeliosEngine/Renderer/Shader.h>
 #include <HeliosEngine/Renderer/Texture.h>
+#include <HeliosEngine/Renderer/SubTexture2D.h>
 #include <HeliosEngine/Renderer/VertexArray.h>
 #include <HeliosEngine/Renderer/OrthographicCamera.h>
 #include <HeliosEngine/Renderer/OrthographicCameraController.h>

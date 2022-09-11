@@ -283,7 +283,57 @@ namespace Helios {
 			  glm::translate(glm::mat4(1.0f), position)
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
-		DrawQuad(transform, texture, tiling, color);
+		constexpr glm::vec2 texCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+		DrawQuad(transform, texture, texCoords, tiling, color);
+	}
+
+
+	// textured quad with 2D position
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float tiling)
+	{
+		DrawQuad({ position.x, position.y, 0.0f }, size, subtexture, tiling, glm::vec4(1.0f));
+	}
+
+
+	// textured quad with 2D position
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, const glm::vec4& color)
+	{
+		DrawQuad({ position.x, position.y, 0.0f }, size, subtexture, 1.0f, color);
+	}
+
+
+	// textured quad with 2D position
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float tiling, const glm::vec4& color)
+	{
+		DrawQuad({ position.x, position.y, 0.0f }, size, subtexture, tiling, color);
+	}
+
+
+
+	// textured quad with 3D position
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float tiling)
+	{
+		DrawQuad(position, size, subtexture, tiling, glm::vec4(1.0f));
+	}
+
+
+	// textured quad with 3D position
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, const glm::vec4& color)
+	{
+		DrawQuad(position, size, subtexture, 1.0f, color);
+	}
+
+
+	// textured quad with 3D position
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float tiling, const glm::vec4& color)
+	{
+		HE_PROFILER_FUNCTION();
+
+		glm::mat4 transform =
+			  glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+		DrawQuad(transform, subtexture->GetTexture(), subtexture->GetTexCoords(), tiling, color);
 	}
 
 
@@ -346,16 +396,65 @@ namespace Helios {
 			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f })
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 
-		DrawQuad(transform, texture, tiling, color);
+		constexpr glm::vec2 texCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
+		DrawQuad(transform, texture, texCoords, tiling, color);
 	}
 
 
-	void Renderer2D::DrawQuad(const glm::mat4 transform, const Ref<Texture2D>& texture, float tiling, const glm::vec4& color)
+	// textured rotated quad with 2D position
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tiling)
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, subtexture, tiling, glm::vec4(1.0f));
+	}
+
+
+	// textured rotated quad with 2D position
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, const glm::vec4& color)
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, subtexture, 1.0f, color);
+	}
+
+
+	// textured rotated quad with 2D position
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tiling, const glm::vec4& color)
+	{
+		DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, subtexture, tiling, color);
+	}
+
+
+	// textured rotated quad with 3D position
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tiling)
+	{
+		DrawRotatedQuad(position, size, rotation, subtexture, tiling, glm::vec4(1.0f));
+	}
+
+
+	// textured rotated quad with 3D position
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, const glm::vec4& color)
+	{
+		DrawRotatedQuad(position, size, rotation, subtexture, 1.0f, color);
+	}
+
+
+	// textured rotated quad with 3D position
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tiling, const glm::vec4& color)
+	{
+		HE_PROFILER_FUNCTION();
+
+		glm::mat4 transform =
+			  glm::translate(glm::mat4(1.0f), position)
+			* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f })
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+		DrawQuad(transform, subtexture->GetTexture(), subtexture->GetTexCoords(), tiling, color);
+	}
+
+
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const Ref<Texture2D>& texture, const glm::vec2* texCoords, float tiling, const glm::vec4& color)
 	{
 		HE_PROFILER_FUNCTION();
 
 		constexpr size_t quadVertexCount = 4;
-		constexpr glm::vec2 textureCoords[] = { { 0.0f, 0.0f }, { 1.0f, 0.0f }, { 1.0f, 1.0f }, { 0.0f, 1.0f } };
 
 		if (s_Data.QuadIndexCount >= Renderer2DData::MaxIndices)
 			NextBatch();
@@ -387,7 +486,7 @@ namespace Helios {
 		{
 			s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[i];
 			s_Data.QuadVertexBufferPtr->Color = color;
-			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+			s_Data.QuadVertexBufferPtr->TexCoord = texCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tiling;
 			s_Data.QuadVertexBufferPtr++;

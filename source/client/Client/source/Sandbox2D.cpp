@@ -17,6 +17,7 @@ void Sandbox2D::OnAttach()
 {
 	m_Texture = Helios::Texture2D::Create("assets/textures/Checkerboard.png");
 	m_Texture2 = Helios::Texture2D::Create("assets/textures/ChernoLogo.png");
+	m_SubTexture = Helios::SubTexture2D::Create(m_Texture, 0, 0, 4, 4);
 }
 
 
@@ -40,8 +41,9 @@ void Sandbox2D::OnUpdate(Helios::Timestep ts)
 
 	/* red     */Helios::Renderer2D::DrawQuad({-0.5f, 0.0f, 0.1f}, {0.8f, 0.8f}, {0.8f, 0.2f, 0.3f, 1.0f});
 	/* blue    */Helios::Renderer2D::DrawQuad({0.5f, -0.5f, -0.1f}, {0.5f, 0.75f}, {0.2f, 0.3f, 0.8f, 1.0f});
-	/* checker */Helios::Renderer2D::DrawRotatedQuad({0.0f, 0.0f}, {1.0f, 1.0f}, rotation, m_Texture, {1.0f, 1.0f, 1.0f, 0.5f});
+	/* checker */Helios::Renderer2D::DrawRotatedQuad({0.0f, -0.5f}, {1.0f, 1.0f}, rotation, m_Texture, {1.0f, 1.0f, 1.0f, 0.5f});
 	/* logo    */Helios::Renderer2D::DrawQuad({-0.5f, 0.5f, 0.2f}, {0.5f, 0.5f}, m_Texture2, {1.0f, 1.0f, 1.0f, 0.75f});
+	/* checker */Helios::Renderer2D::DrawRotatedQuad({ 0.0f, 0.5f, 0.05f }, { 1.0f, 1.0f }, rotation, m_SubTexture, { 1.0f, 1.0f, 1.0f, 0.5f });
 
 	float z = -0.05f;
 	for (float y = 2.0f; y > -2.0f; y -= 0.2f)

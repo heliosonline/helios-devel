@@ -22,6 +22,7 @@ private:
 	Helios::Ref<Helios::Shader> m_FlatColorShader;
 	Helios::Ref<Helios::Texture2D> m_Texture;
 	Helios::Ref<Helios::Texture2D> m_Texture2;
+	Helios::Ref<Helios::SubTexture2D> m_SubTexture;
 
 	glm::vec4 m_Color = { 0.2f, 0.3f, 0.8f, 1.0f };
 
