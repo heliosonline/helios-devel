@@ -77,6 +77,12 @@ namespace Helios {
 		HE_PROFILER_FUNCTION();
 
 		m_AspectRatio = width / height;
+		CalculateView();
+	}
+
+
+	void OrthographicCameraController::CalculateView()
+	{
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 	}
 
@@ -87,7 +93,7 @@ namespace Helios {
 
 		m_ZoomLevel -= e.GetYOffset() * 0.25f;
 		m_ZoomLevel = std::max(m_ZoomLevel, 0.25f);
-		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
+		CalculateView();
 		return false;
 	}
 
