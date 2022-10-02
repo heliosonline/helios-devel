@@ -3,8 +3,6 @@
 #include "Sandbox2D.h"
 
 #include <imgui.h>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 
 Sandbox2D::Sandbox2D()
@@ -15,9 +13,10 @@ Sandbox2D::Sandbox2D()
 
 void Sandbox2D::OnAttach()
 {
-	m_Texture = Helios::Texture2D::Create("assets/textures/Checkerboard.png");
-	m_Texture2 = Helios::Texture2D::Create("assets/textures/ChernoLogo.png");
-	m_SubTexture = Helios::SubTexture2D::Create(m_Texture, 0, 0, 4, 4);
+	m_Texture = Helios::Texture2D::Create("Assets/Textures/Checkerboard.png");
+	m_Texture2 = Helios::Texture2D::Create("Assets/Textures/ChernoLogo.png");
+//	m_SubTexture = Helios::SubTexture2D::CreateByIndex(m_Texture, 0, 0, 4, 4);
+	m_SubTexture = Helios::SubTexture2D::CreateByCoord(m_Texture, { 0.0f, 0.0f }, { 0.25f, 0.25f });
 }
 
 
