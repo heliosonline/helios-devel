@@ -19,6 +19,7 @@
 #include <HeliosEngine/Renderer/Renderer2D.h>
 #include <HeliosEngine/Renderer/RenderCommand.h>
 #include <HeliosEngine/Renderer/Buffer.h>
+#include <HeliosEngine/Renderer/Framebuffer.h>
 #include <HeliosEngine/Renderer/Shader.h>
 #include <HeliosEngine/Renderer/Texture.h>
 #include <HeliosEngine/Renderer/SubTexture2D.h>
@@ -28,3 +29,7 @@
 
 // HeliosEngine - EntryPoint for the Application
 #include <HeliosEngine/Core/EntryPoint.h>
+
+// Most used libraries
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>

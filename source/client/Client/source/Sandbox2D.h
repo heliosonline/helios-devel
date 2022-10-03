@@ -20,6 +20,7 @@ private:
 	// Temp
 	Helios::Ref<Helios::VertexArray> m_VertexArray;
 	Helios::Ref<Helios::Shader> m_FlatColorShader;
+	Helios::Ref<Helios::Framebuffer> m_Framebuffer;
 	Helios::Ref<Helios::Texture2D> m_Texture;
 	Helios::Ref<Helios::Texture2D> m_Texture2;
 	Helios::Ref<Helios::SubTexture2D> m_SubTexture;

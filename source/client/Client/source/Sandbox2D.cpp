@@ -17,6 +17,11 @@ void Sandbox2D::OnAttach()
 	m_Texture2 = Helios::Texture2D::Create("Assets/Textures/ChernoLogo.png");
 //	m_SubTexture = Helios::SubTexture2D::CreateByIndex(m_Texture, 0, 0, 4, 4);
 	m_SubTexture = Helios::SubTexture2D::CreateByCoord(m_Texture, { 0.0f, 0.0f }, { 0.25f, 0.25f });
+
+	Helios::FramebufferSpecification fbs;
+	fbs.Width = 800;
+	fbs.Height = 600;
+	m_Framebuffer = Helios::Framebuffer::Create(fbs);
 }
 
 
@@ -30,6 +35,7 @@ void Sandbox2D::OnUpdate(Helios::Timestep ts)
 	m_CameraController.OnUpdate(ts);
 
 	Helios::Renderer2D::ResetStats();
+	m_Framebuffer->Bind();
 	Helios::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 	Helios::RenderCommand::Clear();
 
@@ -50,20 +56,7 @@ void Sandbox2D::OnUpdate(Helios::Timestep ts)
 	Helios::Renderer2D::DrawRect({ 0.0f, 0.0f, z+0.01f }, { 2.0f, 2.0f }, { 1.0f, 1.0f, 0.0f, 1.0f });
 
 	Helios::Renderer2D::EndScene();
-
-#if 0
-	Helios::Renderer2D::BeginScene(m_CameraController.GetCamera());
-	float s = 0.1f;
-	for (float x = -10.0f; x < 10.0f; x += s)
-	{
-		for (float y = -10.0f; y < 10.0f; y += s)
-		{
-			glm::vec4 color = { (x + 10.0f) / 20.0f, (y + 10.0f) / 20.0f, 1.0f, 1.0f };
-			Helios::Renderer2D::DrawQuad({ x, y, -0.5f }, { s/2, s/2 }, color);
-		}
-	}
-	Helios::Renderer2D::EndScene();
-#endif
+	m_Framebuffer->Unbind();
 }
 
 
@@ -76,6 +69,10 @@ void Sandbox2D::OnImGuiRender()
 	ImGui::Text("%6d Lines", stats.LineCount);
 	ImGui::Text("%6d Vertices", stats.GetTotalVertexCount());
 	ImGui::Text("%6d Indices", stats.GetTotalIndexCount());
+
+	uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
+	ImGui::Image((void*)textureID, ImVec2{ 400.0f, 300.0f });
+
 	ImGui::End();
 }
 
