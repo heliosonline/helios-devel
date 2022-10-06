@@ -63,3 +63,10 @@ project "Client"
 	prebuildcommands {
 		"\"%{wks.location}tools/build_inc/bin/build_inc_" .. os.host() .. "\" -bfile \"%{prj.location}source/config/version.h\" -bdef VERSION_BUILD"
 	}
+
+
+	postbuildmessage "Copying assets to the target folder..."
+	postbuildcommands {
+		"{COPYDIR} %{wks.location}source/client/Engine/Assets " .. dir_bin .. dir_group .. dir_config .. "Assets",
+		"{COPYDIR} %{prj.location}Assets " .. dir_bin .. dir_group .. dir_config .. "Assets"
+	}

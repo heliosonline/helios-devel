@@ -1,41 +1,41 @@
 #include "pch.h"
 
-#include "Sandbox2D.h"
+#include "ClientLayer.h"
 
 #include <imgui.h>
 
 
-Sandbox2D::Sandbox2D()
-	: Layer("Sandbox2D"), m_CameraController(800.0f / 600.0f, true)
+ClientLayer::ClientLayer()
+	: Layer("ClientLayer"), m_CameraController(800.0f / 600.0f, true)
 {
 }
 
 
-void Sandbox2D::OnAttach()
+void ClientLayer::OnAttach()
 {
 	m_Texture = Helios::Texture2D::Create("Assets/Textures/Checkerboard.png");
 	m_Texture2 = Helios::Texture2D::Create("Assets/Textures/ChernoLogo.png");
 //	m_SubTexture = Helios::SubTexture2D::CreateByIndex(m_Texture, 0, 0, 4, 4);
 	m_SubTexture = Helios::SubTexture2D::CreateByCoord(m_Texture, { 0.0f, 0.0f }, { 0.25f, 0.25f });
 
-	Helios::FramebufferSpecification fbs;
-	fbs.Width = 800;
-	fbs.Height = 600;
-	m_Framebuffer = Helios::Framebuffer::Create(fbs);
+//	Helios::FramebufferSpecification fbs;
+//	fbs.Width = 800;
+//	fbs.Height = 600;
+//	m_Framebuffer = Helios::Framebuffer::Create(fbs);
 }
 
 
-void Sandbox2D::OnDetach()
+void ClientLayer::OnDetach()
 {
 }
 
 
-void Sandbox2D::OnUpdate(Helios::Timestep ts)
+void ClientLayer::OnUpdate(Helios::Timestep ts)
 {
 	m_CameraController.OnUpdate(ts);
 
 	Helios::Renderer2D::ResetStats();
-	m_Framebuffer->Bind();
+//	m_Framebuffer->Bind();
 	Helios::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 	Helios::RenderCommand::Clear();
 
@@ -56,11 +56,11 @@ void Sandbox2D::OnUpdate(Helios::Timestep ts)
 	Helios::Renderer2D::DrawRect({ 0.0f, 0.0f, z+0.01f }, { 2.0f, 2.0f }, { 1.0f, 1.0f, 0.0f, 1.0f });
 
 	Helios::Renderer2D::EndScene();
-	m_Framebuffer->Unbind();
+//	m_Framebuffer->Unbind();
 }
 
 
-void Sandbox2D::OnImGuiRender()
+void ClientLayer::OnImGuiRender()
 {
 	ImGui::Begin("Statistics");
 	auto stats = Helios::Renderer2D::GetStats();
@@ -70,14 +70,14 @@ void Sandbox2D::OnImGuiRender()
 	ImGui::Text("%6d Vertices", stats.GetTotalVertexCount());
 	ImGui::Text("%6d Indices", stats.GetTotalIndexCount());
 
-	uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
-	ImGui::Image((void*)textureID, ImVec2{ 400.0f, 300.0f });
+//	uint32_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
+//	ImGui::Image((ImTextureID)textureID, ImVec2{ 400.0f, 300.0f }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 	ImGui::End();
 }
 
 
-void Sandbox2D::OnEvent(Helios::Event& e)
+void ClientLayer::OnEvent(Helios::Event& e)
 {
 	m_CameraController.OnEvent(e);
 }

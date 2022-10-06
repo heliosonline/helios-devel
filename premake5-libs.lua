@@ -31,6 +31,8 @@ function LibHeliosEngine()
 		"%{wks.location}/source/client/Engine/vendor/glm",
 		"%{wks.location}/source/client/Engine/vendor/imgui",
 --		"%{wks.location}/source/client/Engine/vendor/stb",
+--		"%{wks.location}/source/client/Engine/vendor/lua/lua-5.4.4",
+--		"%{wks.location}/source/client/Engine/vendor/lua/extra",
 	}
 	defines {
 		"GLFW_INCLUDE_NONE"

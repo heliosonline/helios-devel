@@ -30,6 +30,7 @@ project "Engine"
 		"vendor/glm",
 		"vendor/imgui",
 		"vendor/stb",
+		"vendor/lua/lua-5.4.4", "vendor/lua/extra",
 	}
 	
 	
@@ -37,6 +38,7 @@ project "Engine"
 		"Engine.glad2",
 		"Engine.glfw",
 		"Engine.imgui",
+		"Engine.lua",
 	}
 
 
@@ -134,11 +136,12 @@ project "Engine"
 
 	postbuildmessage "Copying assets to the target folder..."
 	postbuildcommands {
-		"{COPYDIR} %{wks.location}source/client/Engine/assets " .. dir_bin .. dir_group .. dir_config .. "assets"
+		"{COPYDIR} %{wks.location}source/client/Engine/Assets " .. dir_bin .. dir_group .. dir_config .. "Assets"
 	}
 		
 
 	group "client/Engine/vendor"
 		include("vendor/glad")
+		include("vendor/lua")
 		include("vendor/premake5-glfw.lua")
 		include("vendor/premake5-imgui.lua")

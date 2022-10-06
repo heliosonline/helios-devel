@@ -17,4 +17,4 @@
 #include "Common/version.h"
 
 #define VERSION_PATCH 0
-#define VERSION_BUILD 288 // will automatically incremented by build_inc
+#define VERSION_BUILD 5 // will automatically incremented by build_inc

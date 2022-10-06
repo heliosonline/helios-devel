@@ -1,11 +1,11 @@
 #pragma once
 
 
-class Sandbox2D : public Helios::Layer
+class ClientLayer : public Helios::Layer
 {
 public:
-	Sandbox2D();
-	~Sandbox2D() = default;
+	ClientLayer();
+	~ClientLayer() = default;
 
 	void OnAttach() override;
 	void OnDetach() override;

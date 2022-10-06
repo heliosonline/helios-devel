@@ -1,7 +1,7 @@
 -----------------------
 -- [ PROJECT CONFIG] --
 -----------------------
-project "Launcher"
+project "HeliosEditor"
 	architecture  "x86_64"
 	language      "C++"
 	cppdialect    "C++20"
@@ -15,7 +15,7 @@ project "Launcher"
 
 	-- Libraries
 	LibCommon{}
-	LibNet{}
+--	LibNet{}
 	LibHeliosEngine{}
 
 
