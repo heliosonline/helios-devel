@@ -11,6 +11,7 @@ public:
 	HeliosGame(const Helios::ApplicationSpecification& specification)
 		: Helios::Application(specification)
 	{
+		LOG_INFO("HeliosClient v{0}.{1}.{2}.{3}", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_BUILD);
 		PushLayer(new ClientLayer());
 	}
 

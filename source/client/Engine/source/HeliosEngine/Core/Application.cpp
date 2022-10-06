@@ -162,8 +162,8 @@ namespace Helios {
 					HE_PROFILER_SCOPE("LayerStack OnImGuiRender");
 
 					m_ImGuiLayer->Begin();
-static bool show = true;
-ImGui::ShowDemoWindow(&show);
+//static bool show = true;
+//ImGui::ShowDemoWindow(&show);
 					for (Layer* layer : m_LayerStack)
 						layer->OnImGuiRender();
 					m_ImGuiLayer->End();

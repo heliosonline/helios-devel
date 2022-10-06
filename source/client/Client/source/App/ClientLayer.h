@@ -1,5 +1,7 @@
 #pragma once
 
+#include <HeliosEngine/HeliosEngine.h>
+
 
 class ClientLayer : public Helios::Layer
 {

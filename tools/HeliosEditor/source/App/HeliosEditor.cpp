@@ -5,16 +5,17 @@
 #include "App/EditorLayer.h"
 
 
-class HeliosGame : public Helios::Application
+class HeliosEditor : public Helios::Application
 {
 public:
-	HeliosGame(const Helios::ApplicationSpecification& specification)
+	HeliosEditor(const Helios::ApplicationSpecification& specification)
 		: Helios::Application(specification)
 	{
+		LOG_INFO("HeliosEditor v{0}.{1}.{2}.{3}", VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, VERSION_BUILD);
 		PushLayer(new EditorLayer());
 	}
 
-	~HeliosGame()
+	~HeliosEditor()
 	{
 	}
 };
@@ -27,5 +28,5 @@ Helios::Application* Helios::CreateApplication(Helios::ApplicationCommandLineArg
 	spec.CommandLineArgs = args;
 	spec.hints |= Helios::Hints::HINT_USE_EXEPATH_AS_CWD;
 
-	return new HeliosGame(spec);
+	return new HeliosEditor(spec);
 }

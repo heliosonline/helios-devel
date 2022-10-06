@@ -1,5 +1,7 @@
 #pragma once
 
+#include <HeliosEngine/HeliosEngine.h>
+
 
 class EditorLayer : public Helios::Layer
 {
@@ -24,6 +26,8 @@ private:
 	Helios::Ref<Helios::Texture2D> m_Texture;
 	Helios::Ref<Helios::Texture2D> m_Texture2;
 	Helios::Ref<Helios::SubTexture2D> m_SubTexture;
+
+	glm::vec2 m_ViewportSize = { 0, 0 };
 
 	glm::vec4 m_Color = { 0.2f, 0.3f, 0.8f, 1.0f };
 
