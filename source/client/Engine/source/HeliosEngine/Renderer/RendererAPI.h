@@ -11,6 +11,8 @@ namespace Helios {
 // related on build options and platform
 #if   defined BUILDWITH_RENDERER_DIRECTX
 #		define DEFAULT_RENDERERAPI RendererAPI::API::DirectX
+#elif defined BUILDWITH_RENDERER_METAL
+#		define DEFAULT_RENDERERAPI RendererAPI::API::Metal
 #elif defined BUILDWITH_RENDERER_VULKAN
 #		define DEFAULT_RENDERERAPI RendererAPI::API::Vulkan
 #elif defined BUILDWITH_RENDERER_OPENGL
@@ -28,6 +30,9 @@ namespace Helios {
 // related on build options and platform
 #ifdef BUILDWITH_RENDERER_DIRECTX
 			DirectX,
+#endif
+#ifdef BUILDWITH_RENDERER_METAL
+			Metal,
 #endif
 #ifdef BUILDWITH_RENDERER_VULKAN
 			Vulkan,

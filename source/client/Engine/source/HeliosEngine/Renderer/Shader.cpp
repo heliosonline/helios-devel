@@ -4,6 +4,15 @@
 #include "HeliosEngine/Renderer/Shader.h"
 
 // related on build options and platform
+#ifdef BUILDWITH_RENDERER_DIRECTX
+#	include "Platform/Renderer/DirectX/DXShader.h"
+#endif
+#ifdef BUILDWITH_RENDERER_METAL
+#	include "Platform/Renderer/Metal/MTShader.h"
+#endif
+#ifdef BUILDWITH_RENDERER_VULKAN
+#	include "Platform/Renderer/Vulkan/VKShader.h"
+#endif
 #ifdef BUILDWITH_RENDERER_OPENGL
 #	include "Platform/Renderer/OpenGL/GLShader.h"
 #endif
@@ -21,14 +30,23 @@ namespace Helios {
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::API::None:    LOG_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
+			case RendererAPI::API::None:    LOG_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
 
 // related on build options and platform
+#ifdef BUILDWITH_RENDERER_DIRECTX
+			case RendererAPI::API::DirectX:  return CreateRef<DXShader>(filepath);
+#endif
+#ifdef BUILDWITH_RENDERER_METAL
+			case RendererAPI::API::Metal:  return CreateRef<MTShader>(filepath);
+#endif
+#ifdef BUILDWITH_RENDERER_VULKAN
+			case RendererAPI::API::Vulkan:  return CreateRef<VKShader>(filepath);
+#endif
 #ifdef BUILDWITH_RENDERER_OPENGL
-		case RendererAPI::API::OpenGL:  return CreateRef<GLShader>(filepath);
+			case RendererAPI::API::OpenGL:  return CreateRef<GLShader>(filepath);
 #endif
 
-		default: LOG_CORE_ASSERT(false, "Unknown RendererAPI!"); return nullptr;
+			default: LOG_CORE_ASSERT(false, "Unknown RendererAPI!"); return nullptr;
 		}
 	}
 
@@ -37,14 +55,23 @@ namespace Helios {
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::API::None:    LOG_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
+			case RendererAPI::API::None:    LOG_CORE_ASSERT(false, "RendererAPI::None is currently not supported!"); return nullptr;
 
 // related on build options and platform
+#ifdef BUILDWITH_RENDERER_DIRECTX
+			case RendererAPI::API::DirectX:  return CreateRef<DXShader>(name, vertexSrc, fragmentSrc);
+#endif
+#ifdef BUILDWITH_RENDERER_METAL
+			case RendererAPI::API::Metal:  return CreateRef<MTShader>(name, vertexSrc, fragmentSrc);
+#endif
+#ifdef BUILDWITH_RENDERER_VULKAN
+			case RendererAPI::API::Vulkan:  return CreateRef<VKShader>(name, vertexSrc, fragmentSrc);
+#endif
 #ifdef BUILDWITH_RENDERER_OPENGL
-		case RendererAPI::API::OpenGL:  return CreateRef<GLShader>(name, vertexSrc, fragmentSrc);
+			case RendererAPI::API::OpenGL:  return CreateRef<GLShader>(name, vertexSrc, fragmentSrc);
 #endif
 
-		default: LOG_CORE_ASSERT(false, "Unknown RendererAPI!"); return nullptr;
+			default: LOG_CORE_ASSERT(false, "Unknown RendererAPI!"); return nullptr;
 		}
 	}
 

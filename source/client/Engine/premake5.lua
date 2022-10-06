@@ -75,6 +75,7 @@ project "Engine"
 
 		defines {
 --			"BUILDWITH_RENDERER_DIRECTX",
+--			"BUILDWITH_RENDERER_METAL",
 			"BUILDWITH_RENDERER_OPENGL",
 --			"BUILDWITH_RENDERER_VULKAN",
 		}
@@ -84,6 +85,8 @@ project "Engine"
 			"source/Platform/System/Windows/**.cpp",
 --			"source/Platform/Renderer/DirectX/**.h",
 --			"source/Platform/Renderer/DirectX/**.cpp",
+--			"source/Platform/Renderer/Metal/**.h",
+--			"source/Platform/Renderer/Metal/**.cpp",
 			"source/Platform/Renderer/OpenGL/**.h",
 			"source/Platform/Renderer/OpenGL/**.cpp",
 --			"source/Platform/Renderer/Vulkan/**.h",
@@ -95,6 +98,7 @@ project "Engine"
 
 		defines {
 --			"BUILDWITH_RENDERER_DIRECTX",
+--			"BUILDWITH_RENDERER_METAL",
 			"BUILDWITH_RENDERER_OPENGL",
 --			"BUILDWITH_RENDERER_VULKAN",
 		}
@@ -104,6 +108,8 @@ project "Engine"
 			"source/Platform/System/Linux/**.cpp",
 --			"source/Platform/Renderer/DirectX/**.h",
 --			"source/Platform/Renderer/DirectX/**.cpp",
+--			"source/Platform/Renderer/Metal/**.h",
+--			"source/Platform/Renderer/Metal/**.cpp",
 			"source/Platform/Renderer/OpenGL/**.h",
 			"source/Platform/Renderer/OpenGL/**.cpp",
 --			"source/Platform/Renderer/Vulkan/**.h",
@@ -115,6 +121,7 @@ project "Engine"
 
 		defines {
 --			"BUILDWITH_RENDERER_DIRECTX",
+--			"BUILDWITH_RENDERER_METAL",
 			"BUILDWITH_RENDERER_OPENGL",
 --			"BUILDWITH_RENDERER_VULKAN",
 		}
@@ -124,6 +131,8 @@ project "Engine"
 			"source/Platform/System/MacOS/**.cpp",
 --			"source/Platform/Renderer/DirectX/**.h",
 --			"source/Platform/Renderer/DirectX/**.cpp",
+--			"source/Platform/Renderer/Metal/**.h",
+--			"source/Platform/Renderer/Metal/**.cpp",
 			"source/Platform/Renderer/OpenGL/**.h",
 			"source/Platform/Renderer/OpenGL/**.cpp",
 --			"source/Platform/Renderer/Vulkan/**.h",

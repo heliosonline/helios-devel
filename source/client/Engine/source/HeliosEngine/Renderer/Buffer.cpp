@@ -4,6 +4,15 @@
 #include "HeliosEngine/Renderer/Buffer.h"
 
 // related on build options and platform
+#ifdef BUILDWITH_RENDERER_DIRECTX
+#	include "Platform/Renderer/DirectX/DXBuffer.h"
+#endif
+#ifdef BUILDWITH_RENDERER_METAL
+#	include "Platform/Renderer/Metal/MTBuffer.h"
+#endif
+#ifdef BUILDWITH_RENDERER_VULKAN
+#	include "Platform/Renderer/Vulkan/VKBuffer.h"
+#endif
 #ifdef BUILDWITH_RENDERER_OPENGL
 #	include "Platform/Renderer/OpenGL/GLBuffer.h"
 #endif
@@ -16,14 +25,23 @@ namespace Helios {
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::API::None: LOG_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
+			case RendererAPI::API::None: LOG_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
 
 // related on build options and platform
+#ifdef BUILDWITH_RENDERER_DIRECTX
+			case RendererAPI::API::DirectX: return CreateRef<DXVertexBuffer>(size);
+#endif
+#ifdef BUILDWITH_RENDERER_METAL
+			case RendererAPI::API::Metal: return CreateRef<MTVertexBuffer>(size);
+#endif
+#ifdef BUILDWITH_RENDERER_VULKAN
+			case RendererAPI::API::Vulkan: return CreateRef<VKVertexBuffer>(size);
+#endif
 #ifdef BUILDWITH_RENDERER_OPENGL
-		case RendererAPI::API::OpenGL: return CreateRef<GLVertexBuffer>(size);
+			case RendererAPI::API::OpenGL: return CreateRef<GLVertexBuffer>(size);
 #endif
 
-		default: LOG_CORE_ASSERT(false, "Unknown RendererAPI!"); return nullptr;
+			default: LOG_CORE_ASSERT(false, "Unknown RendererAPI!"); return nullptr;
 		}
 	}
 
@@ -35,6 +53,15 @@ namespace Helios {
 			case RendererAPI::API::None: LOG_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
 
 // related on build options and platform
+#ifdef BUILDWITH_RENDERER_DIRECTX
+			case RendererAPI::API::DirectX: return CreateRef<DXVertexBuffer>(vertices, size);
+#endif
+#ifdef BUILDWITH_RENDERER_METAL
+			case RendererAPI::API::Metal: return CreateRef<MTVertexBuffer>(vertices, size);
+#endif
+#ifdef BUILDWITH_RENDERER_VULKAN
+			case RendererAPI::API::Vulkan: return CreateRef<VKVertexBuffer>(vertices, size);
+#endif
 #ifdef BUILDWITH_RENDERER_OPENGL
 			case RendererAPI::API::OpenGL: return CreateRef<GLVertexBuffer>(vertices, size);
 #endif
@@ -51,6 +78,15 @@ namespace Helios {
 			case RendererAPI::API::None: LOG_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
 
 // related on build options and platform
+#ifdef BUILDWITH_RENDERER_DIRECTX
+			case RendererAPI::API::DirectX: return CreateRef<DXIndexBuffer>(indices, count);
+#endif
+#ifdef BUILDWITH_RENDERER_METAL
+			case RendererAPI::API::Metal: return CreateRef<MTIndexBuffer>(indices, count);
+#endif
+#ifdef BUILDWITH_RENDERER_VULKAN
+			case RendererAPI::API::Vulkan: return CreateRef<VKIndexBuffer>(indices, count);
+#endif
 #ifdef BUILDWITH_RENDERER_OPENGL
 			case RendererAPI::API::OpenGL: return CreateRef<GLIndexBuffer>(indices, count);
 #endif
