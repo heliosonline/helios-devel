@@ -44,16 +44,21 @@ void EditorLayer::OnUpdate(Helios::Timestep ts)
 
 	Helios::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-	/* red     */Helios::Renderer2D::DrawQuad({-0.5f, 0.0f, 0.1f}, {0.8f, 0.8f}, {0.8f, 0.2f, 0.3f, 1.0f});
-	/* blue    */Helios::Renderer2D::DrawQuad({0.5f, -0.5f, -0.1f}, {0.5f, 0.75f}, {0.2f, 0.3f, 0.8f, 1.0f});
-	/* checker */Helios::Renderer2D::DrawRotatedQuad({0.0f, -0.5f}, {1.0f, 1.0f}, rotation, m_Texture, {1.0f, 1.0f, 1.0f, 0.5f});
-	/* logo    */Helios::Renderer2D::DrawQuad({-0.5f, 0.5f, 0.2f}, {0.5f, 0.5f}, m_Texture2, {1.0f, 1.0f, 1.0f, 0.75f});
-	/* checker */Helios::Renderer2D::DrawRotatedQuad({ 0.0f, 0.5f, 0.05f }, { 1.0f, 1.0f }, rotation, m_SubTexture, { 1.0f, 1.0f, 1.0f, 0.5f });
+	/* checker */Helios::Renderer2D::DrawRotatedQuad({  0.0f, -0.5f },        { 1.0f, 1.0f }, rotation, m_Texture,    { 1.0f, 1.0f, 1.0f, 0.5f });
+	/* logo    */Helios::Renderer2D::DrawQuad(       { -0.5f,  0.5f, 0.2f  }, { 0.5f, 0.5f },           m_Texture2,   { 1.0f, 1.0f, 1.0f, 0.7f });
+	/* checker */Helios::Renderer2D::DrawRotatedQuad({  0.0f,  0.5f, 0.05f }, { 1.0f, 1.0f }, rotation, m_SubTexture, { 1.0f, 1.0f, 1.0f, 0.5f });
 
+	// grid
 	float z = -0.05f;
 	for (float y = 2.0f; y > -2.0f; y -= 0.2f)
 		Helios::Renderer2D::DrawLine({ -2.0f, y, z }, { 2.0f, y, z }, { 1.0f, 0.0f, 0.0f, 1.0f });
-	Helios::Renderer2D::DrawRect({ 0.0f, 0.0f, z+0.01f }, { 2.0f, 2.0f }, { 1.0f, 1.0f, 0.0f, 1.0f });
+	Helios::Renderer2D::DrawRect({ 0.0f, 0.0f, z + 0.01f }, { 2.0f, 2.0f }, { 1.0f, 1.0f, 0.0f, 1.0f });
+
+	/* red     */Helios::Renderer2D::DrawQuad(  { -0.5f,  0.0f,  0.1f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
+	/* blue    */Helios::Renderer2D::DrawQuad(  {  0.5f, -0.5f, -0.1f }, { 0.5f, 0.7f }, { 0.2f, 0.3f, 0.8f, 1.0f });
+	/* circle  */Helios::Renderer2D::DrawCircle({ -0.5f, -0.5f,  0.2f }, { 0.5f, 0.8f }, { 0.2f, 0.7f, 0.2f, 1.0f }, 0.05f);
+	/* circle  */Helios::Renderer2D::DrawCircle({ -0.5f, -0.5f,  0.3f }, { 0.8f, 0.5f }, { 0.7f, 0.7f, 0.2f, 1.0f }, 0.05f);
+	/* circle  */Helios::Renderer2D::DrawCircle({ -0.5f, -0.5f,  0.3f }, { 0.4f, 0.4f }, { 0.7f, 0.2f, 0.7f, 0.5f }, 1.0f);
 
 	Helios::Renderer2D::EndScene();
 	m_Framebuffer->Unbind();
@@ -112,7 +117,7 @@ void EditorLayer::OnImGuiRender()
 	// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
 //	if (!opt_padding)
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-	ImGui::Begin("DockSpace Demo", &dockspaceOpen, window_flags);
+	ImGui::Begin("EditorLayer", &dockspaceOpen, window_flags);
 	//	if (!opt_padding)
 	ImGui::PopStyleVar();
 
@@ -162,6 +167,8 @@ void EditorLayer::OnImGuiRender()
 	{
 		m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		m_ViewportSize = { viewportSize.x, viewportSize.y };
+
+		m_CameraController.OnResize(viewportSize.x, viewportSize.y);
 	}
 	ImGui::Image(textureID, viewportSize, ImVec2{0, 1}, ImVec2{1, 0});
 	ImGui::End();
@@ -173,6 +180,7 @@ void EditorLayer::OnImGuiRender()
 	ImGui::Text("%6d Draw Calls", stats.DrawCalls);
 	ImGui::Text("%6d Quads", stats.QuadCount);
 	ImGui::Text("%6d Lines", stats.LineCount);
+	ImGui::Text("%6d Circles", stats.CircleCount);
 	ImGui::Text("%6d Vertices", stats.GetTotalVertexCount());
 	ImGui::Text("%6d Indices", stats.GetTotalIndexCount());
 	ImGui::End();

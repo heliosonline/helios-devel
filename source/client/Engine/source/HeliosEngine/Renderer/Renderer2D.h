@@ -94,8 +94,15 @@ namespace Helios {
 		static void DrawRect(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
 
 //		DrawRotatedRect(position, size, rotation, color);
-//		DrawCircle(position, size, color, filled);
- 
+
+		// Circle with 2D position
+		static void DrawCircle(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, float thickness = 1.0f, float fade = 0.005f);
+		// Circle with 3D position
+		static void DrawCircle(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, float thickness = 1.0f, float fade = 0.005f);
+
+		// Intended to be used internally
+		static void DrawCircle(const glm::mat4& transform, const glm::vec4& color, float thickness = 1.0f, float fade = 0.005f);
+
 		static float SetLineWidth(float width);
  		static float GetLineWidth();
 
@@ -105,6 +112,7 @@ namespace Helios {
 			uint32_t DrawCalls = 0;
 			uint32_t QuadCount = 0;
 			uint32_t LineCount = 0;
+			uint32_t CircleCount = 0;
 
 			uint32_t GetTotalVertexCount() const { return (QuadCount * 4) + (LineCount * 2); }
 			uint32_t GetTotalIndexCount() const { return QuadCount * 6; }

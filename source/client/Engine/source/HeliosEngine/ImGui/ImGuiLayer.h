@@ -27,7 +27,7 @@ namespace Helios {
 
 		void SetThemeColors();
 	private:
-		bool m_BlockEvents = true;
+		bool m_BlockEvents = false;
 		std::string m_IniPath;
 	};
 

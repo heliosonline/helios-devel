@@ -22,6 +22,16 @@ namespace Helios {
 	};
 
 
+	struct CircleVertex
+	{
+		glm::vec3 WorldPosition;
+		glm::vec3 LocalPosition;
+		glm::vec4 Color;
+		float Thickness;
+		float Fade;
+	};
+
+
 	struct LineVertex
 	{
 		glm::vec3 Position;
@@ -47,7 +57,14 @@ namespace Helios {
 		QuadVertex* QuadVertexBufferBase = nullptr;
 		QuadVertex* QuadVertexBufferPtr = nullptr;
 
-		// TODO: Circles
+		// Circles
+		Ref<VertexArray> CircleVertexArray;
+		Ref<VertexBuffer> CircleVertexBuffer;
+		Ref<Shader> CircleShader;
+
+		uint32_t CircleIndexCount = 0;
+		CircleVertex* CircleVertexBufferBase = nullptr;
+		CircleVertex* CircleVertexBufferPtr = nullptr;
 
 		// Lines
 		Ref<VertexArray> LineVertexArray;
@@ -79,12 +96,12 @@ namespace Helios {
 			s_Data.QuadVertexArray = VertexArray::Create();
 			s_Data.QuadVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(QuadVertex));
 			s_Data.QuadVertexBuffer->SetLayout({
-				{ ShaderDataType::Float3, "a_Position" },
-				{ ShaderDataType::Float4, "a_Color" },
-				{ ShaderDataType::Float2, "a_TexCoord" },
-				{ ShaderDataType::Float,  "a_TexIndex" },
+				{ ShaderDataType::Float3, "a_Position"     },
+				{ ShaderDataType::Float4, "a_Color"        },
+				{ ShaderDataType::Float2, "a_TexCoord"     },
+				{ ShaderDataType::Float,  "a_TexIndex"     },
 				{ ShaderDataType::Float,  "a_TilingFactor" }
-				});
+			});
 			s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 			s_Data.QuadVertexBufferBase = new QuadVertex[s_Data.MaxVertices];
 
@@ -102,7 +119,7 @@ namespace Helios {
 
 				offset += 4;
 			}
-			Ref<IndexBuffer>quadIB = IndexBuffer::Create(quadIndices, s_Data.MaxIndices);
+			Ref<IndexBuffer> quadIB = IndexBuffer::Create(quadIndices, s_Data.MaxIndices);
 			s_Data.QuadVertexArray->SetIndexBuffer(quadIB);
 			delete[] quadIndices;
 
@@ -111,10 +128,41 @@ namespace Helios {
 			s_Data.QuadVertexPositions[2] = {  0.5f,  0.5f, 0.0f, 1.0f };
 			s_Data.QuadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
 
-			s_Data.QuadShader = Shader::Create("assets/shaders/Renderer2D_Quad.glsl");
+			s_Data.QuadShader = Shader::Create("Assets/Shaders/Renderer2D_Quad.glsl");
 		} // Quads
 
 		{ // Circles
+			s_Data.CircleVertexArray = VertexArray::Create();
+			s_Data.CircleVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(CircleVertex));
+			s_Data.CircleVertexBuffer->SetLayout({
+				{ ShaderDataType::Float3, "a_WorldPosition" },
+				{ ShaderDataType::Float3, "a_LocalPosition" },
+				{ ShaderDataType::Float4, "a_Color"         },
+				{ ShaderDataType::Float,  "a_Thickness"     },
+				{ ShaderDataType::Float,  "a_Fade"          }
+			});
+			s_Data.CircleVertexArray->AddVertexBuffer(s_Data.CircleVertexBuffer);
+			s_Data.CircleVertexBufferBase = new CircleVertex[s_Data.MaxVertices];
+
+			uint32_t* circleIndices = new uint32_t[s_Data.MaxIndices];
+			uint32_t offset = 0;
+			for (uint32_t i = 0; i < s_Data.MaxIndices; i += 6)
+			{
+				circleIndices[i + 0] = offset + 0;
+				circleIndices[i + 1] = offset + 1;
+				circleIndices[i + 2] = offset + 2;
+
+				circleIndices[i + 3] = offset + 2;
+				circleIndices[i + 4] = offset + 3;
+				circleIndices[i + 5] = offset + 0;
+
+				offset += 4;
+			}
+			Ref<IndexBuffer> circleIB = IndexBuffer::Create(circleIndices, s_Data.MaxIndices);
+			s_Data.CircleVertexArray->SetIndexBuffer(circleIB);
+			delete[] circleIndices;
+
+			s_Data.CircleShader = Shader::Create("Assets/Shaders/Renderer2D_Circle.glsl");
 		} // Circles
 
 		{ // Lines
@@ -123,11 +171,11 @@ namespace Helios {
 			s_Data.LineVertexBuffer->SetLayout({
 				{ ShaderDataType::Float3, "a_Position" },
 				{ ShaderDataType::Float4, "a_Color"    }
-				});
+			});
 			s_Data.LineVertexArray->AddVertexBuffer(s_Data.LineVertexBuffer);
 			s_Data.LineVertexBufferBase = new LineVertex[s_Data.MaxVertices];
 
-			s_Data.LineShader = Shader::Create("assets/shaders/Renderer2D_Line.glsl");
+			s_Data.LineShader = Shader::Create("Assets/Shaders/Renderer2D_Line.glsl");
 		} // Lines
 
 		{ // Textures
@@ -155,6 +203,8 @@ namespace Helios {
 
 		s_Data.QuadShader->Bind();
 		s_Data.QuadShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		s_Data.CircleShader->Bind();
+		s_Data.CircleShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 		s_Data.LineShader->Bind();
 		s_Data.LineShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 
@@ -176,6 +226,9 @@ namespace Helios {
 
 		s_Data.QuadIndexCount = 0;
 		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+		s_Data.CircleIndexCount = 0;
+		s_Data.CircleVertexBufferPtr = s_Data.CircleVertexBufferBase;
 
 		s_Data.LineVertexCount = 0;
 		s_Data.LineVertexBufferPtr = s_Data.LineVertexBufferBase;
@@ -205,6 +258,16 @@ namespace Helios {
 			s_Data.LineShader->Bind();
 			RenderCommand::SetLineWidth(s_Data.LineWidth);
 			RenderCommand::DrawLines(s_Data.LineVertexArray, s_Data.LineVertexCount);
+			s_Data.Stats.DrawCalls++;
+		}
+
+		if (s_Data.CircleIndexCount)
+		{
+			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.CircleVertexBufferPtr - (uint8_t*)s_Data.CircleVertexBufferBase);
+			s_Data.CircleVertexBuffer->SetData(s_Data.CircleVertexBufferBase, dataSize);
+
+			s_Data.CircleShader->Bind();
+			RenderCommand::DrawIndexed(s_Data.CircleVertexArray, s_Data.CircleIndexCount);
 			s_Data.Stats.DrawCalls++;
 		}
 
@@ -447,6 +510,44 @@ namespace Helios {
 		DrawLine(p1, p2, color);
 		DrawLine(p2, p3, color);
 		DrawLine(p3, p0, color);
+	}
+
+
+	// Circle with 2D position
+	void Renderer2D::DrawCircle(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, float thickness, float fade)
+	{
+		DrawCircle({ position.x, position.y, 0.0f }, size, color, thickness, fade);
+	}
+	// Circle with 3D position
+	void Renderer2D::DrawCircle(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, float thickness, float fade)
+	{
+		HE_PROFILER_FUNCTION();
+
+		glm::mat4 transform =
+			  glm::translate(glm::mat4(1.0f), position)
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+
+		DrawCircle(transform, color, thickness, fade);
+	}
+	void Renderer2D::DrawCircle(const glm::mat4& transform, const glm::vec4& color, float thickness, float fade)
+	{
+		HE_PROFILER_FUNCTION();
+
+		if (s_Data.CircleIndexCount >= Renderer2DData::MaxIndices)
+		 	NextBatch();
+
+		for (size_t i = 0; i < 4; i++)
+		{
+			s_Data.CircleVertexBufferPtr->WorldPosition = transform * s_Data.QuadVertexPositions[i];
+			s_Data.CircleVertexBufferPtr->LocalPosition = s_Data.QuadVertexPositions[i] * 2.0f;
+			s_Data.CircleVertexBufferPtr->Color = color;
+			s_Data.CircleVertexBufferPtr->Thickness = thickness;
+			s_Data.CircleVertexBufferPtr->Fade = fade;
+			s_Data.CircleVertexBufferPtr++;
+		}
+		s_Data.CircleIndexCount += 6;
+
+		s_Data.Stats.CircleCount++;
 	}
 
 
