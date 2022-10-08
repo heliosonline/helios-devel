@@ -44,10 +44,6 @@ void ClientLayer::OnUpdate(Helios::Timestep ts)
 
 	Helios::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-	/* checker */Helios::Renderer2D::DrawRotatedQuad({ 0.0f, -0.5f }, { 1.0f, 1.0f }, rotation, m_Texture, { 1.0f, 1.0f, 1.0f, 0.5f });
-	/* logo    */Helios::Renderer2D::DrawQuad({ -0.5f,  0.5f, 0.2f }, { 0.5f, 0.5f }, m_Texture2, { 1.0f, 1.0f, 1.0f, 0.7f });
-	/* checker */Helios::Renderer2D::DrawRotatedQuad({ 0.0f,  0.5f, 0.05f }, { 1.0f, 1.0f }, rotation, m_SubTexture, { 1.0f, 1.0f, 1.0f, 0.5f });
-
 	// grid
 	float z = -0.05f;
 	for (float y = 2.0f; y > -2.0f; y -= 0.2f)
@@ -59,6 +55,10 @@ void ClientLayer::OnUpdate(Helios::Timestep ts)
 	/* circle  */Helios::Renderer2D::DrawCircle({ -0.5f, -0.5f,  0.2f }, { 0.5f, 0.8f }, { 0.2f, 0.7f, 0.2f, 1.0f }, 0.05f);
 	/* circle  */Helios::Renderer2D::DrawCircle({ -0.5f, -0.5f,  0.3f }, { 0.8f, 0.5f }, { 0.7f, 0.7f, 0.2f, 1.0f }, 0.05f);
 	/* circle  */Helios::Renderer2D::DrawCircle({ -0.5f, -0.5f,  0.3f }, { 0.4f, 0.4f }, { 0.7f, 0.2f, 0.7f, 0.5f }, 1.0f);
+
+	/* checker */Helios::Renderer2D::DrawQuad({ 0.0f, -0.5f }, { 1.0f, 1.0f }, rotation, m_Texture, { 1.0f, 1.0f, 1.0f, 0.5f });
+	/* logo    */Helios::Renderer2D::DrawQuad({ -0.5f,  0.5f, 0.2f }, { 0.5f, 0.5f }, m_Texture2, { 1.0f, 1.0f, 1.0f, 0.7f });
+	/* checker */Helios::Renderer2D::DrawQuad({ 0.0f,  0.5f, 0.05f }, { 1.0f, 1.0f }, rotation, m_SubTexture, { 1.0f, 1.0f, 1.0f, 0.5f });
 
 	Helios::Renderer2D::EndScene();
 //	m_Framebuffer->Unbind();

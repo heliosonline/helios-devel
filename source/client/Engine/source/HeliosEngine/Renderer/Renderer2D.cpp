@@ -353,30 +353,30 @@ namespace Helios {
 
 
 	// colored rotated quad with 2D position
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color)
-		{ DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, s_Data.WhiteTexture, 1.0f, color); }
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color)
+		{ DrawQuad({ position.x, position.y, 0.0f }, size, rotation, s_Data.WhiteTexture, 1.0f, color); }
 	// colored rotated quad with 3D position
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color)
-		{ DrawRotatedQuad(position, size, rotation, s_Data.WhiteTexture, 1.0f, color); }
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const glm::vec4& color)
+		{ DrawQuad(position, size, rotation, s_Data.WhiteTexture, 1.0f, color); }
 
 
 	// textured rotated quad with 2D position (optional tiling)
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tiling)
-		{ DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, texture, tiling, glm::vec4(1.0f)); }
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tiling)
+		{ DrawQuad({ position.x, position.y, 0.0f }, size, rotation, texture, tiling, glm::vec4(1.0f)); }
 	// textured rotated quad with 2D position and color
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, const glm::vec4& color)
-		{ DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, texture, 1.0f, color); }
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, const glm::vec4& color)
+		{ DrawQuad({ position.x, position.y, 0.0f }, size, rotation, texture, 1.0f, color); }
 	// textured rotated quad with 2D position, tiling and color
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tiling, const glm::vec4& color)
-		{ DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, texture, tiling, color); }
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tiling, const glm::vec4& color)
+		{ DrawQuad({ position.x, position.y, 0.0f }, size, rotation, texture, tiling, color); }
 	// textured rotated quad with 3D position (optional tiling)
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tiling)
-		{ DrawRotatedQuad(position, size, rotation, texture, tiling, glm::vec4(1.0f)); }
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tiling)
+		{ DrawQuad(position, size, rotation, texture, tiling, glm::vec4(1.0f)); }
 	// textured rotated quad with 3D position and color
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, const glm::vec4& color)
-		{ DrawRotatedQuad(position, size, rotation, texture, 1.0f, color); }
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, const glm::vec4& color)
+		{ DrawQuad(position, size, rotation, texture, 1.0f, color); }
 	// textured rotated quad with 3D position, tiling and color
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tiling, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<Texture2D>& texture, float tiling, const glm::vec4& color)
 	{
 		HE_PROFILER_FUNCTION();
 
@@ -391,22 +391,22 @@ namespace Helios {
 
 
 	// textured rotated quad with 2D position (optional tiling)
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tiling)
-		{ DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, subtexture, tiling, glm::vec4(1.0f)); }
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tiling)
+		{ DrawQuad({ position.x, position.y, 0.0f }, size, rotation, subtexture, tiling, glm::vec4(1.0f)); }
 	// textured rotated quad with 2D position and color
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, const glm::vec4& color)
-		{ DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, subtexture, 1.0f, color); }
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, const glm::vec4& color)
+		{ DrawQuad({ position.x, position.y, 0.0f }, size, rotation, subtexture, 1.0f, color); }
 	// textured rotated quad with 2D position, tiling and color
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tiling, const glm::vec4& color)
-		{ DrawRotatedQuad({ position.x, position.y, 0.0f }, size, rotation, subtexture, tiling, color); }
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tiling, const glm::vec4& color)
+		{ DrawQuad({ position.x, position.y, 0.0f }, size, rotation, subtexture, tiling, color); }
 	// textured rotated quad with 3D position (optional tiling)
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tiling)
-		{ DrawRotatedQuad(position, size, rotation, subtexture, tiling, glm::vec4(1.0f)); }
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tiling)
+		{ DrawQuad(position, size, rotation, subtexture, tiling, glm::vec4(1.0f)); }
 	// textured rotated quad with 3D position and color
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, const glm::vec4& color)
-		{ DrawRotatedQuad(position, size, rotation, subtexture, 1.0f, color); }
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, const glm::vec4& color)
+		{ DrawQuad(position, size, rotation, subtexture, 1.0f, color); }
 	// textured rotated quad with 3D position, tiling and color
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tiling, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Ref<SubTexture2D>& subtexture, float tiling, const glm::vec4& color)
 	{
 		HE_PROFILER_FUNCTION();
 
