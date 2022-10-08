@@ -2,11 +2,11 @@
 
 // HeliosEngine - Core
 #include <HeliosEngine/Core/Base.h>
-#include <HeliosEngine/Core/Log.h>
 #include <HeliosEngine/Core/Application.h>
 #include <HeliosEngine/Core/Layer.h>
 #include <HeliosEngine/Core/Input.h>
 #include <HeliosEngine/Core/Timestep.h>
+#include <HeliosEngine/Core/UUID.h>
 
 // HeliosEngine - Events
 #include <HeliosEngine/Events/Event.h>
@@ -18,12 +18,14 @@
 #include <HeliosEngine/Renderer/Renderer.h>
 #include <HeliosEngine/Renderer/Renderer2D.h>
 #include <HeliosEngine/Renderer/RenderCommand.h>
+
 #include <HeliosEngine/Renderer/Buffer.h>
 #include <HeliosEngine/Renderer/Framebuffer.h>
 #include <HeliosEngine/Renderer/Shader.h>
 #include <HeliosEngine/Renderer/Texture.h>
 #include <HeliosEngine/Renderer/SubTexture2D.h>
 #include <HeliosEngine/Renderer/VertexArray.h>
+
 #include <HeliosEngine/Renderer/OrthographicCamera.h>
 #include <HeliosEngine/Renderer/OrthographicCameraController.h>
 
