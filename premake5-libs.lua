@@ -24,7 +24,9 @@ end
 
 function LibHeliosEngine()
 	includedirs {
+		-- the engine itself
 		"%{wks.location}/source/client/Engine/source",
+		-- libraries
 		"%{wks.location}/source/client/Engine/vendor/spdlog/include",
 --		"%{wks.location}/source/client/Engine/vendor/glad/include",
 		"%{wks.location}/source/client/Engine/vendor/glfw/include",
