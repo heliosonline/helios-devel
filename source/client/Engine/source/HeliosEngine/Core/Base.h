@@ -1,6 +1,7 @@
 #pragma once
 
 
+// Configuration
 #include "HeliosEngine/HeliosConfig.h"
 
 
@@ -33,7 +34,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "glm/glm.hpp"
+// Libraries
+#include <glm/glm.hpp>
 
 
 namespace Helios {
