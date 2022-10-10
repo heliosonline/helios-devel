@@ -60,6 +60,8 @@ void ClientLayer::OnUpdate(Helios::Timestep ts)
 	/* logo    */Helios::Renderer2D::DrawQuad({ -0.5f,  0.5f, 0.2f }, { 0.5f, 0.5f }, m_Texture2, { 1.0f, 1.0f, 1.0f, 0.7f });
 	/* checker */Helios::Renderer2D::DrawQuad({ 0.0f,  0.5f, 0.05f }, { 1.0f, 1.0f }, rotation, m_SubTexture, { 1.0f, 1.0f, 1.0f, 0.5f });
 
+	Helios::Ref<Helios::Font> font = Helios::FontLibrary::Get("OpenSans", Helios::FontFlags::Regular);
+
 	Helios::Renderer2D::EndScene();
 //	m_Framebuffer->Unbind();
 }

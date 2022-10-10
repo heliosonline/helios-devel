@@ -6,4 +6,4 @@
 
 
 // Enable assert macros
-#define HE_LOG_ASSERTS_ENABLED 0
+#define HE_LOG_ASSERTS_ENABLED 1
