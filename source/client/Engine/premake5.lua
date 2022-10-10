@@ -31,6 +31,7 @@ project "Engine"
 		"vendor/imgui",
 		"vendor/stb",
 		"vendor/lua/lua-5.4.4", "vendor/lua/extra",
+		"vendor/msdfgen", "vendor/msdfatlas", "vendor/freetype/include",
 	}
 	
 	
@@ -39,6 +40,7 @@ project "Engine"
 		"Engine.glfw",
 		"Engine.imgui",
 		"Engine.lua",
+		"Engine.msdfatlas",
 	}
 
 
@@ -154,3 +156,6 @@ project "Engine"
 		include("vendor/lua")
 		include("vendor/premake5-glfw.lua")
 		include("vendor/premake5-imgui.lua")
+		include("vendor/premake5-freetype.lua")
+		include("vendor/premake5-msdfgen.lua")
+		include("vendor/premake5-msdfatlas.lua")

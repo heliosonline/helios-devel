@@ -35,13 +35,19 @@ workspace "Helios-Development"
 	-- [ DEBUG/RELEASE CONFIGURATION ] --
 	-------------------------------------
 	filter "configurations:Debug"
-		defines  "BUILD_DEBUG"
+		defines {
+			"BUILD_DEBUG",
+			"_DEBUG",
+		}
 		symbols  "On"
 		optimize "Off"
 		runtime  "Debug"
 
 	filter "configurations:Release"
-		defines  "BUILD_RELEASE"
+		defines {
+			"BUILD_RELEASE",
+			"NDEBUG",
+		}
 		symbols  "Off"
 		optimize "Speed"
 		runtime  "Release"
