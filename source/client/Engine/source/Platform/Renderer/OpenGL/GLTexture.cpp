@@ -8,13 +8,13 @@
 namespace Helios {
 
 
-	GLTexture2D::GLTexture2D(uint32_t width, uint32_t height)
+	GLTexture2D::GLTexture2D(uint32_t width, uint32_t height, int bpp)
 		: m_Width(width), m_Height(height)
 	{
 		HE_PROFILER_FUNCTION();
 
-		m_InternalFormat = GL_RGBA8;
-		m_DataFormat = GL_RGBA;
+		m_InternalFormat = bpp == 4 ? GL_RGBA8 : GL_RGB8;
+		m_DataFormat = bpp == 4 ? GL_RGBA : GL_RGB;
 		Create();
 	}
 

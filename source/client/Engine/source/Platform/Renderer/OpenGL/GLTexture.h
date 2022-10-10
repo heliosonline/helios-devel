@@ -11,7 +11,7 @@ namespace Helios {
 	class GLTexture2D : public Texture2D
 	{
 	public:
-		GLTexture2D(uint32_t width, uint32_t height);
+		GLTexture2D(uint32_t width, uint32_t height, int bpp);
 		GLTexture2D(const std::string& path);
 		~GLTexture2D();
 

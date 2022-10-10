@@ -35,9 +35,9 @@ namespace Helios {
 	{
 	public:
 		Font(const std::string& name, const std::string& filepath, const uint32_t flags);
-		~Font() = default;
+		~Font();
 
-		const Ref<Texture> GetTexture() { return m_Texture; }
+		Ref<Texture2D> GetTexture() { return m_Texture; }
 		const std::string& GetName() { return m_Name; }
 		uint32_t GetFlags() { return m_Flags; }
 
@@ -54,9 +54,10 @@ namespace Helios {
 
 	private:
 		std::string m_Name;
+		std::string m_Filepath;
 		uint32_t m_Flags;
 
-		Ref<Texture> m_Texture;
+		Ref<Texture2D> m_Texture;
 		FontData* m_Data = nullptr;
 
 //		friend class FontLibrary;

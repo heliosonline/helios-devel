@@ -21,7 +21,7 @@
 namespace Helios {
 
 
-	Ref<Texture2D> Texture2D::Create(uint32_t width, uint32_t height)
+	Ref<Texture2D> Texture2D::Create(uint32_t width, uint32_t height, int bpp)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -29,16 +29,16 @@ namespace Helios {
 
 // related on build options and platform
 #ifdef BUILDWITH_RENDERER_DIRECTX
-			case RendererAPI::API::DirectX:  return CreateRef<DXTexture2D>(width, height);
+			case RendererAPI::API::DirectX:  return CreateRef<DXTexture2D>(width, height, bpp);
 #endif
 #ifdef BUILDWITH_RENDERER_METAL
-			case RendererAPI::API::Metal:  return CreateRef<MTTexture2D>(width, height);
+			case RendererAPI::API::Metal:  return CreateRef<MTTexture2D>(width, height, bpp);
 #endif
 #ifdef BUILDWITH_RENDERER_VULKAN
-			case RendererAPI::API::Vulkan:  return CreateRef<VKTexture2D>(width, height);
+			case RendererAPI::API::Vulkan:  return CreateRef<VKTexture2D>(width, height, bpp);
 #endif
 #ifdef BUILDWITH_RENDERER_OPENGL
-			case RendererAPI::API::OpenGL:  return CreateRef<GLTexture2D>(width, height);
+			case RendererAPI::API::OpenGL:  return CreateRef<GLTexture2D>(width, height, bpp);
 #endif
 
 			default: LOG_CORE_ASSERT(false, "Unknown RendererAPI!"); return nullptr;

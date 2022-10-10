@@ -13,6 +13,12 @@ namespace Helios {
 	// ============================================================================
 
 
+#define DEFAULT_ANGLE_THRESHOLD 3.0
+#define DEFAULT_PIXEL_RANGE 2.0
+#define DEFAULT_MITER_LIMIT 1.0
+#define DEFAULT_MIN_EMSIZE 16.0
+
+
 	struct FontData
 	{
 		// Generated chars
@@ -22,13 +28,12 @@ namespace Helios {
 
 	Ref<Font> Font::Create(const std::string& name, const std::string& filepath, const uint32_t flags)
 	{
-LOG_INFO("Creating font object for font: {0}", filepath);
+LOG_DEBUG("Creating font object for font: {0}", filepath);
 		Ref<Font> fontobj = nullptr;
 
+		// Load font
 		std::vector<msdf_atlas::GlyphGeometry> glyphs;
 		msdf_atlas::FontGeometry fontGeometry(&glyphs);
-
-		// Load font
 		msdfgen::FreetypeHandle* ft = msdfgen::initializeFreetype();
 		if (ft)
 		{
@@ -36,24 +41,58 @@ LOG_INFO("Creating font object for font: {0}", filepath);
 			if (font)
 			{
 				// TODO: implement multiple (language dependent) charsets
+
 				int glyphsLoaded = fontGeometry.loadCharset(font, 1.0, msdf_atlas::Charset::ASCII);
-				LOG_CORE_ASSERT(glyphsLoaded, "Could not load glyphs from font: {0}", filepath);
+				if (glyphsLoaded < 1)
+				{
+					LOG_CORE_ERROR("Font: Could not load any glyphs from font \"{0}\"!",
+						filepath);
+				}
+				else if (glyphsLoaded < msdf_atlas::Charset::ASCII.size())
+				{
+					LOG_CORE_WARN("Font: Font \"{0}\" is missing {1} codepoints!",
+						filepath, msdf_atlas::Charset::ASCII.size() - glyphsLoaded);
+				}
 			}
 			msdfgen::destroyFont(font);
 			msdfgen::deinitializeFreetype(ft);
 		}
+		if (glyphs.empty())
+			return nullptr;
 
 		// Assign glyph edge colors
-		// TODO...
+		for (msdf_atlas::GlyphGeometry& glyph : glyphs)
+			glyph.edgeColoring(msdfgen::edgeColoringByDistance, DEFAULT_ANGLE_THRESHOLD, 1);
 
 		// Pack glyphs
-		// TODO...
+		msdf_atlas::TightAtlasPacker atlasPacker;
+		atlasPacker.setDimensionsConstraint(msdf_atlas::TightAtlasPacker::DimensionsConstraint::POWER_OF_TWO_RECTANGLE);
+		atlasPacker.setMinimumScale(DEFAULT_MIN_EMSIZE);
+		atlasPacker.setPixelRange(DEFAULT_PIXEL_RANGE);
+		atlasPacker.setMiterLimit(DEFAULT_MITER_LIMIT);
+		int glyphPackFailureCount = atlasPacker.pack(glyphs.data(), (int)glyphs.size());
+		if (glyphPackFailureCount > 0)
+		{
+			LOG_CORE_WARN("Font: Failure to pack {1} glyphs from font \"{0}\" into atlas!",
+				filepath, glyphPackFailureCount);
+		}
 
 		// Generate the atlas
-		// TODO...
+		int width = -1, height = -1;
+		atlasPacker.getDimensions(width, height);
+		msdf_atlas::ImmediateAtlasGenerator<float, 3, msdf_atlas::msdfGenerator, msdf_atlas::BitmapAtlasStorage<unsigned char, 3>>
+			generator(width, height);
+		generator.setThreadCount(std::max((int)std::thread::hardware_concurrency(), 1));
+		generator.generate(glyphs.data(), (int)glyphs.size());
+		auto bitmap = (msdfgen::BitmapConstRef<unsigned char, 3>)generator.atlasStorage();
+LOG_DEBUG("atlas size: {0}x{1}", width, height);
+
+		// Create Font object
+		fontobj = CreateRef<Font>(name, filepath, flags);
 
 		// Generate Texture
-		// TODO...
+		fontobj->m_Texture = Texture2D::Create(width, height, 3);
+		fontobj->m_Texture->SetData((void*)bitmap.pixels, width * height * 3);
 
 		// Store font metrics
 		// TODO...
@@ -63,9 +102,16 @@ LOG_INFO("Creating font object for font: {0}", filepath);
 
 
 	Font::Font(const std::string& name, const std::string& filepath, const uint32_t flags)
-		: m_Name(name), m_Flags(flags)
+		: m_Name(name), m_Filepath(filepath), m_Flags(flags)
 	{
-LOG_INFO("Loading font: {0}", filepath);
+LOG_DEBUG("Font: Constructor() {0}", name);
+	}
+
+
+	Font::~Font()
+	{
+		if (m_Data)
+			delete m_Data;
 	}
 
 
@@ -79,7 +125,12 @@ LOG_INFO("Loading font: {0}", filepath);
 
 	void FontLibrary::Add(const Ref<Font>& font)
 	{
-		LOG_CORE_ASSERT(!Exists(font->GetName(), font->GetFlags()), "Font already exists!");
+		if (Exists(font->GetName(), font->GetFlags()))
+		{
+			LOG_CORE_ERROR("FontLibrary: Font \"{0}\" is already loaded!",
+				font->GetName());
+			return;
+		}
 		m_Fonts[font->GetName()][font->GetFlags()] = font;
 	}
 
@@ -91,7 +142,8 @@ LOG_INFO("Loading font: {0}", filepath);
 		filepath += name;
 		if (!std::filesystem::exists(filepath))
 		{
-			LOG_CORE_ASSERT(true, "Font folder not found: {0}", filepath.string());
+			LOG_CORE_ERROR("FontLibrary: Font folder \"{0}\" not found!",
+				filepath.string());
 			return nullptr;
 		}
 
@@ -144,8 +196,9 @@ LOG_INFO("Loading font: {0}", filepath);
 				}
 			}
 		}
-		// no matching file found
-		LOG_CORE_ASSERT(true, "Font not found: {0}", name);
+		// no matching font file found
+		LOG_CORE_WARN("FontLibrary: Font \"{0}\" not found!",
+			name);
 		return nullptr;
 	}
 

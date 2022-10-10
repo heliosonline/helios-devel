@@ -28,7 +28,7 @@ namespace Helios {
 	class Texture2D : public Texture
 	{
 	public:
-		static Ref<Texture2D> Create(uint32_t width, uint32_t height);
+		static Ref<Texture2D> Create(uint32_t width, uint32_t height, int bpp = 4);
 		static Ref<Texture2D> Create(const std::string& path);
 	};
 
