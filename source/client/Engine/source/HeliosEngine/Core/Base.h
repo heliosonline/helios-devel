@@ -31,6 +31,8 @@
 #include <string>
 #include <vector>
 
+#include <tuple>
+#include <map>
 #include <unordered_map>
 #include <unordered_set>
 

@@ -14,6 +14,27 @@ namespace Helios {
 	struct FontData;
 
 
+	struct GlyphMetrics
+	{
+		// Horizontal advance
+		float Advance;
+		// Boundingbox in atlas
+		struct { float l, r, t, b; } AtlasCoords;
+		// Boundingbox rel to baseline
+		struct { float l, r, t, b; } BaselineCoords;
+	};
+
+
+	struct FontMetrics
+	{
+		float Ascender;
+		float Descender;
+		float LineHeight;
+		float UnderlineOffset;
+		float UnderlineThickness;
+	};
+
+
 	enum FontFlags : uint32_t
 	{
 		// base font
@@ -34,33 +55,37 @@ namespace Helios {
 	class Font
 	{
 	public:
-		Font(const std::string& name, const std::string& filepath, const uint32_t flags);
+		Font(const std::string& name, const std::string& filepath, const uint32_t flags, Ref<FontData>& pfd);
 		~Font();
 
-		Ref<Texture2D> GetTexture() { return m_Texture; }
 		const std::string& GetName() { return m_Name; }
+		const std::string& GetFilePath() { return m_Filepath; }
 		uint32_t GetFlags() { return m_Flags; }
 
-//		glm::vec4& GetTexCoords(const char32_t codepoint);
-//		float GetAdvance(const char32_t codepoint);
-//		float GetWhitespaceAdvance();
-//		float GetKerning(const char32_t cp1, const char32_t cp2);
+		Ref<Texture2D> GetAtlasTexture() { return m_AtlasTexture; }
+		FontMetrics& GetFontMetrics() { return m_Metrics; }
+//		GlyphMetrics& GetGlyphInfo(const char32_t codepoint);
+//		float GetKerning(const uint32_t cp_left, const uint32_t cp_right);
 
 		static Ref<Font> Create(const std::string& name, const std::string& filepath, const uint32_t flags);
 
 	private:
-//		void GenerateTexture();
+//		bool AddGlyph(const uint32_t codepoint);
+//		bool AddCharset(type??? charset);
 // 		void GenerateAtlas();
+//		void GenerateTexture();
 
 	private:
 		std::string m_Name;
 		std::string m_Filepath;
 		uint32_t m_Flags;
 
-		Ref<Texture2D> m_Texture;
-		FontData* m_Data = nullptr;
+		Ref<Texture2D> m_AtlasTexture;
+		FontMetrics m_Metrics;
+		std::map<uint32_t, GlyphMetrics> m_Glyphs;
+		std::map<std::pair<uint32_t, uint32_t>, float> m_Kernings; // [std::pair(cp_left, cp_right)] = offset_x
 
-//		friend class FontLibrary;
+		Ref<FontData> m_Data;
 	};
 
 

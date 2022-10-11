@@ -21,16 +21,14 @@ namespace Helios {
 
 	struct FontData
 	{
-		// Generated chars
-		// Kerning
+		std::vector<msdf_atlas::GlyphGeometry> glyphs;
+		msdf_atlas::FontGeometry fontGeometry;
+		std::map<int, uint32_t> index2codepoint;
 	};
 
 
 	Ref<Font> Font::Create(const std::string& name, const std::string& filepath, const uint32_t flags)
 	{
-LOG_DEBUG("Creating font object for font: {0}", filepath);
-		Ref<Font> fontobj = nullptr;
-
 		// Load font
 		std::vector<msdf_atlas::GlyphGeometry> glyphs;
 		msdf_atlas::FontGeometry fontGeometry(&glyphs);
@@ -42,6 +40,7 @@ LOG_DEBUG("Creating font object for font: {0}", filepath);
 			{
 				// TODO: implement multiple (language dependent) charsets
 
+				// Load glyphs
 				int glyphsLoaded = fontGeometry.loadCharset(font, 1.0, msdf_atlas::Charset::ASCII);
 				if (glyphsLoaded < 1)
 				{
@@ -53,6 +52,8 @@ LOG_DEBUG("Creating font object for font: {0}", filepath);
 					LOG_CORE_WARN("Font: Font \"{0}\" is missing {1} codepoints!",
 						filepath, msdf_atlas::Charset::ASCII.size() - glyphsLoaded);
 				}
+				// Load kerning data
+				auto x = fontGeometry.loadKerning(font);
 			}
 			msdfgen::destroyFont(font);
 			msdfgen::deinitializeFreetype(ft);
@@ -60,8 +61,21 @@ LOG_DEBUG("Creating font object for font: {0}", filepath);
 		if (glyphs.empty())
 			return nullptr;
 
+		// Create FontData
+		auto pfd = CreateRef<FontData>();
+		pfd->glyphs = glyphs;
+		pfd->fontGeometry = fontGeometry;
+
+		// Create Font object
+		return CreateRef<Font>(name, filepath, flags, pfd);
+	}
+
+
+	Font::Font(const std::string& name, const std::string& filepath, const uint32_t flags, Ref<FontData>& pfd)
+		: m_Name(name), m_Filepath(filepath), m_Flags(flags), m_Data(pfd)
+	{
 		// Assign glyph edge colors
-		for (msdf_atlas::GlyphGeometry& glyph : glyphs)
+		for (msdf_atlas::GlyphGeometry& glyph : pfd->glyphs)
 			glyph.edgeColoring(msdfgen::edgeColoringByDistance, DEFAULT_ANGLE_THRESHOLD, 1);
 
 		// Pack glyphs
@@ -70,7 +84,7 @@ LOG_DEBUG("Creating font object for font: {0}", filepath);
 		atlasPacker.setMinimumScale(DEFAULT_MIN_EMSIZE);
 		atlasPacker.setPixelRange(DEFAULT_PIXEL_RANGE);
 		atlasPacker.setMiterLimit(DEFAULT_MITER_LIMIT);
-		int glyphPackFailureCount = atlasPacker.pack(glyphs.data(), (int)glyphs.size());
+		int glyphPackFailureCount = atlasPacker.pack(pfd->glyphs.data(), (int)pfd->glyphs.size());
 		if (glyphPackFailureCount > 0)
 		{
 			LOG_CORE_WARN("Font: Failure to pack {1} glyphs from font \"{0}\" into atlas!",
@@ -81,37 +95,67 @@ LOG_DEBUG("Creating font object for font: {0}", filepath);
 		int width = -1, height = -1;
 		atlasPacker.getDimensions(width, height);
 		msdf_atlas::ImmediateAtlasGenerator<float, 3, msdf_atlas::msdfGenerator, msdf_atlas::BitmapAtlasStorage<unsigned char, 3>>
-			generator(width, height);
+		generator(width, height);
 		generator.setThreadCount(std::max((int)std::thread::hardware_concurrency(), 1));
-		generator.generate(glyphs.data(), (int)glyphs.size());
+		generator.generate(pfd->glyphs.data(), (int)pfd->glyphs.size());
 		auto bitmap = (msdfgen::BitmapConstRef<unsigned char, 3>)generator.atlasStorage();
 LOG_DEBUG("atlas size: {0}x{1}", width, height);
 
-		// Create Font object
-		fontobj = CreateRef<Font>(name, filepath, flags);
-
 		// Generate Texture
-		fontobj->m_Texture = Texture2D::Create(width, height, 3);
-		fontobj->m_Texture->SetData((void*)bitmap.pixels, width * height * 3);
+		m_AtlasTexture = Texture2D::Create(width, height, 3);
+		m_AtlasTexture->SetData((void*)bitmap.pixels, width * height * 3);
 
 		// Store font metrics
-		// TODO...
+		for (const msdf_atlas::GlyphGeometry& glyph : pfd->glyphs)
+		{
+			GlyphMetrics gm = {};
 
-		return fontobj;
-	}
+			// Unicode codepoint
+			uint32_t codepoint = glyph.getCodepoint();
+			pfd->index2codepoint[glyph.getIndex()] = codepoint;
 
+			// Horizontal advance
+			gm.Advance = (float)glyph.getAdvance();
 
-	Font::Font(const std::string& name, const std::string& filepath, const uint32_t flags)
-		: m_Name(name), m_Filepath(filepath), m_Flags(flags)
-	{
-LOG_DEBUG("Font: Constructor() {0}", name);
+			// Glyph bounding box in atlas
+			double l, b, r, t;
+			glyph.getQuadAtlasBounds(l, b, r, t);
+			gm.AtlasCoords.l = (float)(l /= bitmap.width);
+			gm.AtlasCoords.r = (float)(r /= bitmap.width);
+			gm.AtlasCoords.b = (float)(b /= bitmap.height);
+			gm.AtlasCoords.t = (float)(t /= bitmap.height);
+
+			// Glyph bounding box rel to baseline
+			glyph.getQuadPlaneBounds(l, b, r, t);
+			gm.BaselineCoords.l = (float)l;
+			gm.BaselineCoords.r = (float)r;
+			gm.BaselineCoords.b = (float)b;
+			gm.BaselineCoords.t = (float)t;
+
+			m_Glyphs[codepoint] = gm;
+		}
+
+		// Font metricts
+		msdfgen::FontMetrics metrics = pfd->fontGeometry.getMetrics();
+		m_Metrics.Ascender = (float)metrics.ascenderY;
+		m_Metrics.Descender = (float)metrics.descenderY;
+		m_Metrics.LineHeight = (float)metrics.lineHeight;
+		m_Metrics.UnderlineOffset = (float)metrics.underlineY;
+		m_Metrics.UnderlineThickness = (float)metrics.underlineThickness;
+
+		// Kerning
+		for (const auto [key, val] : pfd->fontGeometry.getKerning())
+		{
+			std::pair<uint32_t, uint32_t> codePointsKey(
+				pfd->index2codepoint[key.first],
+				pfd->index2codepoint[key.second]);
+			m_Kernings[codePointsKey] = (float)val;
+		}
 	}
 
 
 	Font::~Font()
 	{
-		if (m_Data)
-			delete m_Data;
 	}
 
 
