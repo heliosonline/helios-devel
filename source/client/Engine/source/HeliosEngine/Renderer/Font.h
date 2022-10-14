@@ -56,7 +56,7 @@ namespace Helios {
 	{
 	public:
 		Font(const std::string& name, const std::string& filepath, const uint32_t flags, Ref<FontData>& pfd);
-		~Font();
+		~Font() = default;
 
 		const std::string& GetName() { return m_Name; }
 		const std::string& GetFilePath() { return m_Filepath; }
@@ -64,14 +64,17 @@ namespace Helios {
 
 		Ref<Texture2D> GetAtlasTexture() { return m_AtlasTexture; }
 		FontMetrics& GetFontMetrics() { return m_Metrics; }
-//		GlyphMetrics& GetGlyphInfo(const char32_t codepoint);
-//		float GetKerning(const uint32_t cp_left, const uint32_t cp_right);
+		GlyphMetrics& GetGlyphMetrics(const char32_t codepoint, bool add = false);
+
+		float GetAdvance(const char32_t cp_left, const char32_t cp_right = 0);
+		float GetKerning(const char32_t cp_left, const char32_t cp_right);
+
+		bool AddGlyph(const char32_t codepoint);
+//		bool AddCharset(type??? charset);
 
 		static Ref<Font> Create(const std::string& name, const std::string& filepath, const uint32_t flags);
 
 	private:
-//		bool AddGlyph(const uint32_t codepoint);
-//		bool AddCharset(type??? charset);
 // 		void GenerateAtlas();
 //		void GenerateTexture();
 
@@ -82,8 +85,8 @@ namespace Helios {
 
 		Ref<Texture2D> m_AtlasTexture;
 		FontMetrics m_Metrics;
-		std::map<uint32_t, GlyphMetrics> m_Glyphs;
-		std::map<std::pair<uint32_t, uint32_t>, float> m_Kernings; // [std::pair(cp_left, cp_right)] = offset_x
+		std::map<char32_t, GlyphMetrics> m_Glyphs;
+		std::map<std::pair<char32_t, char32_t>, float> m_Kernings;  // [std::pair(cp_left, cp_right)] = offset_x
 
 		Ref<FontData> m_Data;
 	};

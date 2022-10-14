@@ -23,7 +23,7 @@ namespace Helios {
 	{
 		std::vector<msdf_atlas::GlyphGeometry> glyphs;
 		msdf_atlas::FontGeometry fontGeometry;
-		std::map<int, uint32_t> index2codepoint;
+		std::map<int, char32_t> index2codepoint;
 	};
 
 
@@ -99,7 +99,6 @@ namespace Helios {
 		generator.setThreadCount(std::max((int)std::thread::hardware_concurrency(), 1));
 		generator.generate(pfd->glyphs.data(), (int)pfd->glyphs.size());
 		auto bitmap = (msdfgen::BitmapConstRef<unsigned char, 3>)generator.atlasStorage();
-LOG_DEBUG("atlas size: {0}x{1}", width, height);
 
 		// Generate Texture
 		m_AtlasTexture = Texture2D::Create(width, height, 3);
@@ -111,7 +110,7 @@ LOG_DEBUG("atlas size: {0}x{1}", width, height);
 			GlyphMetrics gm = {};
 
 			// Unicode codepoint
-			uint32_t codepoint = glyph.getCodepoint();
+			char32_t codepoint = glyph.getCodepoint();
 			pfd->index2codepoint[glyph.getIndex()] = codepoint;
 
 			// Horizontal advance
@@ -146,7 +145,7 @@ LOG_DEBUG("atlas size: {0}x{1}", width, height);
 		// Kerning
 		for (const auto [key, val] : pfd->fontGeometry.getKerning())
 		{
-			std::pair<uint32_t, uint32_t> codePointsKey(
+			std::pair<char32_t, char32_t> codePointsKey(
 				pfd->index2codepoint[key.first],
 				pfd->index2codepoint[key.second]);
 			m_Kernings[codePointsKey] = (float)val;
@@ -154,9 +153,60 @@ LOG_DEBUG("atlas size: {0}x{1}", width, height);
 	}
 
 
-	Font::~Font()
+	GlyphMetrics& Font::GetGlyphMetrics(const char32_t codepoint, bool add)
 	{
+		// Glyph is loaded
+		if (m_Glyphs.count(codepoint))
+			return m_Glyphs[codepoint];
+
+		// Don't dynamic load glyph
+		if (!add)
+			return  m_Glyphs[0x20];
+
+		// Dynamic load glyph
+		if (AddGlyph(codepoint))
+			return m_Glyphs[codepoint];
 	}
+
+
+	float Font::GetAdvance(const char32_t cp_left, const char32_t cp_right)
+	{
+		if (m_Glyphs.count(cp_right))
+		{
+			// advance with kerning
+			return GetKerning(cp_left, cp_right) + m_Glyphs[cp_right].Advance;
+		}
+		else if (m_Glyphs.count(cp_right))
+		{
+			// advance only (no kerning)
+			return m_Glyphs[cp_right].Advance;
+		}
+		else if (m_Glyphs.count(cp_left) && cp_right == 0)
+		{
+			// single codepoint (the left one)
+			return m_Glyphs[cp_left].Advance;
+		}
+		return 0.0f;
+	}
+
+
+	float Font::GetKerning(const char32_t cp_left, const char32_t cp_right)
+	{
+		if (m_Kernings.count(std::pair(cp_left, cp_right)))
+		{
+			return m_Kernings[std::pair(cp_left, cp_right)];
+		}
+		return 0.0f;
+	}
+
+
+	bool Font::AddGlyph(const char32_t codepoint)
+	{
+		// TODO...
+
+		return false;
+	}
+
 
 
 	// ============================================================================

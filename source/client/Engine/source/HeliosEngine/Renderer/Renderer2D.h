@@ -3,6 +3,7 @@
 #include "HeliosEngine/Renderer/OrthographicCamera.h"
 #include "HeliosEngine/Renderer/Texture.h"
 #include "HeliosEngine/Renderer/SubTexture2D.h"
+#include "HeliosEngine/Renderer/Font.h"
 
 
 namespace Helios {
@@ -106,6 +107,18 @@ namespace Helios {
 		static float SetLineWidth(float width);
  		static float GetLineWidth();
 
+		// String with 2D position
+		static void DrawString(Ref<Font>& font, const std::string& text, const glm::vec2& position, float size, const glm::vec4& color);
+		// String with 3D position
+		static void DrawString(Ref<Font>& font, const std::string& text, const glm::vec3& position, float size, const glm::vec4& color);
+		// Rotated string with 2D position
+		static void DrawString(Ref<Font>& font, const std::string& text, const glm::vec2& position, float size, float rotation, const glm::vec4& color);
+		// Rotated string with 3D position
+		static void DrawString(Ref<Font>& font, const std::string& text, const glm::vec3& position, float size, float rotation, const glm::vec4& color);
+
+		// Intended to be used internally
+		static void DrawChar(const glm::mat4& transform, const glm::vec4* vertices, const Ref<Texture2D>& texture, const glm::vec2* texCoords, const glm::vec4& color);
+
 		// Stats
 		struct Statistics
 		{
@@ -113,9 +126,10 @@ namespace Helios {
 			uint32_t QuadCount = 0;
 			uint32_t LineCount = 0;
 			uint32_t CircleCount = 0;
+			uint32_t GlyphCount = 0;
 
-			uint32_t GetTotalVertexCount() const { return (QuadCount * 4) + (LineCount * 2); }
-			uint32_t GetTotalIndexCount() const { return QuadCount * 6; }
+			uint32_t GetTotalVertexCount() const { return (QuadCount * 4) + (GlyphCount * 4) + (LineCount * 2); }
+			uint32_t GetTotalIndexCount() const { return (QuadCount * 6) + (GlyphCount * 6); }
 		};
 		static void ResetStats();
 		static Statistics GetStats();

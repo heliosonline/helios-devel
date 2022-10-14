@@ -22,6 +22,15 @@ namespace Helios {
 	};
 
 
+	struct TextVertex
+	{
+		glm::vec3 Position;
+		glm::vec4 Color;
+		glm::vec2 TexCoord;
+		float TexIndex;
+	};
+
+
 	struct CircleVertex
 	{
 		glm::vec3 WorldPosition;
@@ -56,6 +65,16 @@ namespace Helios {
 		uint32_t QuadIndexCount = 0;
 		QuadVertex* QuadVertexBufferBase = nullptr;
 		QuadVertex* QuadVertexBufferPtr = nullptr;
+
+		// Text
+		Ref<VertexArray> TextVertexArray;
+		Ref<VertexBuffer> TextVertexBuffer;
+		Ref<Shader> TextShader;
+		glm::vec4 TextVertexPositions[4];
+
+		uint32_t TextIndexCount = 0;
+		TextVertex* TextVertexBufferBase = nullptr;
+		TextVertex* TextVertexBufferPtr = nullptr;
 
 		// Circles
 		Ref<VertexArray> CircleVertexArray;
@@ -92,7 +111,8 @@ namespace Helios {
 	{
 		HE_PROFILER_FUNCTION();
 
-		{ // Quads
+		// Quads
+		{
 			s_Data.QuadVertexArray = VertexArray::Create();
 			s_Data.QuadVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(QuadVertex));
 			s_Data.QuadVertexBuffer->SetLayout({
@@ -131,7 +151,47 @@ namespace Helios {
 			s_Data.QuadShader = Shader::Create("Assets/Shaders/Renderer2D_Quad.glsl");
 		} // Quads
 
-		{ // Circles
+		// Text
+		{
+			s_Data.TextVertexArray = VertexArray::Create();
+			s_Data.TextVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(TextVertex));
+			s_Data.TextVertexBuffer->SetLayout({
+				{ ShaderDataType::Float3, "a_Position"     },
+				{ ShaderDataType::Float4, "a_Color"        },
+				{ ShaderDataType::Float2, "a_TexCoord"     },
+				{ ShaderDataType::Float,  "a_TexIndex"     }
+				});
+			s_Data.TextVertexArray->AddVertexBuffer(s_Data.TextVertexBuffer);
+			s_Data.TextVertexBufferBase = new TextVertex[s_Data.MaxVertices];
+
+			uint32_t* textIndices = new uint32_t[s_Data.MaxIndices];
+			uint32_t offset = 0;
+			for (uint32_t i = 0; i < s_Data.MaxIndices; i += 6)
+			{
+				textIndices[i + 0] = offset + 0;
+				textIndices[i + 1] = offset + 1;
+				textIndices[i + 2] = offset + 2;
+
+				textIndices[i + 3] = offset + 2;
+				textIndices[i + 4] = offset + 3;
+				textIndices[i + 5] = offset + 0;
+
+				offset += 4;
+			}
+			Ref<IndexBuffer> textIB = IndexBuffer::Create(textIndices, s_Data.MaxIndices);
+			s_Data.TextVertexArray->SetIndexBuffer(textIB);
+			delete[] textIndices;
+
+			s_Data.TextVertexPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
+			s_Data.TextVertexPositions[1] = { 0.5f, -0.5f, 0.0f, 1.0f };
+			s_Data.TextVertexPositions[2] = { 0.5f,  0.5f, 0.0f, 1.0f };
+			s_Data.TextVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
+
+			s_Data.TextShader = Shader::Create("Assets/Shaders/Renderer2D_Text.glsl");
+		} // Text
+
+		// Circles
+		{
 			s_Data.CircleVertexArray = VertexArray::Create();
 			s_Data.CircleVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(CircleVertex));
 			s_Data.CircleVertexBuffer->SetLayout({
@@ -165,7 +225,8 @@ namespace Helios {
 			s_Data.CircleShader = Shader::Create("Assets/Shaders/Renderer2D_Circle.glsl");
 		} // Circles
 
-		{ // Lines
+		// Lines
+		{
 			s_Data.LineVertexArray = VertexArray::Create();
 			s_Data.LineVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(LineVertex));
 			s_Data.LineVertexBuffer->SetLayout({
@@ -193,6 +254,7 @@ namespace Helios {
 		HE_PROFILER_FUNCTION();
 
 		delete[] s_Data.QuadVertexBufferBase;
+		delete[] s_Data.TextVertexBufferBase;
 		delete[] s_Data.LineVertexBufferBase;
 	}
 
@@ -203,8 +265,13 @@ namespace Helios {
 
 		s_Data.QuadShader->Bind();
 		s_Data.QuadShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+		s_Data.TextShader->Bind();
+		s_Data.TextShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
 		s_Data.CircleShader->Bind();
 		s_Data.CircleShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
 		s_Data.LineShader->Bind();
 		s_Data.LineShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 
@@ -226,6 +293,9 @@ namespace Helios {
 
 		s_Data.QuadIndexCount = 0;
 		s_Data.QuadVertexBufferPtr = s_Data.QuadVertexBufferBase;
+
+		s_Data.TextIndexCount = 0;
+		s_Data.TextVertexBufferPtr = s_Data.TextVertexBufferBase;
 
 		s_Data.CircleIndexCount = 0;
 		s_Data.CircleVertexBufferPtr = s_Data.CircleVertexBufferBase;
@@ -250,6 +320,7 @@ namespace Helios {
 	{
 		HE_PROFILER_FUNCTION();
 
+		// Lines
 		if (s_Data.LineVertexCount)
 		{
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.LineVertexBufferPtr - (uint8_t*)s_Data.LineVertexBufferBase);
@@ -259,8 +330,9 @@ namespace Helios {
 			RenderCommand::SetLineWidth(s_Data.LineWidth);
 			RenderCommand::DrawLines(s_Data.LineVertexArray, s_Data.LineVertexCount);
 			s_Data.Stats.DrawCalls++;
-		}
+		} // Lines
 
+		// Circles
 		if (s_Data.CircleIndexCount)
 		{
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.CircleVertexBufferPtr - (uint8_t*)s_Data.CircleVertexBufferBase);
@@ -269,8 +341,9 @@ namespace Helios {
 			s_Data.CircleShader->Bind();
 			RenderCommand::DrawIndexed(s_Data.CircleVertexArray, s_Data.CircleIndexCount);
 			s_Data.Stats.DrawCalls++;
-		}
+		} // Circles
 
+		// Quads
 		if (s_Data.QuadIndexCount)
 		{
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
@@ -283,7 +356,22 @@ namespace Helios {
 			RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 
 			s_Data.Stats.DrawCalls++;
-		}
+		} // Quads
+
+		// Text
+		if (s_Data.TextIndexCount)
+		{
+			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.TextVertexBufferPtr - (uint8_t*)s_Data.TextVertexBufferBase);
+			s_Data.TextVertexBuffer->SetData(s_Data.TextVertexBufferBase, dataSize);
+
+			for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
+				s_Data.TextureSlots[i]->Bind(i);
+
+			s_Data.TextShader->Bind();
+			RenderCommand::DrawIndexed(s_Data.TextVertexArray, s_Data.TextIndexCount);
+
+			s_Data.Stats.DrawCalls++;
+		} // Text
 	}
 
 
@@ -562,6 +650,119 @@ namespace Helios {
 	float Renderer2D::GetLineWidth()
 	{
 		return s_Data.LineWidth;
+	}
+
+
+	// String with 2D position
+	void Renderer2D::DrawString(Ref<Font>& font, const std::string& text, const glm::vec2& position, float size, const glm::vec4& color)
+		{ DrawString(font, text, { position.x, position.y, 0.0f }, size, 0.0f, color); }
+	// String with 3D position
+	void Renderer2D::DrawString(Ref<Font>& font, const std::string& text, const glm::vec3& position, float size, const glm::vec4& color)
+		{ DrawString(font, text, position, size, 0.0f, color); }
+	// Rotated string with 2D position
+	void Renderer2D::DrawString(Ref<Font>& font, const std::string& text, const glm::vec2& position, float size, float rotation, const glm::vec4& color)
+		{ DrawString(font, text, { position.x, position.y, 0.0f }, size, rotation, color); }
+	// Rotated string with 3D position
+	void Renderer2D::DrawString(Ref<Font>& font, const std::string& text, const glm::vec3& position, float size, float rotation, const glm::vec4& color)
+	{
+		HE_PROFILER_FUNCTION();
+
+		auto fm = font->GetFontMetrics();
+		glm::vec3 pos = position;
+		float scale = 1.0f / fm.LineHeight;
+		pos.y += (size * fm.Descender * scale);
+
+		char32_t c_prev = 0;
+		float adv = 0.0f;
+		for (char32_t c_next : text)
+		{
+			switch (c_next)
+			{
+			case '\n':
+				{
+					adv = 0.0f;
+					continue;
+				}
+			case '\r':
+				{
+					pos.y -= (size * fm.LineHeight * scale);
+					continue;
+				}
+			case '\t':
+				{
+					float tab = 4 * font->GetAdvance(' ');
+					adv = ((int)((adv + 0.25f * tab) / tab)) + tab;
+					continue;
+				}
+			default:
+				{
+					auto m = font->GetGlyphMetrics((char32_t)c_next);
+					glm::mat4 transform =
+						glm::translate(glm::mat4(1.0f), pos)
+						* glm::rotate(glm::mat4(1.0f), glm::radians(rotation), { 0.0f, 0.0f, 1.0f })
+						* glm::scale(glm::mat4(1.0f), { size * scale, size * scale, 1.0f });
+					glm::vec2 tex_coords[4] = {
+						{ m.AtlasCoords.l, m.AtlasCoords.b },
+						{ m.AtlasCoords.r, m.AtlasCoords.b },
+						{ m.AtlasCoords.r, m.AtlasCoords.t },
+						{ m.AtlasCoords.l, m.AtlasCoords.t }
+					};
+					glm::vec4 vertices[4] = {
+						{ m.BaselineCoords.l + adv, m.BaselineCoords.b, 0.0f, 1.0f},
+						{ m.BaselineCoords.r + adv, m.BaselineCoords.b, 0.0f, 1.0f },
+						{ m.BaselineCoords.r + adv, m.BaselineCoords.t, 0.0f, 1.0f },
+						{ m.BaselineCoords.l + adv, m.BaselineCoords.t, 0.0f, 1.0f }
+					};
+					DrawChar(transform, vertices, font->GetAtlasTexture(), tex_coords, color);
+					adv += font->GetAdvance(c_prev, c_next);
+				}
+			} // switch
+		} // for
+	}
+
+
+	void Renderer2D::DrawChar(const glm::mat4& transform, const glm::vec4* vertices, const Ref<Texture2D>& texture, const glm::vec2* texCoords, const glm::vec4& color)
+	{
+		constexpr size_t textVertexCount = 4;
+
+		if (s_Data.TextIndexCount >= Renderer2DData::MaxIndices)
+			NextBatch();
+
+		float textureIndex = 0.0f; // White Texture
+		if (*s_Data.TextureSlots[0] != *texture)
+		{
+			for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
+			{
+				if (*s_Data.TextureSlots[i] == *texture)
+				{
+					textureIndex = (float)i;
+					break;
+				}
+			}
+
+			if (textureIndex == 0.0f)
+			{
+				if (s_Data.TextureSlotIndex >= Renderer2DData::MaxTextureSlots)
+					NextBatch();
+
+				textureIndex = (float)s_Data.TextureSlotIndex;
+				s_Data.TextureSlots[s_Data.TextureSlotIndex] = texture;
+				s_Data.TextureSlotIndex++;
+			}
+		}
+
+		for (size_t i = 0; i < textVertexCount; i++)
+		{
+			s_Data.TextVertexBufferPtr->Position = transform * vertices[i];
+			s_Data.TextVertexBufferPtr->Color = color;
+			s_Data.TextVertexBufferPtr->TexCoord = texCoords[i];
+			s_Data.TextVertexBufferPtr->TexIndex = textureIndex;
+			s_Data.TextVertexBufferPtr++;
+		}
+
+		s_Data.TextIndexCount += 6;
+
+		s_Data.Stats.GlyphCount++;
 	}
 
 

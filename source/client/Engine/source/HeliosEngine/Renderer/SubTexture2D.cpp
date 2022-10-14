@@ -36,4 +36,10 @@ namespace Helios {
 	}
 
 
+	Ref<SubTexture2D> SubTexture2D::CreateByCoord(const Ref<Texture2D>& texture, const glm::vec4& coords)
+	{
+		return CreateRef<SubTexture2D>(texture, glm::vec2{ coords.x, coords.y }, glm::vec2{ coords.z, coords.w });
+	}
+
+
 } // namespace Helios

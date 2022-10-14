@@ -61,7 +61,10 @@ void ClientLayer::OnUpdate(Helios::Timestep ts)
 	/* checker */Helios::Renderer2D::DrawQuad({ 0.0f,  0.5f, 0.05f }, { 1.0f, 1.0f }, rotation, m_SubTexture, { 1.0f, 1.0f, 1.0f, 0.5f });
 
 	Helios::Ref<Helios::Font> font = Helios::FontLibrary::Get("OpenSans", Helios::FontFlags::Regular);
-	Helios::Renderer2D::DrawQuad({ 1.0f,  0.5f, 0.2f }, { 1.5f, 1.5f }, font->GetAtlasTexture(), {1.0f, 1.0f, 1.0f, 1.0f});
+	Helios::Renderer2D::DrawQuad({ 1.0f,  1.5f, 0.2f }, { 1.0f, 1.0f }, font->GetAtlasTexture(), {1.0f, 1.0f, 1.0f, 1.0f});
+
+	std::string text = "Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+	Helios::Renderer2D::DrawString(font, text, { 0.0f, 0.1f, 0.2f }, 0.2f, glm::vec4(1.0f));
 
 	Helios::Renderer2D::EndScene();
 //	m_Framebuffer->Unbind();
@@ -76,6 +79,7 @@ void ClientLayer::OnImGuiRender()
 	ImGui::Text("%6d Quads", stats.QuadCount);
 	ImGui::Text("%6d Lines", stats.LineCount);
 	ImGui::Text("%6d Circles", stats.CircleCount);
+	ImGui::Text("%6d Glyphs", stats.GlyphCount);
 	ImGui::Text("%6d Vertices", stats.GetTotalVertexCount());
 	ImGui::Text("%6d Indices", stats.GetTotalIndexCount());
 
