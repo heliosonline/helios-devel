@@ -673,25 +673,26 @@ namespace Helios {
 		pos.y += (size * fm.Descender * scale);
 
 		char32_t c_prev = 0;
-		float adv = 0.0f;
+		float offset_x = 0.0f;
+		float offset_y = 0.0f;
 		for (char32_t c_next : text)
 		{
 			switch (c_next)
 			{
 			case '\n':
 				{
-					adv = 0.0f;
+					offset_x = 0.0f;
 					continue;
 				}
 			case '\r':
 				{
-					pos.y -= (size * fm.LineHeight * scale);
+					offset_y -= fm.LineHeight;
 					continue;
 				}
 			case '\t':
 				{
 					float tab = 4 * font->GetAdvance(' ');
-					adv = ((int)((adv + 0.25f * tab) / tab)) + tab;
+					offset_x = ((int)((offset_x + 0.25f * tab) / tab)) + tab;
 					continue;
 				}
 			default:
@@ -708,13 +709,13 @@ namespace Helios {
 						{ m.AtlasCoords.l, m.AtlasCoords.t }
 					};
 					glm::vec4 vertices[4] = {
-						{ m.BaselineCoords.l + adv, m.BaselineCoords.b, 0.0f, 1.0f},
-						{ m.BaselineCoords.r + adv, m.BaselineCoords.b, 0.0f, 1.0f },
-						{ m.BaselineCoords.r + adv, m.BaselineCoords.t, 0.0f, 1.0f },
-						{ m.BaselineCoords.l + adv, m.BaselineCoords.t, 0.0f, 1.0f }
+						{ m.BaselineCoords.l + offset_x, m.BaselineCoords.b + offset_y, 0.0f, 1.0f},
+						{ m.BaselineCoords.r + offset_x, m.BaselineCoords.b + offset_y, 0.0f, 1.0f },
+						{ m.BaselineCoords.r + offset_x, m.BaselineCoords.t + offset_y, 0.0f, 1.0f },
+						{ m.BaselineCoords.l + offset_x, m.BaselineCoords.t + offset_y, 0.0f, 1.0f }
 					};
 					DrawChar(transform, vertices, font->GetAtlasTexture(), tex_coords, color);
-					adv += font->GetAdvance(c_prev, c_next);
+					offset_x += font->GetAdvance(c_prev, c_next);
 				}
 			} // switch
 		} // for

@@ -63,8 +63,8 @@ void ClientLayer::OnUpdate(Helios::Timestep ts)
 	Helios::Ref<Helios::Font> font = Helios::FontLibrary::Get("OpenSans", Helios::FontFlags::Regular);
 	Helios::Renderer2D::DrawQuad({ 1.0f,  1.5f, 0.2f }, { 1.0f, 1.0f }, font->GetAtlasTexture(), {1.0f, 1.0f, 1.0f, 1.0f});
 
-	std::string text = "Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-	Helios::Renderer2D::DrawString(font, text, { 0.0f, 0.1f, 0.2f }, 0.2f, glm::vec4(1.0f));
+	std::string text = "Lorem ipsum dolor sit amet, \n\rconsectetur adipisci elit, \n\rsed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+	Helios::Renderer2D::DrawString(font, text, { 0.0f, 0.1f, 0.2f }, 0.2f, 45.0f, glm::vec4(1.0f));
 
 	Helios::Renderer2D::EndScene();
 //	m_Framebuffer->Unbind();
