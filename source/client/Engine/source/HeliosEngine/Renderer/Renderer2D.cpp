@@ -60,7 +60,8 @@ namespace Helios {
 		Ref<VertexArray> QuadVertexArray;
 		Ref<VertexBuffer> QuadVertexBuffer;
 		Ref<Shader> QuadShader;
-		glm::vec4 QuadVertexPositions[4];
+		glm::vec4 QuadVertexPositions[4] =
+			{ glm::vec4(0), glm::vec4(0), glm::vec4(0), glm::vec4(0) };
 
 		uint32_t QuadIndexCount = 0;
 		QuadVertex* QuadVertexBufferBase = nullptr;
@@ -70,7 +71,8 @@ namespace Helios {
 		Ref<VertexArray> TextVertexArray;
 		Ref<VertexBuffer> TextVertexBuffer;
 		Ref<Shader> TextShader;
-		glm::vec4 TextVertexPositions[4];
+		glm::vec4 TextVertexPositions[4] =
+			{ glm::vec4(0), glm::vec4(0), glm::vec4(0), glm::vec4(0) };
 
 		uint32_t TextIndexCount = 0;
 		TextVertex* TextVertexBufferBase = nullptr;
@@ -681,6 +683,7 @@ namespace Helios {
 			{
 			case '\n':
 				{
+					c_prev = 0;
 					offset_x = 0.0f;
 					continue;
 				}
@@ -691,6 +694,7 @@ namespace Helios {
 				}
 			case '\t':
 				{
+					c_prev = ' ';
 					float tab = 4 * font->GetAdvance(' ');
 					offset_x = ((int)((offset_x + 0.25f * tab) / tab)) + tab;
 					continue;
@@ -716,6 +720,7 @@ namespace Helios {
 					};
 					DrawChar(transform, vertices, font->GetAtlasTexture(), tex_coords, color);
 					offset_x += font->GetAdvance(c_prev, c_next);
+					c_prev = c_next;
 				}
 			} // switch
 		} // for

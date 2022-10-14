@@ -161,7 +161,7 @@ void EditorLayer::OnImGuiRender()
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
 	ImGui::Begin("Viewport");
-	ImTextureID textureID = (ImTextureID)m_Framebuffer->GetColorAttachmentRendererID();
+	ImTextureID textureID = (ImTextureID)(uint64_t)m_Framebuffer->GetColorAttachmentRendererID();
 	ImVec2 viewportSize = ImGui::GetContentRegionAvail();
 	if (m_ViewportSize != *((glm::vec2*)&viewportSize))
 	{
