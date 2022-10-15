@@ -16,7 +16,7 @@ namespace Helios {
 #define DEFAULT_ANGLE_THRESHOLD 3.0
 #define DEFAULT_PIXEL_RANGE 2.0
 #define DEFAULT_MITER_LIMIT 1.0
-#define DEFAULT_MIN_EMSIZE 16.0
+#define DEFAULT_MIN_EMSIZE 32.0
 
 
 	struct FontData

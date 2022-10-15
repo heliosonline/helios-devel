@@ -705,10 +705,11 @@ namespace Helios {
 				char32_t l_prev = ' ';
 				for (auto next_it = it + 1; next_it != text.cend(); ++next_it)
 				{
-					if (*next_it == ' ')
+					char32_t l_next = *next_it;
+					if (l_next == ' ')
 						break;
-					next_length += font->GetAdvance(l_prev, *next_it);
-					l_prev = *next_it;
+					next_length += font->GetAdvance(l_prev, l_next);
+					l_prev = l_next;
 				}
 				// If next_length > max_length insert \n\r
 				if (next_length > limit_x)
