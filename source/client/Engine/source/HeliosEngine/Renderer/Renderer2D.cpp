@@ -11,6 +11,9 @@
 
 namespace Helios {
 
+	// ---------------------------------------------------------------------------
+	// Internal Data
+	// ---------------------------------------------------------------------------
 
 	struct QuadVertex
 	{
@@ -71,8 +74,6 @@ namespace Helios {
 		Ref<VertexArray> TextVertexArray;
 		Ref<VertexBuffer> TextVertexBuffer;
 		Ref<Shader> TextShader;
-		glm::vec4 TextVertexPositions[4] =
-			{ glm::vec4(0), glm::vec4(0), glm::vec4(0), glm::vec4(0) };
 
 		uint32_t TextIndexCount = 0;
 		TextVertex* TextVertexBufferBase = nullptr;
@@ -184,11 +185,6 @@ namespace Helios {
 			s_Data.TextVertexArray->SetIndexBuffer(textIB);
 			delete[] textIndices;
 
-			s_Data.TextVertexPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
-			s_Data.TextVertexPositions[1] = { 0.5f, -0.5f, 0.0f, 1.0f };
-			s_Data.TextVertexPositions[2] = { 0.5f,  0.5f, 0.0f, 1.0f };
-			s_Data.TextVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
-
 			s_Data.TextShader = Shader::Create("Assets/Shaders/Renderer2D_Text.glsl");
 		} // Text
 
@@ -260,6 +256,9 @@ namespace Helios {
 		delete[] s_Data.LineVertexBufferBase;
 	}
 
+	// ---------------------------------------------------------------------------
+	// Batch Rendering
+	// ---------------------------------------------------------------------------
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
@@ -376,6 +375,9 @@ namespace Helios {
 		} // Text
 	}
 
+	// ---------------------------------------------------------------------------
+	// Quads
+	// ---------------------------------------------------------------------------
 
 	// colored quad with 2D position
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -556,14 +558,13 @@ namespace Helios {
 		s_Data.Stats.QuadCount++;
 	}
 
+	// ---------------------------------------------------------------------------
+	// Lines
+	// ---------------------------------------------------------------------------
 
 	// Line with 2D position
 	void Renderer2D::DrawLine(const glm::vec2& p0, const glm::vec2& p1, const glm::vec4& color)
-	{
-		DrawLine({ p0.x, p0.y, 0.0f }, { p1.x, p1.y, 0.0f }, color);
-	}
-
-
+		{ DrawLine({ p0.x, p0.y, 0.0f }, { p1.x, p1.y, 0.0f }, color); }
 	// Line with 3D position
 	void Renderer2D::DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color)
 	{
@@ -583,11 +584,7 @@ namespace Helios {
 
 	// Rectangle with 2D position
 	void Renderer2D::DrawRect(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
-	{
-		DrawRect({ position.x, position.y, 0.0f }, size, color);
-	}
-
-
+		{ DrawRect({ position.x, position.y, 0.0f }, size, color); }
 	// Rectangle with 3D position
 	void Renderer2D::DrawRect(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
@@ -602,12 +599,13 @@ namespace Helios {
 		DrawLine(p3, p0, color);
 	}
 
+	// ---------------------------------------------------------------------------
+	// Circles
+	// ---------------------------------------------------------------------------
 
 	// Circle with 2D position
 	void Renderer2D::DrawCircle(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, float thickness, float fade)
-	{
-		DrawCircle({ position.x, position.y, 0.0f }, size, color, thickness, fade);
-	}
+		{ DrawCircle({ position.x, position.y, 0.0f }, size, color, thickness, fade); }
 	// Circle with 3D position
 	void Renderer2D::DrawCircle(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, float thickness, float fade)
 	{
@@ -654,31 +652,75 @@ namespace Helios {
 		return s_Data.LineWidth;
 	}
 
+	// ---------------------------------------------------------------------------
+	// Text
+	// ---------------------------------------------------------------------------
 
 	// String with 2D position
 	void Renderer2D::DrawString(Ref<Font>& font, const std::string& text, const glm::vec2& position, float size, const glm::vec4& color)
-		{ DrawString(font, text, { position.x, position.y, 0.0f }, size, 0.0f, color); }
+		{ DrawString(font, text, { position.x, position.y, 0.0f }, size, 0.0f, color, 0.0f); }
 	// String with 3D position
 	void Renderer2D::DrawString(Ref<Font>& font, const std::string& text, const glm::vec3& position, float size, const glm::vec4& color)
-		{ DrawString(font, text, position, size, 0.0f, color); }
+		{ DrawString(font, text, position, size, 0.0f, color, 0.0f); }
 	// Rotated string with 2D position
-	void Renderer2D::DrawString(Ref<Font>& font, const std::string& text, const glm::vec2& position, float size, float rotation, const glm::vec4& color)
-		{ DrawString(font, text, { position.x, position.y, 0.0f }, size, rotation, color); }
+	void Renderer2D::DrawString(Ref<Font>& font, const std::string& text, const glm::vec2& position, float size, const glm::vec4& color, float rotation)
+		{ DrawString(font, text, { position.x, position.y, 0.0f }, size, 0.0f, color, rotation); }
 	// Rotated string with 3D position
-	void Renderer2D::DrawString(Ref<Font>& font, const std::string& text, const glm::vec3& position, float size, float rotation, const glm::vec4& color)
+	void Renderer2D::DrawString(Ref<Font>& font, const std::string& text, const glm::vec3& position, float size, const glm::vec4& color, float rotation)
+		{ DrawString(font, text, position, size, 0.0f, color, rotation); }
+
+	// String with 2D position, max length
+	void Renderer2D::DrawString(Ref<Font>& font, const std::string& text, const glm::vec2& position, float size, float max_length, const glm::vec4& color)
+		{ DrawString(font, text, { position.x, position.y, 0.0f }, size, max_length, color, 0.0f); }
+	// String with 3D position, max length
+	void Renderer2D::DrawString(Ref<Font>& font, const std::string& text, const glm::vec3& position, float size, float max_length, const glm::vec4& color)
+		{ DrawString(font, text, position, size, max_length, color, 0.0f); }
+	// Rotated string with 2D position, max length
+	void Renderer2D::DrawString(Ref<Font>& font, const std::string& text, const glm::vec2& position, float size, float max_length, const glm::vec4& color, float rotation)
+		{ DrawString(font, text, { position.x, position.y, 0.0f }, size, max_length, color, rotation); }
+	// Rotated string with 3D position, max length
+	void Renderer2D::DrawString(Ref<Font>& font, const std::string& text, const glm::vec3& position, float size, float max_length, const glm::vec4& color, float rotation)
 	{
 		HE_PROFILER_FUNCTION();
 
 		auto fm = font->GetFontMetrics();
 		glm::vec3 pos = position;
 		float scale = 1.0f / fm.LineHeight;
-		pos.y += (size * fm.Descender * scale);
+		pos.y += (fm.Descender * size * scale);
+		float limit_x = max_length * (1.0f / size) * fm.LineHeight;
 
 		char32_t c_prev = 0;
 		float offset_x = 0.0f;
 		float offset_y = 0.0f;
-		for (char32_t c_next : text)
+		for (auto it = text.cbegin();  it != text.cend(); ++it)
 		{
+			// Get codepoint
+			char32_t c_next = *it;
+
+			// Check length of next word
+			if (max_length > 0.0f && c_next == ' ')
+			{
+				float next_length = offset_x;
+				// Get length of next word
+				char32_t l_prev = ' ';
+				for (auto next_it = it + 1; next_it != text.cend(); ++next_it)
+				{
+					if (*next_it == ' ')
+						break;
+					next_length += font->GetAdvance(l_prev, *next_it);
+					l_prev = *next_it;
+				}
+				// If next_length > max_length insert \n\r
+				if (next_length > limit_x)
+				{
+					c_prev = 0;
+					offset_x = 0.0f;
+					offset_y -= fm.LineHeight;
+					continue;
+				}
+			}
+
+			// Draw next glyph
 			switch (c_next)
 			{
 			case '\n':
@@ -771,6 +813,9 @@ namespace Helios {
 		s_Data.Stats.GlyphCount++;
 	}
 
+	// ---------------------------------------------------------------------------
+	// Stats
+	// ---------------------------------------------------------------------------
 
 	void Renderer2D::ResetStats()
 	{

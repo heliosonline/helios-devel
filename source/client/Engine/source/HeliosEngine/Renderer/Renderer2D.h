@@ -112,9 +112,18 @@ namespace Helios {
 		// String with 3D position
 		static void DrawString(Ref<Font>& font, const std::string& text, const glm::vec3& position, float size, const glm::vec4& color);
 		// Rotated string with 2D position
-		static void DrawString(Ref<Font>& font, const std::string& text, const glm::vec2& position, float size, float rotation, const glm::vec4& color);
+		static void DrawString(Ref<Font>& font, const std::string& text, const glm::vec2& position, float size, const glm::vec4& color, float rotation);
 		// Rotated string with 3D position
-		static void DrawString(Ref<Font>& font, const std::string& text, const glm::vec3& position, float size, float rotation, const glm::vec4& color);
+		static void DrawString(Ref<Font>& font, const std::string& text, const glm::vec3& position, float size, const glm::vec4& color, float rotation);
+
+		// String with 2D position, max length
+		static void DrawString(Ref<Font>& font, const std::string& text, const glm::vec2& position, float size, float max_length, const glm::vec4& color);
+		// String with 3D position, max length
+		static void DrawString(Ref<Font>& font, const std::string& text, const glm::vec3& position, float size, float max_length, const glm::vec4& color);
+		// Rotated string with 2D position, max length
+		static void DrawString(Ref<Font>& font, const std::string& text, const glm::vec2& position, float size, float max_length, const glm::vec4& color, float rotation);
+		// Rotated string with 3D position, max length
+		static void DrawString(Ref<Font>& font, const std::string& text, const glm::vec3& position, float size, float max_length, const glm::vec4& color, float rotation);
 
 		// Intended to be used internally
 		static void DrawChar(const glm::mat4& transform, const glm::vec4* vertices, const Ref<Texture2D>& texture, const glm::vec2* texCoords, const glm::vec4& color);
