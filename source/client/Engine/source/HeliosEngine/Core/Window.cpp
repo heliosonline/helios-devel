@@ -64,6 +64,27 @@ namespace Helios {
 			glfwWindowHint(GLFW_CONTEXT_DEBUG, GLFW_TRUE);
 		LOG_CORE_DEBUG("GLFW using debug mode context (hint)");
 #endif
+
+		{ // debug
+			int count_mon;
+			GLFWmonitor** monitors = glfwGetMonitors(&count_mon);
+			if (!monitors)
+				LOG_GLFW_ERROR("Can't retrieve montors!");
+			for (int x = 0; x < count_mon; ++x)
+			{
+				LOG_CORE_DEBUG("Monitor found: ({0}):\"{1}\"", x, glfwGetMonitorName(monitors[x]));
+				int count_modes;
+				const GLFWvidmode* modes = glfwGetVideoModes(monitors[x], &count_modes);
+				if (!modes)
+					LOG_GLFW_ERROR("Can't retrieve video modes!");
+				for (int y = 0; y < count_modes; ++y)
+				{
+					LOG_CORE_DEBUG("  Video mode({0}): {1}x{2} {3}bit {4}Hz",
+						y, modes[y].width, modes[y].height, modes[y].redBits + modes[y].greenBits + modes[y].blueBits, modes[y].refreshRate);
+				}
+			}
+		} // debug
+
 		m_Window = glfwCreateWindow((int)spec.Width, (int)spec.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		++s_GLFWWindowCount;
 
