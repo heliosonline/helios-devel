@@ -16,7 +16,7 @@ namespace Helios {
 #define DEFAULT_ANGLE_THRESHOLD 3.0
 #define DEFAULT_PIXEL_RANGE 2.0
 #define DEFAULT_MITER_LIMIT 1.0
-#define DEFAULT_MIN_EMSIZE 32.0
+#define DEFAULT_MIN_EMSIZE 64.0
 
 
 	struct FontData
@@ -95,7 +95,7 @@ namespace Helios {
 		int width = -1, height = -1;
 		atlasPacker.getDimensions(width, height);
 		msdf_atlas::ImmediateAtlasGenerator<float, 3, msdf_atlas::msdfGenerator, msdf_atlas::BitmapAtlasStorage<unsigned char, 3>>
-		generator(width, height);
+			generator(width, height);
 		generator.setThreadCount(std::max((int)std::thread::hardware_concurrency(), 1));
 		generator.generate(pfd->glyphs.data(), (int)pfd->glyphs.size());
 		auto bitmap = (msdfgen::BitmapConstRef<unsigned char, 3>)generator.atlasStorage();
