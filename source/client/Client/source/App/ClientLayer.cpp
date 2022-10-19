@@ -35,8 +35,10 @@ void ClientLayer::OnUpdate(Helios::Timestep ts)
 	m_CameraController.OnUpdate(ts);
 
 	Helios::Renderer2D::ResetStats();
+
 //	m_Framebuffer->Bind();
-	Helios::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+
+	Helios::RenderCommand::SetClearColor({ 0.0f, 0.0f, 0.0f, 1 });
 	Helios::RenderCommand::Clear();
 
 	static float rotation = 0.0f;

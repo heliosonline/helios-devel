@@ -62,25 +62,27 @@ int texIndex = int(v_TexIndex);
 
 
 float median(float r, float g, float b) {
-    return max(min(r, g), min(max(r, g), b));
+	return max(min(r, g), min(max(r, g), b));
 }
 
 
 float screenPxRange() {
-    vec2 unitRange = vec2(pxRange) / vec2(textureSize(u_Textures[texIndex], 0));
-    vec2 screenTexSize = vec2(1.0) / fwidth(Input.TexCoord);
-    return max(0.5 * dot(unitRange, screenTexSize), 1.0);
+	// TODO: get the correct texture size of the glyph (by uniform? / extra vertex field?)
+	vec2 unitRange = vec2(pxRange) / vec2(textureSize(u_Textures[texIndex], 0));
+	vec2 screenTexSize = vec2(1.0) / fwidth(Input.TexCoord);
+	return max(0.5 * dot(unitRange, screenTexSize), 1.0);
 }
 
 
 void main()
 {
-    vec3 msd = texture(u_Textures[texIndex], Input.TexCoord).rgb;
-    float sd = median(msd.r, msd.g, msd.b);
-    float screenPxDistance = screenPxRange() * (sd - 0.5);
-    float opacity = clamp(screenPxDistance + 0.5, 0.0, 1.0);
-    vec4 color = mix(bgColor, Input.Color, opacity);
-	if (color.a == 0.0)
+	// TODO: add supersampling
+
+	vec3 msd = texture(u_Textures[texIndex], Input.TexCoord).rgb;
+	float sd = median(msd.r, msd.g, msd.b);
+	float screenPxDistance = screenPxRange() * (sd - 0.5);
+	float opacity = clamp(screenPxDistance + 0.5, 0.0, 1.0);
+	if (opacity < 0.05)
 		discard;
-	o_Color = color;
+	o_Color = mix(bgColor, Input.Color, opacity);
 }

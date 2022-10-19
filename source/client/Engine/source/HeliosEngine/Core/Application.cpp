@@ -84,6 +84,11 @@ namespace Helios {
 
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
+
+		int size_x, size_y;
+		glfwGetWindowSize((GLFWwindow*)m_Window->GetNativeWindow(), &size_x, &size_y);
+		WindowResizeEvent event(size_x, size_y);
+		OnEvent(event);
 	}
 
 
@@ -93,6 +98,11 @@ namespace Helios {
 
 		m_LayerStack.PushOverlay(layer);
 		layer->OnAttach();
+
+		int size_x, size_y;
+		glfwGetWindowSize((GLFWwindow*)m_Window->GetNativeWindow(), &size_x, &size_y);
+		WindowResizeEvent event(size_x, size_y);
+		OnEvent(event);
 	}
 
 

@@ -66,6 +66,22 @@ namespace Helios {
 	}
 
 
+	void GLRendererAPI::ClearColorBuffer()
+	{
+		HE_PROFILER_FUNCTION();
+
+		glClear(GL_COLOR_BUFFER_BIT);
+	}
+
+
+	void GLRendererAPI::ClearDepthBuffer()
+	{
+		HE_PROFILER_FUNCTION();
+
+		glClear(GL_DEPTH_BUFFER_BIT);
+	}
+
+
 	void GLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
 	{
 		HE_PROFILER_FUNCTION();

@@ -4,6 +4,7 @@
 #include <HeliosEngine/Core/Base.h>
 #include <HeliosEngine/Core/Application.h>
 #include <HeliosEngine/Core/Layer.h>
+#include <HeliosEngine/UI/UILayer.h>
 #include <HeliosEngine/Core/Input.h>
 #include <HeliosEngine/Core/Timestep.h>
 #include <HeliosEngine/Core/UUID.h>
@@ -26,9 +27,10 @@
 #include <HeliosEngine/Renderer/VertexArray.h>
 // Renderer (abstract)
 #include <HeliosEngine/Renderer/SubTexture2D.h>
-#include <HeliosEngine/Renderer/OrthographicCamera.h>
-#include <HeliosEngine/Renderer/OrthographicCameraController.h>
 #include <HeliosEngine/Renderer/Font.h>
+#include <HeliosEngine/Renderer/Camera/OrthographicCamera.h>
+#include <HeliosEngine/Renderer/Camera/OrthographicCameraController.h>
+#include <HeliosEngine/Renderer/Camera/UICameraController.h>
 
 // EntryPoint for the Application
 #include <HeliosEngine/Core/EntryPoint.h>

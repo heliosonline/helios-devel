@@ -1,7 +1,7 @@
 #pragma once
 
 #include "HeliosEngine/Renderer/RenderCommand.h"
-#include "HeliosEngine/Renderer/OrthographicCamera.h"
+#include "HeliosEngine/Renderer/Camera/OrthographicCamera.h"
 #include "HeliosEngine/Renderer/Shader.h"
 
 

@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "HeliosEngine/Renderer/OrthographicCamera.h"
+#include "HeliosEngine/Renderer/Camera/OrthographicCamera.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 

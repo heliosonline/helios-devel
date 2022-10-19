@@ -1,6 +1,6 @@
 #pragma once
 
-#include "HeliosEngine/Renderer/OrthographicCamera.h"
+#include "HeliosEngine/Renderer/Camera/OrthographicCamera.h"
 #include "HeliosEngine/Renderer/Texture.h"
 #include "HeliosEngine/Renderer/SubTexture2D.h"
 #include "HeliosEngine/Renderer/Font.h"

@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "HeliosEngine/Renderer/OrthographicCameraController.h"
+#include "HeliosEngine/Renderer/Camera/OrthographicCameraController.h"
 
 #include "HeliosEngine/Core/Input.h"
 #include "HeliosEngine/Core/InputCodes.h"
@@ -9,7 +9,7 @@
 namespace Helios {
 
 	OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotation)
-		: m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio* m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
+		: m_AspectRatio(aspectRatio), m_Camera(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel), m_Rotation(rotation)
 	{
 		HE_PROFILER_FUNCTION();
 	}
