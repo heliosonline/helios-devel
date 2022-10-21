@@ -82,115 +82,49 @@ namespace Helios {
 
 
 	void GLShader::SetInt(const std::string& name, int value)
-	{
-		HE_PROFILER_FUNCTION();
-
-		UploadUniformInt(name, value);
-	}
-
-
+		{ HE_PROFILER_FUNCTION(); UploadUniformInt(name, value); }
 	void GLShader::SetIntArray(const std::string& name, int* values, uint32_t count)
-	{
-		HE_PROFILER_FUNCTION();
-
-		UploadUniformIntArray(name, values, count);
-	}
-
-
+		{ HE_PROFILER_FUNCTION(); UploadUniformIntArray(name, values, count); }
 	void GLShader::SetFloat(const std::string& name, float value)
-	{
-		HE_PROFILER_FUNCTION();
-
-		UploadUniformFloat(name, value);
-	}
-
-
+		{ HE_PROFILER_FUNCTION(); UploadUniformFloat(name, value); }
 	void GLShader::SetFloat2(const std::string& name, const glm::vec2& value)
-	{
-		HE_PROFILER_FUNCTION();
-
-		UploadUniformFloat2(name, value);
-	}
-
-
+		{ HE_PROFILER_FUNCTION(); UploadUniformFloat2(name, value); }
 	void GLShader::SetFloat3(const std::string& name, const glm::vec3& value)
-	{
-		HE_PROFILER_FUNCTION();
-
-		UploadUniformFloat3(name, value);
-	}
-
-
+		{ HE_PROFILER_FUNCTION(); UploadUniformFloat3(name, value); }
 	void GLShader::SetFloat4(const std::string& name, const glm::vec4& value)
-	{
-		HE_PROFILER_FUNCTION();
-
-		UploadUniformFloat4(name, value);
-	}
-
-
+		{ HE_PROFILER_FUNCTION(); UploadUniformFloat4(name, value); }
 	void GLShader::SetMat4(const std::string& name, const glm::mat4& value)
-	{
-		HE_PROFILER_FUNCTION();
+		{ HE_PROFILER_FUNCTION(); UploadUniformMat4(name, value); }
 
-		UploadUniformMat4(name, value);
+
+	GLint GLShader::GetUniformLocation(const std::string& name) const
+	{
+		if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
+			return m_UniformLocationCache[name];
+
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		m_UniformLocationCache[name] = location;
+		return location;
 	}
 
 
 	void GLShader::UploadUniformInt(const std::string& name, int value)
-	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform1i(location, value);
-	}
-
-
+		{ glUniform1i(GetUniformLocation(name), value); }
 	void GLShader::UploadUniformIntArray(const std::string& name, int* values, uint32_t count)
-	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform1iv(location, count, values);
-	}
-
-
+		{ glUniform1iv(GetUniformLocation(name), count, values); }
 	void GLShader::UploadUniformFloat(const std::string& name, float value)
-	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform1f(location, value);
-	}
-
-
+		{ glUniform1f(GetUniformLocation(name), value); }
 	void GLShader::UploadUniformFloat2(const std::string& name, const glm::vec2& value)
-	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform2f(location, value.x, value.y);
-	}
-
-
+		{ glUniform2f(GetUniformLocation(name), value.x, value.y); }
 	void GLShader::UploadUniformFloat3(const std::string& name, const glm::vec3& value)
-	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform3f(location, value.x, value.y, value.z);
-	}
-
-
+		{ glUniform3f(GetUniformLocation(name), value.x, value.y, value.z); }
 	void GLShader::UploadUniformFloat4(const std::string& name, const glm::vec4& value)
-	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniform4f(location, value.x, value.y, value.z, value.w);
-	}
-
-
+		{ glUniform4f(GetUniformLocation(name), value.x, value.y, value.z, value.w); }
 	void GLShader::UploadUniformMat3(const std::string& name, const glm::mat3& matrix)
-	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
-	}
-
-
+		{ glUniformMatrix3fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix)); }
 	void GLShader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix)
-	{
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
-	}
+		{ glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix)); }
+
 
 	std::string GLShader::ReadFile(const std::string& filepath)
 	{

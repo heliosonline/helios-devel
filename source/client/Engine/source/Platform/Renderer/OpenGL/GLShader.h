@@ -4,6 +4,7 @@
 
 // TODO: REMOVE!
 typedef unsigned int GLenum;
+typedef int GLint;
 
 
 namespace Helios {
@@ -28,7 +29,8 @@ namespace Helios {
 		void SetMat4(const std::string& name, const glm::mat4& value) override;
 
 		const std::string& GetName() const override { return m_Name; }
-	public:
+	private:
+		GLint GetUniformLocation(const std::string& name) const;
 		void UploadUniformInt(const std::string& name, int value);
 		void UploadUniformIntArray(const std::string& name, int* values, uint32_t count);
 		void UploadUniformFloat(const std::string& name, float value);
@@ -50,6 +52,7 @@ namespace Helios {
 		uint32_t m_RendererID;
 		std::string m_FilePath;
 		std::string m_Name;
+		mutable std::unordered_map<std::string, GLint> m_UniformLocationCache;
 
 //		std::unordered_map<GLenum, std::vector<uint32_t>> m_VulkanSPIRV;
 //		std::unordered_map<GLenum, std::vector<uint32_t>> m_OpenGLSPIRV;
