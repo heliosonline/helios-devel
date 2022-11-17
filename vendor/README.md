@@ -1,4 +1,0 @@
-# External Sources
-
-### [Premake](https://premake.github.io/)
-Premake is a command line utility which reads a scripted definition of a software project and, most commonly, uses it to generate project files for toolsets like Visual Studio, Xcode, or GNU Make.

@@ -64,30 +64,31 @@ workspace "Helios-Development"
 	-- [ PROJECT CONFIGURATION ] --
 	-------------------------------
 
-	dir_bin     = "%{wks.location}/bin/"
-	dir_build   = "%{wks.location}/build/"
+	dir_bin     = "%{wks.location}/_bin/"
+	dir_build   = "%{wks.location}/_build/"
 	dir_config  = "%{string.lower(cfg.platform)}-%{string.lower(cfg.buildcfg)}/"
 	dir_project = "%{string.lower(prj.name)}"
 
-	group "client"
-		dir_group = "client/"
-		include("source/client/")
+	group "Client"
+		dir_group = "Client/"
+		include("Source/Client/")
 
-	group "server"
-		dir_group = "server/"
-		include("source/server/")
+	group "Server"
+		dir_group = "Server/"
+		include("Source/Server/")
 
-	group "common"
-		dir_group = "common/"
-		include("source/common/")
+	group "Libs"
+		dir_group = "Libs/"
+		include("Source/Libs/")
 
-	group "vendor"
-		dir_group = "vendor/"
-		include("vendor/")
+	group "Vendor"
+		dir_group = "Vendor/"
+		include("Vendor/")
+		include("Source/Vendor/")
 
-	group "tools"
-		dir_group = "tools/"
-		include("tools/")
-		include("docu/")
+	group "Misc"
+		dir_group = "Misc/"
+		include("Docu/")
+		include("Tools/")
 
 	group ""
