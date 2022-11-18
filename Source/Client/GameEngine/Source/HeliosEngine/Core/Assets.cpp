@@ -36,6 +36,8 @@ namespace Helios {
 		{
 		case AssetType::FontAsset:
 			return std::string("AssetsCache/Fonts");
+		case AssetType::ShaderAsset:
+			return std::string("AssetsCache/Shaders");
 		default:
 			return GetAssetPath(type);
 		}

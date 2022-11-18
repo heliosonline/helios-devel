@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "Platform/Renderer/OpenGL/GLShader.h"
+#include "HeliosEngine/Core/Assets.h"
 
 #include <glad/gl.h>
 #include <glm/gtc/type_ptr.hpp>
@@ -9,37 +10,16 @@
 namespace Helios {
 
 
-	namespace Utils {
-
-
-		static GLenum ShaderTypeFromString(const std::string& type)
-		{
-			if (type == "vertex")
-				return GL_VERTEX_SHADER;
-			if (type == "fragment" || type == "pixel")
-				return GL_FRAGMENT_SHADER;
-
-			//LOG_CORE_ASSERT(false, "GLShader: Unknown shader type!");
-			return 0;
-		}
-
-
-	} // namespace Utils
-
-
-	GLShader::GLShader(const std::string& filepath)
-		: m_FilePath(filepath)
+	GLShader::GLShader(const std::string& name)
+		: m_Name(name)
 	{
-		std::string source = ReadFile(filepath);
-		auto shaderSources = PreProcess(source);
-		Compile(shaderSources);
+		std::string file_vertex = Assets::GetAssetPath(ShaderAsset) + "/" + name + ".vertex.glsl";
+		std::string file_fragment = Assets::GetAssetPath(ShaderAsset) + "/" + name + ".fragment.glsl";
 
-		// Extract name from filepath
-		auto lastSlash = filepath.find_last_of("/\\");
-		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
-		auto lastDot = filepath.rfind('.');
-		auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
-		m_Name = filepath.substr(lastSlash, count);
+		std::unordered_map<GLenum, std::string> sources;
+		sources[GL_VERTEX_SHADER] = ReadFile(file_vertex);
+		sources[GL_FRAGMENT_SHADER] = ReadFile(file_fragment);
+		Compile(sources);
 	}
 
 
@@ -140,40 +120,6 @@ namespace Helios {
 		in.seekg(0, std::ios::beg);
 		in.read(&result[0], size);
 		return result;
-	}
-
-
-	std::unordered_map<GLenum, std::string> GLShader::PreProcess(const std::string& source)
-	{
-		std::unordered_map<GLenum, std::string> shaderSources;
-
-		const char* typeToken = "#type ";
-		size_t typeTokenLength = strlen(typeToken);
-		size_t pos = source.find(typeToken, 0); // start of shader type declaration line
-		while (pos != std::string::npos)
-		{
-			// end of shader type declaration line
-			size_t eol = source.find_first_of("\r\n", pos);
-			LOG_CORE_ASSERT(eol != std::string::npos, "GLShader: Syntax error! No source after type declaration.");
-
-			// start of shader type name (after "#type " keyword + any count of spaces)
-			size_t begin = source.find_first_not_of(" ", pos + typeTokenLength);
-
-			// typestring until eol or first space
-			std::string type = source.substr(begin, source.find_first_of(" \r\n", begin) - begin);
-			LOG_CORE_ASSERT(Utils::ShaderTypeFromString(type), "GLShader: Invalid shader type specified!");
-
-			// start of shader code after shader type declaration line
-			size_t nextLinePos = source.find_first_not_of("\r\n", eol);
-			LOG_CORE_ASSERT(nextLinePos != std::string::npos, "GLShader: Syntax error! No source after type declaration.");
-
-			// start of next shader type declaration line
-			pos = source.find(typeToken, nextLinePos);
-
-			// extract the source
-			shaderSources[Utils::ShaderTypeFromString(type)] = (pos == std::string::npos) ? source.substr(nextLinePos) : source.substr(nextLinePos, pos - nextLinePos);
-		}
-		return shaderSources;
 	}
 
 

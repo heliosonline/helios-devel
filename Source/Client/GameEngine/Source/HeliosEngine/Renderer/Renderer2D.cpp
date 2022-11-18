@@ -152,7 +152,7 @@ namespace Helios {
 			s_Data.QuadVertexPositions[2] = {  0.5f,  0.5f, 0.0f, 1.0f };
 			s_Data.QuadVertexPositions[3] = { -0.5f,  0.5f, 0.0f, 1.0f };
 
-			s_Data.QuadShader = Shader::Create("Assets/Shaders/Renderer2D_Quad.glsl");
+			s_Data.QuadShader = Shader::Create("Renderer2D_Quad");
 		} // Quads
 
 		// Text
@@ -187,7 +187,7 @@ namespace Helios {
 			s_Data.TextVertexArray->SetIndexBuffer(textIB);
 			delete[] textIndices;
 
-			s_Data.TextShader = Shader::Create("Assets/Shaders/Renderer2D_Text.glsl");
+			s_Data.TextShader = Shader::Create("Renderer2D_Text");
 		} // Text
 
 		// Circles
@@ -222,7 +222,7 @@ namespace Helios {
 			s_Data.CircleVertexArray->SetIndexBuffer(circleIB);
 			delete[] circleIndices;
 
-			s_Data.CircleShader = Shader::Create("Assets/Shaders/Renderer2D_Circle.glsl");
+			s_Data.CircleShader = Shader::Create("Renderer2D_Circle");
 		} // Circles
 
 		// Lines
@@ -236,7 +236,7 @@ namespace Helios {
 			s_Data.LineVertexArray->AddVertexBuffer(s_Data.LineVertexBuffer);
 			s_Data.LineVertexBufferBase = new LineVertex[s_Data.MaxVertices];
 
-			s_Data.LineShader = Shader::Create("Assets/Shaders/Renderer2D_Line.glsl");
+			s_Data.LineShader = Shader::Create("Renderer2D_Line");
 		} // Lines
 
 		{ // Textures

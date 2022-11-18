@@ -13,7 +13,7 @@ namespace Helios {
 	class GLShader : public Shader
 	{
 	public:
-		GLShader(const std::string& filepath);
+		GLShader(const std::string& name);
 		GLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
 		~GLShader();
 
@@ -41,8 +41,7 @@ namespace Helios {
 		void UploadUniformMat4(const std::string& name, const glm::mat4& value);
 	private:
 		std::string ReadFile(const std::string& filepath);
-		std::unordered_map<GLenum, std::string> PreProcess(const std::string& source);
-//
+
 //		void CompileOrGetVulkanBinaries(const std::unordered_map<GLenum, std::string>& shaderSources);
 //		void CompileOrGetOpenGLBinaries();
 		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
@@ -50,7 +49,7 @@ namespace Helios {
 //		void Reflect(GLenum stage, const std::vector<uint32_t>& shaderData);
 	private:
 		uint32_t m_RendererID;
-		std::string m_FilePath;
+//		std::string m_FilePath;
 		std::string m_Name;
 		mutable std::unordered_map<std::string, GLint> m_UniformLocationCache;
 
