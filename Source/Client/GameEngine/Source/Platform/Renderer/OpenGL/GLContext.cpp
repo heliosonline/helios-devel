@@ -25,10 +25,10 @@ namespace Helios {
 		// Log basic OpenGL info
 //		LOG_CORE_INFO("OpenGL {0}.{1} Info:", GLAD_VERSION_MAJOR(version), GLAD_VERSION_MINOR(version));
 		LOG_CORE_INFO("OpenGL Info:");
-		LOG_CORE_INFO("  Vendor:   {0}", glGetString(GL_VENDOR));
-		LOG_CORE_INFO("  Renderer: {0}", glGetString(GL_RENDERER));
-		LOG_CORE_INFO("  Version:  {0}", glGetString(GL_VERSION));
-		LOG_CORE_INFO("  Shader:   {0}", glGetString(GL_SHADING_LANGUAGE_VERSION));
+		LOG_CORE_INFO("  Vendor:   {0}", (char*)(glGetString(GL_VENDOR)));
+		LOG_CORE_INFO("  Renderer: {0}", (char*)(glGetString(GL_RENDERER)));
+		LOG_CORE_INFO("  Version:  {0}", (char*)(glGetString(GL_VERSION)));
+		LOG_CORE_INFO("  Shader:   {0}", (char*)(glGetString(GL_SHADING_LANGUAGE_VERSION)));
 
 		// Log basic OpenGL capabilities
 		LOG_CORE_DEBUG("OpenGL Driver Capabilities:");
