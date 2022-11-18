@@ -12,5 +12,6 @@ int main(int argc, char** argv)
 int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 #endif
 {
+	// Call the engines main() function
 	return Helios::AppMain(__argc, __argv);
 }
