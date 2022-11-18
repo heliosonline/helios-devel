@@ -9,5 +9,6 @@
 
 
 # Build and Binary
-bin/
-build/
+_bin/
+_build/
+Tools/build_inc/_bin/
