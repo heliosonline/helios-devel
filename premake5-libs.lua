@@ -17,31 +17,25 @@ function LibNet()
 end
 
 
-function LibLua()
-	includedirs "%{wks.location}/Source/Libs/LibLua/extra"
+function LibLuaHelper()
+	includedirs "%{wks.location}/Source/Libs/LibLuaHelper/Source"
 end
 
 
 function LibHeliosEngine()
 	-- libraries
---	LibLua{}
+	LibLuaHelper{}
 --	VendorGlad{}
 	VendorGlfw{}
 	VendorGlm{}
 	VendorImgui{}
---	VendorLua{}
+	VendorLua{}
 	VendorSpdlog{}
 --	VendorStb{}
 
 	-- the engine itself
 	includedirs "%{wks.location}/Source/Client/GameEngine/Source"
 	links "GameEngine"
-end
-
-
-function LibUTF8()
-	includedirs "%{wks.location}/Source/Libs/LibUTF8/source"
-	links "LibUTF8"
 end
 
 

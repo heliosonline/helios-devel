@@ -16,7 +16,7 @@ project "GameEngine"
 
 	-- Libraries
 	LibCommon{}
-	LibLua{}
+	LibLuaHelper{}
 	VendorGlad{}
 	VendorGlfw{}
 	VendorGlm{}

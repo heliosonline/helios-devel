@@ -1,3 +1,3 @@
 include("LibCommon/")
+include("LibLuaHelper/")
 include("LibNet/")
---include("LibUTF8/")

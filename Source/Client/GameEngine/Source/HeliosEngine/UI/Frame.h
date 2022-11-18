@@ -1,10 +1,9 @@
 #pragma once
-/*
 
 #include "HeliosEngine/Core/Timestep.h"
 
-#include "lua/lua.h"
-#include "LuaHelper/LuaMacros.h"
+#include <lua/lua.hpp>
+#include <LuaHelper/LuaMacros.h>
 
 
 namespace Helios {
@@ -32,8 +31,8 @@ namespace Helios {
 
 	// internal
 	private:
-//		Frame& m_Parent;
-		std::vector<Frame&> m_Childs;
+		Frame* m_Parent;
+		std::vector<Frame*> m_Childs;
 
 	// Lua
 	public:
@@ -43,4 +42,3 @@ namespace Helios {
 
 
 } // namespace Helios
-*/
