@@ -50,7 +50,7 @@ void main()
 	float screenPxDistance = screenPxRange() * (sd - 0.5);
 
 	float opacity = clamp(screenPxDistance + 0.5, 0.0, 1.0);
-	if (opacity < 0.0)
+	if (opacity < 0.1)
 		discard;
 
 //	vec4 bgColor = vec4(0.0);
