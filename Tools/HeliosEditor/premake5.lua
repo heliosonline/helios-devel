@@ -15,8 +15,7 @@ project "HeliosEditor"
 
 	-- Libraries
 	LibCommon{}
-	LibUTF8{}
-	--LibNet{}
+	LibNet{}
 	LibHeliosEngine{}
 
 

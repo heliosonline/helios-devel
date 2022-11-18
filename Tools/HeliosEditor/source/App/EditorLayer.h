@@ -20,12 +20,12 @@ private:
 	Helios::OrthographicCameraController m_CameraController;
 
 	// Temp
-	Helios::Ref<Helios::VertexArray> m_VertexArray;
-	Helios::Ref<Helios::Shader> m_FlatColorShader;
-	Helios::Ref<Helios::Framebuffer> m_Framebuffer;
-	Helios::Ref<Helios::Texture2D> m_Texture;
-	Helios::Ref<Helios::Texture2D> m_Texture2;
-	Helios::Ref<Helios::SubTexture2D> m_SubTexture;
+	Ref<Helios::VertexArray> m_VertexArray;
+	Ref<Helios::Shader> m_FlatColorShader;
+	Ref<Helios::Framebuffer> m_Framebuffer;
+	Ref<Helios::Texture2D> m_Texture;
+	Ref<Helios::Texture2D> m_Texture2;
+	Ref<Helios::SubTexture2D> m_SubTexture;
 
 	glm::vec2 m_ViewportSize = { 0, 0 };
 

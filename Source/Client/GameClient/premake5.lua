@@ -16,7 +16,7 @@ project "GameClient"
 	-- Libraries
 	LibCommon{}
 	LibHeliosEngine{}
---	LibNet{}
+	LibNet{}
 
 
 	includedirs {
