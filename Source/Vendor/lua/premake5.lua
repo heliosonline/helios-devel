@@ -1,7 +1,7 @@
 -----------------------
 -- [ PROJECT CONFIG] --
 -----------------------
-project Vendor.lua"
+project "Vendor.lua"
 	architecture  "x86_64"
 	language      "C++"
 	cppdialect    "C++17"

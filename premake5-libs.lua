@@ -86,6 +86,7 @@ end
 
 function VendorLua()
 	includedirs "%{wks.location}/Source/Vendor/lua/lua-5.4.4"
+	links "Vendor.lua"
 end
 
 
